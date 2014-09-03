@@ -1,7 +1,7 @@
 /*jshint strict:false */
 /*global angular:false */
 
-angular.module('osm.services').factory('settingsService',
+angular.module('osm.services').factory('osmSettingsService',
     ['$localStorage', function($localStorage){
         return {
             localStorage: $localStorage.$default({
@@ -17,13 +17,13 @@ angular.module('osm.services').factory('settingsService',
                 return this.localStorage.userName;
             },
             setUserName: function(username){
-                this.localstorage.userName = username;
+                this.localStorage.userName = username;
             },
             getUserID: function(){
                 return this.localStorage.userID;
             },
             setUserID: function(userid){
-                this.localstorage.userID = userid;
+                this.localStorage.userID = userid;
             },
             getCredentials: function(){
                 return this.localStorage.credentials;
@@ -45,13 +45,14 @@ angular.module('osm.services').factory('settingsService',
                 if (this.localStorage.overpassAPI){
                     return this.localStorage.overpassAPI;
                 }else{
-                    return 'http://api.openstreetmap.org/api';
+                    //return 'http://api.openstreetmap.org/api';
+                    return 'http://overpass-api.de/api/interpreter';
                 }
             },
             setOverpassAPI: function(overpassAPI){
                 this.localStorage.overpassAPI = overpassAPI;
             },
-            getNodes: function(nodes){
+            getNodes: function(){
                 return this.localStorage.nodes;
             },
             setNodes: function(nodes){

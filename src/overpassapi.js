@@ -2,8 +2,8 @@
 /*global angular:false */
 
 angular.module('osm.services').factory('overpassAPI',
-    ['$base64', '$http', '$q', 'settingsService',
-    function ($base64, $http, $q, settingsService) {
+    ['$base64', '$http', '$q', 'osmSettingsService',
+    function ($base64, $http, $q, osmSettingsService) {
         var parseXml;
         var parser;
 
@@ -25,7 +25,7 @@ angular.module('osm.services').factory('overpassAPI',
 
         var service = {
             overpass: function(query){
-                var url = settingsService.getOverpassAPI();
+                var url = osmSettingsService.getOverpassAPI();
                 var deferred = $q.defer();
                 var self = this;
                 var headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};

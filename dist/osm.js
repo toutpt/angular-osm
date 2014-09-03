@@ -1,10 +1,20 @@
 /*jshint strict:false */
 /*global angular:false */
+
+angular.module('osm', [
+    'base64',
+    'osm.services',
+    'ngStorage'
+]);
+
+angular.module('osm.services', []);
+/*jshint strict:false */
+/*global angular:false */
 /*global osmtogeojson:false */
 
 angular.module('osm.services').factory('osmAPI',
-    ['$base64', '$http', '$q', 'settingsService',
-    function ($base64, $http, $q, settingsService) {
+    ['$base64', '$http', '$q', 'osmSettingsService',
+    function ($base64, $http, $q, osmSettingsService) {
         var parseXml;
         var parser;
         var serializer = new XMLSerializer();
@@ -31,7 +41,7 @@ angular.module('osm.services').factory('osmAPI',
                 this.getUserDetails().then(function(data){
                     var users = data.getElementsByTagName('user');
                     if (users.length > 0){
-                        settingsService.setUserID(users[0].id);
+                        osmSettingsService.setUserID(users[0].id);
                     }
                     deferred.resolve(users.length > 0);
                 }, function(error){
@@ -40,19 +50,19 @@ angular.module('osm.services').factory('osmAPI',
                 return deferred.promise;
             },
             setCredentials: function(username, password){
-                settingsService.setUserName(username);
+                osmSettingsService.setUserName(username);
                 var credentials = $base64.encode(username + ':' + password);
-                settingsService.setCredentials(credentials);
+                osmSettingsService.setCredentials(credentials);
                 return credentials;
             },
             getCredentials: function(){
-                return settingsService.getCredentials();
+                return osmSettingsService.getCredentials();
             },
             getAuthorization: function(){
-                return 'Basic ' + settingsService.getCredentials();
+                return 'Basic ' + osmSettingsService.getCredentials();
             },
             clearCredentials: function () {
-                settingsService.setCredentials('');
+                osmSettingsService.setCredentials('');
             },
             parseXML: function(data){
                 //bug: this return nothing with firefox ...
@@ -68,7 +78,7 @@ angular.module('osm.services').factory('osmAPI',
             get: function(method, config){
                 var deferred = $q.defer();
                 var self = this;
-                var url = settingsService.getOSMAPI() + method;
+                var url = osmSettingsService.getOSMAPI() + method;
                 $http.get(url, config).then(function(data){
                     var contentType = data.headers()['content-type'];
                     var results;
@@ -93,7 +103,7 @@ angular.module('osm.services').factory('osmAPI',
                     config = {};
                 }
                 config.headers = {Authorization: this.getAuthorization()};
-                var url = settingsService.getOSMAPI() + method;
+                var url = osmSettingsService.getOSMAPI() + method;
                 $http.put(url, content, config).then(function(data){
                     var contentType = data.headers()['content-type'];
                     var results;
@@ -118,7 +128,7 @@ angular.module('osm.services').factory('osmAPI',
                     config = {};
                 }
                 config.headers = {Authorization: this.getAuthorization()};
-                config.url = settingsService.getOSMAPI() + method;
+                config.url = osmSettingsService.getOSMAPI() + method;
                 config.method = 'delete';
                 $http(config).then(function(data){
                     var contentType = data.headers()['content-type'];
@@ -137,7 +147,7 @@ angular.module('osm.services').factory('osmAPI',
                 return deferred.promise;
             },
             getNodesInJSON: function(xmlNodes){
-                settingsService.setNodes(xmlNodes);
+                osmSettingsService.setNodes(xmlNodes);
                 return osmtogeojson(xmlNodes, {flatProperties: true});
             },
             createChangeset: function(comment){
@@ -145,7 +155,7 @@ angular.module('osm.services').factory('osmAPI',
                 var changeset = '<osm><changeset><tag k="created_by" v="OSM-Relation-Editor"/><tag k="comment" v="';
                 changeset += comment + '"/></changeset></osm>';
                 this.put('/0.6/changeset/create', changeset).then(function(data){
-                    settingsService.setChangeset(data);
+                    osmSettingsService.setChangeset(data);
                     deferred.resolve(data);
                 });
                 return deferred.promise;
@@ -153,12 +163,12 @@ angular.module('osm.services').factory('osmAPI',
             getLastOpenedChangesetId: function(){
                 var deferred = $q.defer();
                 var config = {
-                    params:{user: settingsService.getUserid(), open: true}
+                    params:{user: osmSettingsService.getUserID(), open: true}
                 };
                 this.get('/0.6/changesets', config).then(function(data){
                     var changesets = data.getElementsByTagName('changeset');
                     if (changesets.length > 0){
-                        settingsService.setChangeset(changesets[0].id);
+                        osmSettingsService.setChangeset(changesets[0].id);
                         deferred.resolve(changesets[0].id);
                     }else{
                         deferred.resolve();
@@ -167,9 +177,9 @@ angular.module('osm.services').factory('osmAPI',
                 return deferred.promise;
             },
             closeChangeset: function(){
-                var changeset = settingsService.getChangeset();
+                var changeset = osmSettingsService.getChangeset();
                 var results = this.put('/0.6/changeset/'+ changeset +'/close');
-                settingsService.setChangeset();
+                osmSettingsService.setChangeset();
                 return results;
             },
             getUserDetails: function(){
@@ -181,7 +191,7 @@ angular.module('osm.services').factory('osmAPI',
             updateNode: function(currentNode, updatedNode){
                 //we need to do the diff and build the xml
                 //first try to find the node by id
-                var nodes = settingsService.getNodes();
+                var nodes = osmSettingsService.getNodes();
                 var node = nodes.getElementById(currentNode.properties.id);
                 var deferred = $q.defer(); //only for errors
                 if (node === null){
@@ -194,8 +204,8 @@ angular.module('osm.services').factory('osmAPI',
                     return deferred.promise;
                 }
                 var tag;
-                node.setAttribute('changeset', settingsService.getChangeset());
-                node.setAttribute('user', settingsService.getUserName());
+                node.setAttribute('changeset', osmSettingsService.getChangeset());
+                node.setAttribute('user', osmSettingsService.getUserName());
                 while (node.getElementsByTagName('tag')[0]){
                     node.removeChild(node.getElementsByTagName('tag')[0]);
                 }
@@ -238,7 +248,7 @@ angular.module('osm.services').factory('osmAPI',
                 var tagTPL = '<tag k="KEY" v="VALUE"/>';
                 var tags = '';
                 var value;
-                newNode = newNode.replace('CHANGESET', settingsService.getChangeset());
+                newNode = newNode.replace('CHANGESET', osmSettingsService.getChangeset());
                 for (var property in feature.osm) {
                     if (feature.osm.hasOwnProperty(property)) {
                         value = feature.osm[property];
@@ -398,13 +408,13 @@ angular.module('osm.services').factory('osmAPI',
                 var i;
                 var pp = relationGeoJSON.properties;
                 var members = relationGeoJSON.members;
-                var settings = settingsService;
+                var settings = osmSettingsService;
                 var output = '<?xml version="1.0" encoding="UTF-8"?>\n';
                 output += '<osm version="0.6" generator="CGImap 0.3.3 (31468 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">\n';
                 output += '  <relation id="'+ pp.id + '" visible="' + pp.visible + '" ';
                 output += 'version="' + pp.version + '" ';
                 output += 'changeset="'+settings.getChangeset() +'" timestamp="' + new Date().toISOString() + '" ';
-                output += 'user="' + settings.getUsername() + '" uid="' + pp.uid + '">\n';
+                output += 'user="' + settings.getUserName() + '" uid="' + pp.uid + '">\n';
 
                 for (i = 0; i < members.length; i++) {
                     output += '    <member type="'+ members[i].type +'" ';
@@ -582,8 +592,8 @@ angular.module('osm.services').factory('osmAPI',
 /*global angular:false */
 
 angular.module('osm.services').factory('overpassAPI',
-    ['$base64', '$http', '$q', 'settingsService',
-    function ($base64, $http, $q, settingsService) {
+    ['$base64', '$http', '$q', 'osmSettingsService',
+    function ($base64, $http, $q, osmSettingsService) {
         var parseXml;
         var parser;
 
@@ -605,7 +615,7 @@ angular.module('osm.services').factory('overpassAPI',
 
         var service = {
             overpass: function(query){
-                var url = settingsService.getOverpassAPI();
+                var url = osmSettingsService.getOverpassAPI();
                 var deferred = $q.defer();
                 var self = this;
                 var headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
@@ -701,3 +711,73 @@ angular.module('osm.services').factory('overpassAPI',
         return service;
     }
 ]);
+
+/*jshint strict:false */
+/*global angular:false */
+
+angular.module('osm.services').factory('osmSettingsService',
+    ['$localStorage', function($localStorage){
+        return {
+            localStorage: $localStorage.$default({
+                userName: '',
+                userID: '',
+                credentials: '',
+                nodes: [],
+                changeset: '',
+                osmAPI: '',
+                overpassAPI: ''
+            }),
+            getUserName: function(){
+                return this.localStorage.userName;
+            },
+            setUserName: function(username){
+                this.localStorage.userName = username;
+            },
+            getUserID: function(){
+                return this.localStorage.userID;
+            },
+            setUserID: function(userid){
+                this.localStorage.userID = userid;
+            },
+            getCredentials: function(){
+                return this.localStorage.credentials;
+            },
+            setCredentials: function(credentials){
+                this.localStorage.credentials = credentials;
+            },
+            getOSMAPI: function(){
+                if (this.localStorage.osmAPI){
+                    return this.localStorage.osmAPI;
+                }else{
+                    return 'http://api.openstreetmap.org/api';
+                }
+            },
+            setOSMAPI: function(osmAPI){
+                this.localStorage.osmAPI = osmAPI;
+            },
+            getOverpassAPI: function(){
+                if (this.localStorage.overpassAPI){
+                    return this.localStorage.overpassAPI;
+                }else{
+                    //return 'http://api.openstreetmap.org/api';
+                    return 'http://overpass-api.de/api/interpreter';
+                }
+            },
+            setOverpassAPI: function(overpassAPI){
+                this.localStorage.overpassAPI = overpassAPI;
+            },
+            getNodes: function(){
+                return this.localStorage.nodes;
+            },
+            setNodes: function(nodes){
+                this.localStorage.setNodes(nodes);
+            },
+            getChangeset: function(){
+                return this.localStorage.changeset;
+            },
+            setChangeset: function(changeset){
+                this.localStorage.changeset = changeset;
+            }
+        };
+    }]
+);
