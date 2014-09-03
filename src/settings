@@ -4,13 +4,65 @@
 angular.module('osm.services').factory('settingsService',
     ['$localStorage', function($localStorage){
         return {
-            settings: $localStorage.$default({
-                username: '',
-                userid: '',
+            localStorage: $localStorage.$default({
+                userName: '',
+                userID: '',
                 credentials: '',
                 nodes: [],
-                changeset: ''
-            })
+                changeset: '',
+                osmAPI: '',
+                overpassAPI: ''
+            }),
+            getUserName: function(){
+                return this.localStorage.userName;
+            },
+            setUserName: function(username){
+                this.localstorage.userName = username;
+            },
+            getUserID: function(){
+                return this.localStorage.userID;
+            },
+            setUserID: function(userid){
+                this.localstorage.userID = userid;
+            },
+            getCredentials: function(){
+                return this.localStorage.credentials;
+            },
+            setCredentials: function(credentials){
+                this.localStorage.credentials = credentials;
+            },
+            getOSMAPI: function(){
+                if (this.localStorage.osmAPI){
+                    return this.localStorage.osmAPI;
+                }else{
+                    return 'http://api.openstreetmap.org/api';
+                }
+            },
+            setOSMAPI: function(osmAPI){
+                this.localStorage.osmAPI = osmAPI;
+            },
+            getOverpassAPI: function(){
+                if (this.localStorage.overpassAPI){
+                    return this.localStorage.overpassAPI;
+                }else{
+                    return 'http://api.openstreetmap.org/api';
+                }
+            },
+            setOverpassAPI: function(overpassAPI){
+                this.localStorage.overpassAPI = overpassAPI;
+            },
+            getNodes: function(nodes){
+                return this.localStorage.nodes;
+            },
+            setNodes: function(nodes){
+                this.localStorage.setNodes(nodes);
+            },
+            getChangeset: function(){
+                return this.localStorage.changeset;
+            },
+            setChangeset: function(changeset){
+                this.localStorage.changeset = changeset;
+            }
         };
     }]
 );

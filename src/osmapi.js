@@ -8,7 +8,6 @@ angular.module('osm.services').factory('osmAPI',
         var parseXml;
         var parser;
         var serializer = new XMLSerializer();
-        var API = 'http://api.openstreetmap.org/api';
 
         if (typeof window.DOMParser !== 'undefined') {
             parser = new window.DOMParser();
@@ -32,7 +31,7 @@ angular.module('osm.services').factory('osmAPI',
                 this.getUserDetails().then(function(data){
                     var users = data.getElementsByTagName('user');
                     if (users.length > 0){
-                        settingsService.settings.userid = users[0].id;
+                        settingsService.setUserID(users[0].id);
                     }
                     deferred.resolve(users.length > 0);
                 }, function(error){
@@ -41,18 +40,19 @@ angular.module('osm.services').factory('osmAPI',
                 return deferred.promise;
             },
             setCredentials: function(username, password){
-                settingsService.settings.username = username;
-                settingsService.settings.credentials = $base64.encode(username + ':' + password);
-                return settingsService.settings.credentials;
+                settingsService.setUserName(username);
+                var credentials = $base64.encode(username + ':' + password);
+                settingsService.setCredentials(credentials);
+                return credentials;
             },
             getCredentials: function(){
-                return settingsService.settings.credentials;
+                return settingsService.getCredentials();
             },
             getAuthorization: function(){
-                return 'Basic ' + settingsService.settings.credentials;
+                return 'Basic ' + settingsService.getCredentials();
             },
             clearCredentials: function () {
-                settingsService.settings.credentials = '';
+                settingsService.setCredentials('');
             },
             parseXML: function(data){
                 //bug: this return nothing with firefox ...
@@ -68,8 +68,8 @@ angular.module('osm.services').factory('osmAPI',
             get: function(method, config){
                 var deferred = $q.defer();
                 var self = this;
-
-                $http.get(API + method, config).then(function(data){
+                var url = settingsService.getOSMAPI() + method;
+                $http.get(url, config).then(function(data){
                     var contentType = data.headers()['content-type'];
                     var results;
                     if (contentType.indexOf('application/xml;') === 0){
@@ -93,7 +93,8 @@ angular.module('osm.services').factory('osmAPI',
                     config = {};
                 }
                 config.headers = {Authorization: this.getAuthorization()};
-                $http.put(API + method, content, config).then(function(data){
+                var url = settingsService.getOSMAPI() + method;
+                $http.put(url, content, config).then(function(data){
                     var contentType = data.headers()['content-type'];
                     var results;
                     if (contentType.indexOf('application/xml;') === 0){
@@ -117,7 +118,7 @@ angular.module('osm.services').factory('osmAPI',
                     config = {};
                 }
                 config.headers = {Authorization: this.getAuthorization()};
-                config.url = API + method;
+                config.url = settingsService.getOSMAPI() + method;
                 config.method = 'delete';
                 $http(config).then(function(data){
                     var contentType = data.headers()['content-type'];
@@ -135,101 +136,8 @@ angular.module('osm.services').factory('osmAPI',
                 });
                 return deferred.promise;
             },
-            overpass: function(query){
-                var url = 'http://api.openstreetmap.fr/oapi/interpreter';
-                var deferred = $q.defer();
-                var self = this;
-                var headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
-                $http.post(
-                    url,
-                    'data='+encodeURIComponent(query),
-                    {headers: headers}
-                ).then(function(data){
-                    if (typeof data.data === 'object'){
-                        deferred.resolve(data.data);
-                    }else{
-                        deferred.resolve(self.parseXML(data.data));
-                    }
-                },function(data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
-            },
-            overpassToGeoJSON: function(query, filter){
-                var deferred = $q.defer();
-                var features = [];
-                var relations = [];
-                var result = {
-                    type: 'FeatureCollection',
-                    features: features,
-                    relations: relations
-                };
-                this.overpass(query).then(function(data){
-                    //TODO check if data is XML or JSON, here it's JSON
-                    var node, feature, coordinates;
-                    var cache = {loaded:false};
-                    var getNodeById = function(id){
-                        if (!cache.loaded){
-                            var tmp;
-                            for (var i = 0; i < data.elements.length; i++) {
-                                tmp = data.elements[i];
-                                cache[tmp.id] = tmp;
-                            }
-                        }
-                        return cache[id];
-                    };
-                    for (var i = 0; i < data.elements.length; i++) {
-                        node = data.elements[i];
-                        if (node.type === 'node'){
-                            feature = {
-                                type: 'Feature',
-                                properties:node.tags,
-                                id: node.id,
-                                geometry: {
-                                    type:'Point',
-                                    coordinates: [node.lon, node.lat]
-                                }
-                            };
-                            if (!filter(feature)){
-                                features.push(feature);
-                            }
-                        }else if (node.type === 'way'){
-                            coordinates = [];
-                            feature = {
-                                type: 'Feature',
-                                properties:node.tags,
-                                id: node.id,
-                                geometry: {
-                                    type:'LineString',
-                                    coordinates: coordinates
-                                }
-                            };
-                            for (var j = 0; j < node.nodes.length; j++) {
-                                coordinates.push([
-                                    getNodeById(node.nodes[j]).lon,
-                                    getNodeById(node.nodes[j]).lat
-                                ]);
-                            }
-                            if (!filter(feature)){
-                                features.push(feature);
-                            }
-                        }else if (node.type === 'relation'){
-                            result.relations.push({
-                                ref: node.id,
-                                tags: node.tags,
-                                type: 'relation',
-                                members: node.members
-                            });
-                        }
-                    }
-                    deferred.resolve(result);
-                }, function(error){
-                    deferred.reject(error);
-                });
-                return deferred.promise;
-            },
             getNodesInJSON: function(xmlNodes){
-                settingsService.settings.nodes = xmlNodes;
+                settingsService.setNodes(xmlNodes);
                 return osmtogeojson(xmlNodes, {flatProperties: true});
             },
             createChangeset: function(comment){
@@ -237,17 +145,20 @@ angular.module('osm.services').factory('osmAPI',
                 var changeset = '<osm><changeset><tag k="created_by" v="OSM-Relation-Editor"/><tag k="comment" v="';
                 changeset += comment + '"/></changeset></osm>';
                 this.put('/0.6/changeset/create', changeset).then(function(data){
-                    settingsService.settings.changeset = data;
+                    settingsService.setChangeset(data);
                     deferred.resolve(data);
                 });
                 return deferred.promise;
             },
             getLastOpenedChangesetId: function(){
                 var deferred = $q.defer();
-                this.get('/0.6/changesets', {params:{user: settingsService.settings.userid, open: true}}).then(function(data){
+                var config = {
+                    params:{user: settingsService.getUserid(), open: true}
+                };
+                this.get('/0.6/changesets', config).then(function(data){
                     var changesets = data.getElementsByTagName('changeset');
                     if (changesets.length > 0){
-                        settingsService.settings.changeset = changesets[0].id;
+                        settingsService.setChangeset(changesets[0].id);
                         deferred.resolve(changesets[0].id);
                     }else{
                         deferred.resolve();
@@ -256,8 +167,9 @@ angular.module('osm.services').factory('osmAPI',
                 return deferred.promise;
             },
             closeChangeset: function(){
-                var results = this.put('/0.6/changeset/'+ settingsService.settings.changeset +'/close');
-                settingsService.settings.changeset = undefined;
+                var changeset = settingsService.getChangeset();
+                var results = this.put('/0.6/changeset/'+ changeset +'/close');
+                settingsService.setChangeset();
                 return results;
             },
             getUserDetails: function(){
@@ -269,7 +181,8 @@ angular.module('osm.services').factory('osmAPI',
             updateNode: function(currentNode, updatedNode){
                 //we need to do the diff and build the xml
                 //first try to find the node by id
-                var node = settingsService.settings.nodes.getElementById(currentNode.properties.id);
+                var nodes = settingsService.getNodes();
+                var node = nodes.getElementById(currentNode.properties.id);
                 var deferred = $q.defer(); //only for errors
                 if (node === null){
                     deferred.reject({
@@ -281,8 +194,8 @@ angular.module('osm.services').factory('osmAPI',
                     return deferred.promise;
                 }
                 var tag;
-                node.setAttribute('changeset', settingsService.settings.changeset);
-                node.setAttribute('user', settingsService.settings.username);
+                node.setAttribute('changeset', settingsService.getChangeset());
+                node.setAttribute('user', settingsService.getUserName());
                 while (node.getElementsByTagName('tag')[0]){
                     node.removeChild(node.getElementsByTagName('tag')[0]);
                 }
@@ -325,7 +238,7 @@ angular.module('osm.services').factory('osmAPI',
                 var tagTPL = '<tag k="KEY" v="VALUE"/>';
                 var tags = '';
                 var value;
-                newNode = newNode.replace('CHANGESET', settingsService.settings.changeset);
+                newNode = newNode.replace('CHANGESET', settingsService.getChangeset());
                 for (var property in feature.osm) {
                     if (feature.osm.hasOwnProperty(property)) {
                         value = feature.osm[property];
@@ -485,13 +398,13 @@ angular.module('osm.services').factory('osmAPI',
                 var i;
                 var pp = relationGeoJSON.properties;
                 var members = relationGeoJSON.members;
-                var settings = settingsService.settings;
+                var settings = settingsService;
                 var output = '<?xml version="1.0" encoding="UTF-8"?>\n';
                 output += '<osm version="0.6" generator="CGImap 0.3.3 (31468 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">\n';
                 output += '  <relation id="'+ pp.id + '" visible="' + pp.visible + '" ';
                 output += 'version="' + pp.version + '" ';
-                output += 'changeset="'+settings.changeset +'" timestamp="' + new Date().toISOString() + '" ';
-                output += 'user="' + settings.username + '" uid="' + pp.uid + '">\n';
+                output += 'changeset="'+settings.getChangeset() +'" timestamp="' + new Date().toISOString() + '" ';
+                output += 'user="' + settings.getUsername() + '" uid="' + pp.uid + '">\n';
 
                 for (i = 0; i < members.length; i++) {
                     output += '    <member type="'+ members[i].type +'" ';

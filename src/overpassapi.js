@@ -2,8 +2,8 @@
 /*global angular:false */
 
 angular.module('osm.services').factory('overpassAPI',
-    ['$base64', '$http', '$q',
-    function ($base64, $http, $q) {
+    ['$base64', '$http', '$q', 'settingsService',
+    function ($base64, $http, $q, settingsService) {
         var parseXml;
         var parser;
 
@@ -25,7 +25,7 @@ angular.module('osm.services').factory('overpassAPI',
 
         var service = {
             overpass: function(query){
-                var url = 'http://api.openstreetmap.fr/oapi/interpreter';
+                var url = settingsService.getOverpassAPI();
                 var deferred = $q.defer();
                 var self = this;
                 var headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
