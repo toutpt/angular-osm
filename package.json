@@ -1,0 +1,16 @@
+{
+  "name": "angular-osm",
+  "version": "0.0.1",
+  "description": "OpenStreetMap APIs as services for angular",
+  "main": "dist/osm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jean-Michel FRANCOIS <toutpt@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^3.8.7",
+    "gulp-concat": "^2.3.4",
+    "gulp-jshint": "^1.8.4"
+  }
+}
