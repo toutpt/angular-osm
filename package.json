@@ -1,6 +1,6 @@
 {
   "name": "angular-osm",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "OpenStreetMap APIs as services for angular",
   "main": "dist/osm.js",
   "scripts": {
