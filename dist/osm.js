@@ -171,6 +171,7 @@ angular.module('osm.services').factory('osmAPI',
                         osmSettingsService.setChangeset(changesets[0].id);
                         deferred.resolve(changesets[0].id);
                     }else{
+                        osmSettingsService.setChangeset();
                         deferred.resolve();
                     }
                 });
@@ -404,13 +405,20 @@ angular.module('osm.services').factory('osmAPI',
                 result.tags = self.getTagsFromChildren(relation);
                 return result;
             },
+            encodeXML: function (str) {
+                return str.replace(/&/g, '&amp;')
+                          .replace(/</g, '&lt;')
+                          .replace(/>/g, '&gt;')
+                          .replace(/"/g, '&quot;')
+                          .replace(/'/g, '&apos;');
+            },
             relationGeoJSONToXml: function(relationGeoJSON){
                 var i;
                 var pp = relationGeoJSON.properties;
                 var members = relationGeoJSON.members;
                 var settings = osmSettingsService;
                 var output = '<?xml version="1.0" encoding="UTF-8"?>\n';
-                output += '<osm version="0.6" generator="CGImap 0.3.3 (31468 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">\n';
+                output += '<osm version="0.6" generator="angular-osm 0.2" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">\n';
                 output += '  <relation id="'+ pp.id + '" visible="' + pp.visible + '" ';
                 output += 'version="' + pp.version + '" ';
                 output += 'changeset="'+settings.getChangeset() +'" timestamp="' + new Date().toISOString() + '" ';
@@ -429,7 +437,7 @@ angular.module('osm.services').factory('osmAPI',
 
                 var tags = relationGeoJSON.tags;
                 for (var k in tags) {
-                    output += '    <tag k="'+ k +'" v="'+ tags[k] +'"/>\n';
+                    output += '    <tag k="'+ k +'" v="'+ this.encodeXML(tags[k]) +'"/>\n';
                 }
                 output += '  </relation>\n';
                 output += '</osm>';
