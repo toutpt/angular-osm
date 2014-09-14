@@ -56,7 +56,7 @@ angular.module('osm.services').factory('osmSettingsService',
                 return this.localStorage.nodes;
             },
             setNodes: function(nodes){
-                this.localStorage.setNodes(nodes);
+                this.localStorage.nodes = nodes;
             },
             getChangeset: function(){
                 return this.localStorage.changeset;

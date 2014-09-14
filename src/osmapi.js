@@ -136,10 +136,6 @@ angular.module('osm.services').factory('osmAPI',
                 });
                 return deferred.promise;
             },
-            getNodesInJSON: function(xmlNodes){
-                osmSettingsService.setNodes(xmlNodes);
-                return osmtogeojson(xmlNodes, {flatProperties: true});
-            },
             createChangeset: function(comment){
                 var deferred = $q.defer();
                 var changeset = '<osm><changeset><tag k="created_by" v="OSM-Relation-Editor"/><tag k="comment" v="';
@@ -234,29 +230,25 @@ angular.module('osm.services').factory('osmAPI',
                 //put request !!
                 return this.put('/0.6/' + nodeType + '/' + currentNode.properties.id, osm.outerHTML);
             },
-            addNode: function(feature){
+            createNode: function(node){
                 var newNode = '<osm><node changeset="CHANGESET" lat="LAT" lon="LNG">TAGS</node></osm>';
                 var tagTPL = '<tag k="KEY" v="VALUE"/>';
                 var tags = '';
                 var value;
                 newNode = newNode.replace('CHANGESET', osmSettingsService.getChangeset());
-                for (var property in feature.osm) {
-                    if (feature.osm.hasOwnProperty(property)) {
-                        value = feature.osm[property];
+                for (var property in node.tags) {
+                    if (node.tags.hasOwnProperty(property)) {
+                        value = node.tags[property];
                         if (value === undefined || value === null){
                             continue;
                         }else{
-                            tags = tags + tagTPL.replace('KEY', property).replace('VALUE', feature.osm[property]);
+                            tags = tags + tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
                         }
                     }
                 }
                 newNode = newNode.replace('TAGS', tags);
-                if (feature.geometry.type === 'Point'){
-                    newNode = newNode.replace('LNG', feature.geometry.coordinates[0]);
-                    newNode = newNode.replace('LAT', feature.geometry.coordinates[1]);
-                }else{
-                    throw new Error('Can t save sth else than Point');
-                }
+                newNode = newNode.replace('LNG', node.lng);
+                newNode = newNode.replace('LAT', node.lat);
                 console.log('create new node with ' + newNode);
                 return this.put('/0.6/node/create', newNode);
             },
@@ -548,6 +540,14 @@ angular.module('osm.services').factory('osmAPI',
                 }else{
                     console.error('can t sort this relation');
                 }
+            },
+            getNodesInJSON: function(xmlNodes, flatProperties){
+                osmSettingsService.setNodes(xmlNodes);
+                var options = {};
+                if (flatProperties !== undefined){
+                    options.flatProperties = flatProperties;
+                }
+                return osmtogeojson(xmlNodes, options);
             },
             yqlJSON: function(featuresURL){
                 var deferred = $q.defer();
