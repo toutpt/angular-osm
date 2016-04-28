@@ -1,9 +1,11 @@
-/*jshint strict:false */
-/*global angular:false */
+(function () {
+    'use strict';
+    angular.module('osm.overpass')
 
-angular.module('osm.services').factory('overpassAPI',
-    ['$base64', '$http', '$q', 'osmSettingsService',
-    function ($base64, $http, $q, osmSettingsService) {
+    .factory('overpassAPI', overpassAPI);
+
+    overpassAPI.$inject = ['$base64', '$http', '$q', 'osmSettingsService'];
+    function overpassAPI($base64, $http, $q, osmSettingsService) {
         var parseXml;
         var parser;
 
@@ -120,4 +122,5 @@ angular.module('osm.services').factory('overpassAPI',
         };
         return service;
     }
-]);
+
+})();

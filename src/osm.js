@@ -1,10 +1,13 @@
-/*jshint strict:false */
-/*global angular:false */
+(function () {
+    'use strict';
 
-angular.module('osm', [
-    'base64',
-    'osm.services',
-    'ngStorage'
-]);
+    angular.module('osm', [
+        'base64',
+        'ngStorage',
+        'osm.settings',
+        'osm.api',
+        'osm.overpass',
+        'osm.taginfo'
+    ]);
 
-angular.module('osm.services', []);
+})();

@@ -1,20 +1,24 @@
-/*jshint strict:false */
-/*global angular:false */
+(function () {
+    'use strict';
 
-angular.module('osm', [
-    'base64',
-    'osm.services',
-    'ngStorage'
-]);
+    angular.module('osm', [
+        'base64',
+        'ngStorage',
+        'osm.settings',
+        'osm.api',
+        'osm.overpass',
+        'osm.taginfo'
+    ]);
 
-angular.module('osm.services', []);
-/*jshint strict:false */
-/*global angular:false */
-/*global osmtogeojson:false */
+})();
+(function () {
+    'use strict';
 
-angular.module('osm.services').factory('osmAPI',
-    ['$base64', '$http', '$q', 'osmSettingsService',
-    function ($base64, $http, $q, osmSettingsService) {
+    angular.module('osm.api')
+    .factory('osmAPI', osmAPI);
+
+    osmAPI.$inject = ['$base64', '$http', '$q', 'osmSettingsService'];
+    function osmAPI($base64, $http, $q, osmSettingsService) {
         var parseXml;
         var parser;
         var serializer = new XMLSerializer();
@@ -594,14 +598,16 @@ angular.module('osm.services').factory('osmAPI',
         };
         return service;
     }
-]);
 
-/*jshint strict:false */
-/*global angular:false */
+})();
+(function () {
+    'use strict';
+    angular.module('osm.overpass')
 
-angular.module('osm.services').factory('overpassAPI',
-    ['$base64', '$http', '$q', 'osmSettingsService',
-    function ($base64, $http, $q, osmSettingsService) {
+    .factory('overpassAPI', overpassAPI);
+
+    overpassAPI.$inject = ['$base64', '$http', '$q', 'osmSettingsService'];
+    function overpassAPI($base64, $http, $q, osmSettingsService) {
         var parseXml;
         var parser;
 
@@ -718,13 +724,16 @@ angular.module('osm.services').factory('overpassAPI',
         };
         return service;
     }
-]);
 
-/*jshint strict:false */
-/*global angular:false */
+})();
+(function () {
+    'use strict';
+    angular.module('osm.settings', [])
 
-angular.module('osm.services').factory('osmSettingsService',
-    ['$localStorage', function($localStorage){
+    .factory('osmSettingsService', osmSettingsService);
+
+    osmSettingsService.$inject = ['$localStorage'];
+    function osmSettingsService ($localStorage) {
         return {
             localStorage: $localStorage.$default({
                 userName: '',
@@ -787,15 +796,17 @@ angular.module('osm.services').factory('osmSettingsService',
                 this.localStorage.changeset = changeset;
             }
         };
-    }]
-);
+    }
 
-/*jshint strict:false */
-/*global angular:false */
+})();
+(function () {
+    'use strict';
 
-angular.module('osm.services').factory('osmTagInfoAPI',
-    ['$base64', '$http', '$q',
-    function ($base64, $http, $q) {
+    angular.module('osm.taginfo', [])
+    .factory('osmTagInfoAPI', osmTagInfoAPI);
+
+    osmTagInfoAPI.$inject = ['$base64', '$http', '$q'];
+    function osmTagInfoAPI($base64, $http, $q) {
         //http://taginfo.openstreetmap.org/taginfo/apidoc
         var service = {
             get: function(method, config){
@@ -974,4 +985,5 @@ angular.module('osm.services').factory('osmTagInfoAPI',
         };
         return service;
     }
-]);
+
+})();

@@ -1,9 +1,11 @@
-/*jshint strict:false */
-/*global angular:false */
+(function () {
+    'use strict';
 
-angular.module('osm.services').factory('osmTagInfoAPI',
-    ['$base64', '$http', '$q',
-    function ($base64, $http, $q) {
+    angular.module('osm.taginfo', [])
+    .factory('osmTagInfoAPI', osmTagInfoAPI);
+
+    osmTagInfoAPI.$inject = ['$base64', '$http', '$q'];
+    function osmTagInfoAPI($base64, $http, $q) {
         //http://taginfo.openstreetmap.org/taginfo/apidoc
         var service = {
             get: function(method, config){
@@ -182,4 +184,5 @@ angular.module('osm.services').factory('osmTagInfoAPI',
         };
         return service;
     }
-]);
+
+})();

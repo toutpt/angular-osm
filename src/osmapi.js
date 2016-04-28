@@ -1,10 +1,11 @@
-/*jshint strict:false */
-/*global angular:false */
-/*global osmtogeojson:false */
+(function () {
+    'use strict';
 
-angular.module('osm.services').factory('osmAPI',
-    ['$base64', '$http', '$q', 'osmSettingsService',
-    function ($base64, $http, $q, osmSettingsService) {
+    angular.module('osm.api')
+    .factory('osmAPI', osmAPI);
+
+    osmAPI.$inject = ['$base64', '$http', '$q', 'osmSettingsService'];
+    function osmAPI($base64, $http, $q, osmSettingsService) {
         var parseXml;
         var parser;
         var serializer = new XMLSerializer();
@@ -584,4 +585,5 @@ angular.module('osm.services').factory('osmAPI',
         };
         return service;
     }
-]);
+
+})();

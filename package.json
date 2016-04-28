@@ -8,9 +8,16 @@
   },
   "author": "Jean-Michel FRANCOIS <toutpt@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "gulp": "^3.8.7",
     "gulp-concat": "^2.3.4",
-    "gulp-jshint": "^1.8.4"
+    "gulp-jshint": "^1.8.4",
+    "gulp-watch": "^4.3.5"
+  },
+  "dependencies": {
+    "angular": "1.5.5",
+    "angular-base64": "2.0.5",
+    "ngstorage": "0.3.10",
+    "osmtogeojson": "https://github.com/tyrasd/osmtogeojson.git#2.0.5"
   }
 }

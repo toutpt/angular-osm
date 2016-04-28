@@ -1,8 +1,11 @@
-/*jshint strict:false */
-/*global angular:false */
+(function () {
+    'use strict';
+    angular.module('osm.settings', [])
 
-angular.module('osm.services').factory('osmSettingsService',
-    ['$localStorage', function($localStorage){
+    .factory('osmSettingsService', osmSettingsService);
+
+    osmSettingsService.$inject = ['$localStorage'];
+    function osmSettingsService ($localStorage) {
         return {
             localStorage: $localStorage.$default({
                 userName: '',
@@ -65,5 +68,6 @@ angular.module('osm.services').factory('osmSettingsService',
                 this.localStorage.changeset = changeset;
             }
         };
-    }]
-);
+    }
+
+})();
