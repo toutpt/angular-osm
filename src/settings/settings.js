@@ -1,4 +1,6 @@
 import osmSettingsService from './settings.component';
 
-export default angular.module('osm.settings', [])
+var osmSettingsModule = angular.module('osm.settings', [])
 .factory('osmSettingsService', osmSettingsService);
+
+export default osmSettingsModule;

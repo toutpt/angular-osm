@@ -1,4 +1,6 @@
 import osmAPI from './api.component';
 
-export default angular.module('osm.api', ['osm.settings'])
+var osmAPIModule = angular.module('osm.api', ['osm.settings'])
 .factory('osmAPI', osmAPI);
+
+export default osmAPIModule;

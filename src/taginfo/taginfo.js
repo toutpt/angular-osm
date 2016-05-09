@@ -1,3 +1,6 @@
+import osmTagInfoAPI from './taginfo.component';
 
-export default angular.module('osm.taginfo', [])
+var osmTagInfoModule = angular.module('osm.taginfo', [])
 .factory('osmTagInfoAPI', osmTagInfoAPI);
+
+export default osmTagInfoModule;

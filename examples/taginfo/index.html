@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>angular-osm taginfo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script type="text/javascript" src="../../dist/dependencies.js"></script>
+	<script type="text/javascript" src="../../dist/osm.js"></script>
+	<script type="text/javascript" src="example.js"></script>
+</head>
+<body ng-app="example" ng-controller="ExampleCtrl as $ctrl">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<p class="help-block">This example show you how to use osmTaginfoService</p>
+				<h2>API based on the key</h2>
+				<form name="keyform">
+					<div class="form-group">
+						<input class="form-control" type="text" placeholder="key" ng-model="$ctrl.key"/>
+					</div>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getKeyValues()">getKeyValues</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getKeyStats()">getKeyStats</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getKeyCombinations()">getKeyCombinations</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getKeyDistributionWays()">getKeyDistributionWays</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getKeyWikiPages()">getKeyWikiPages</button>
+				</form>
+
+				<h2>API based on a query</h2>
+				<form name="queryform">
+					<div class="form-group">
+						<input class="form-control" type="text" placeholder="query" ng-model="$ctrl.query"/>
+					</div>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getTagsPopular()">getTagsPopular</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getSearchByValue()">getSearchByValue</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getSearchByRole()">getSearchByRole</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getSearchByKeyword()">getSearchByKeyword</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getSearchByKeyAndValue()">getSearchByKeyAndValue</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getRelationsAll()">getRelationsAll</button>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.getKeysAll()">getKeysAll</button>
+				</form>
+			</div>
+			<div class="col-md-6">
+				<span ng-show="$ctrl.loading" class="ng-hide">loading...</span>
+				<pre>{{$ctrl.data | json}}</pre>
+				<div class="alert alert-danger ng-hide" ng-show="$ctrl.error">
+					{{$ctrl.error}}
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,4 +1,6 @@
 import osmAuthService from './oauth.component';
 
-export default angular.module('osm.oauth', ['osm.settings'])
+var osmOAuthModule = angular.module('osm.oauth', [])
 .factory('osmAuthService', osmAuthService);
+
+export default osmOAuthModule;
