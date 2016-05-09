@@ -41,7 +41,7 @@
 			</div>
 			<div class="col-md-6">
 				<span ng-show="$ctrl.loading" class="ng-hide">loading...</span>
-				<pre>{{$ctrl.data | json}}</pre>
+				<pre ng-show="$ctrl.data">{{$ctrl.data | json}}</pre>
 				<div class="alert alert-danger ng-hide" ng-show="$ctrl.error">
 					{{$ctrl.error}}
 				</div>
