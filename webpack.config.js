@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
     entry: {
         osm: './src/osm.js',
-        dependencies: ['angular', 'osm-auth', 'ngstorage', 'osmtogeojson']
+        dependencies: ['angular', 'osm-auth', 'ngstorage']
     },
     output: {
         path: __dirname,

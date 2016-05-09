@@ -8,7 +8,7 @@
     "url": "https://github.com/toutpt/angular-osm.git"
   },
   "scripts": {
-    "test": "karma start tests/karma.headless.conf.js --single-run",
+    "test": "karma start karma/karma.travis.conf.js --single-run",
     "build": "webpack"
   },
   "author": "Jean-Michel FRANCOIS <toutpt@gmail.com>",

@@ -1,5 +1,4 @@
 import angular from 'angular';
-import base64 from 'angular-base64';
 
 import oauth from './oauth/oauth';
 import api from './api/api';
@@ -8,7 +7,6 @@ import taginfo from './taginfo/taginfo';
 import settings from './settings/settings';
 
 angular.module('osm', [
-    base64.name,
     settings.name,
     api.name,
     overpass.name,
