@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>angular-osm oauth</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script type="text/javascript" src="../../dist/dependencies.js"></script>
+	<script type="text/javascript" src="../../dist/osm.js"></script>
+	<script type="text/javascript" src="example.js"></script>
+</head>
+<body ng-app="example" ng-controller="ExampleCtrl as $ctrl">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<p>This example show you how to use osmOAuthService</p>
+				<button ng-click="$ctrl.login()">login</button>
+			</div>
+			<div class="col-md-6">
+				<span ng-show="$ctrl.loading" class="ng-hide">loading...</span>
+				<pre ng-show="$ctrl.data">{{$ctrl.data | json}}</pre>
+				<div class="alert alert-danger ng-hide" ng-show="$ctrl.error">
+					{{$ctrl.error}}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
