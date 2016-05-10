@@ -2,35 +2,22 @@ webpackJsonp([1],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/// <reference path="../typings/browser.d.ts"/>
+	"use strict";
+	var angular_1 = __webpack_require__(1);
+	var oauth_1 = __webpack_require__(15);
+	var api_1 = __webpack_require__(17);
+	var overpass_1 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./overpass/overpass\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var taginfo_1 = __webpack_require__(19);
+	var settings_1 = __webpack_require__(21);
+	angular_1["default"].module('osm', [
+	    settings_1["default"].name,
+	    api_1["default"].name,
+	    overpass_1["default"].name,
+	    taginfo_1["default"].name,
+	    oauth_1["default"].name
+	]);
 
-	var _angular = __webpack_require__(1);
-
-	var _angular2 = _interopRequireDefault(_angular);
-
-	var _oauth = __webpack_require__(15);
-
-	var _oauth2 = _interopRequireDefault(_oauth);
-
-	var _api = __webpack_require__(17);
-
-	var _api2 = _interopRequireDefault(_api);
-
-	var _overpass = __webpack_require__(19);
-
-	var _overpass2 = _interopRequireDefault(_overpass);
-
-	var _taginfo = __webpack_require__(21);
-
-	var _taginfo2 = _interopRequireDefault(_taginfo);
-
-	var _settings = __webpack_require__(23);
-
-	var _settings2 = _interopRequireDefault(_settings);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	_angular2.default.module('osm', [_settings2.default.name, _api2.default.name, _overpass2.default.name, _taginfo2.default.name, _oauth2.default.name]);
 
 /***/ },
 /* 1 */,
@@ -50,38 +37,27 @@ webpackJsonp([1],[
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	"use strict";
+	var oauth_service_1 = __webpack_require__(16);
+	var osmOAuthModule = angular.module('osm.oauth', [])
+	    .factory('osmAuthService', oauth_service_1["default"])
+	    .provider('osmAuthService', function osmAuthServiceProvider() {
+	    this.options = {};
+	    this.$get = function osmAuthServiceFactory() {
+	        return new oauth_service_1["default"](this.options);
+	    };
 	});
+	exports.__esModule = true;
+	exports["default"] = osmOAuthModule;
 
-	var _oauth = __webpack_require__(16);
-
-	var _oauth2 = _interopRequireDefault(_oauth);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var osmOAuthModule = angular.module('osm.oauth', []).factory('osmAuthService', _oauth2.default);
-
-	exports.default = osmOAuthModule;
 
 /***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _osmAuth = __webpack_require__(3);
-
-	var _osmAuth2 = _interopRequireDefault(_osmAuth);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	"use strict";
+	var osm_auth_1 = __webpack_require__(3);
+	//TODO: write a provider to configure the service and provide options
 	/**
 	* @ngdoc service
 	* @name osm.oauth.osmAuthService
@@ -91,47 +67,51 @@ webpackJsonp([1],[
 	function osmAuthService(options) {
 	    if (options) {
 	        if (options.oauth_secret && options.oauth_consumer_key) {
-	            (0, _osmAuth2.default)(options);
+	            this.auth = osm_auth_1["default"](options);
 	        }
 	    }
-	    this.logout = _osmAuth2.default.logout;
-	    this.authenticated = _osmAuth2.default.authenticated;
-	    this.authenticate = _osmAuth2.default.authenticate;
-	    this.xhr = _osmAuth2.default.xhr;
-	    this.options = _osmAuth2.default.options;
+	    this.logout = function () {
+	        return this.auth.logout();
+	    };
+	    this.authenticated = function () {
+	        return this.auth.authenticated();
+	    };
+	    this.authenticate = function (callback) {
+	        return this.auth.authenticate(callback);
+	    };
+	    this.xhr = function (options) {
+	        return this.auth.xhr(options);
+	    };
+	    this.options = function (options) {
+	        if (this.auth) {
+	            this.auth.options(options);
+	        }
+	        else {
+	            this.auth = osm_auth_1["default"](options);
+	        }
+	    };
 	}
+	exports.__esModule = true;
+	exports["default"] = osmAuthService;
 
-	exports.default = osmAuthService;
 
 /***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+	var api_service_1 = __webpack_require__(18);
+	var osmAPIModule = angular.module('osm.api', ['osm.settings'])
+	    .factory('osmAPI', api_service_1["default"]);
+	exports.__esModule = true;
+	exports["default"] = osmAPIModule;
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _api = __webpack_require__(18);
-
-	var _api2 = _interopRequireDefault(_api);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var osmAPIModule = angular.module('osm.api', ['osm.settings']).factory('osmAPI', _api2.default);
-
-	exports.default = osmAPIModule;
 
 /***/ },
 /* 18 */
 /***/ function(module, exports) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+	"use strict";
 	/**
 	 * @ngdoc service
 	 * @name osm.oauth.osmAuthService
@@ -141,29 +121,16 @@ webpackJsonp([1],[
 	 * @param  {any} osmSettingsService
 	 */
 	osmAPI.$inject = ['$base64', '$http', '$q', 'osmSettingsService'];
-	function osmAPI($base64, $http, $q, osmSettingsService) {
-	    var parseXml;
-	    var parser;
-	    var serializer = new XMLSerializer();
-
-	    if (typeof window.DOMParser !== 'undefined') {
-	        parser = new window.DOMParser();
-	        parseXml = function parseXml(xmlStr) {
-	            return parser.parseFromString(xmlStr, 'application/xml');
-	        };
-	    } else if (typeof window.ActiveXObject !== 'undefined') {
-	        parseXml = function parseXml(xmlStr) {
-	            var xmlDoc = new window.ActiveXObject('Microsoft.XMLDOM');
-	            xmlDoc.async = 'false';
-	            xmlDoc.loadXML(xmlStr);
-	            return xmlDoc;
-	        };
-	    } else {
-	        throw new Error('No XML parser found');
-	    }
-
+	function osmAPI($base64, $http, $q, osmSettingsService, osmUtils) {
 	    var service = {
-	        validateCredentials: function validateCredentials() {
+	        /**
+	         * @ngdoc method
+	         * @name validateCredentials
+	         * @methodOf osm.api.osmAPI
+	         * @description in the case you don't want to use osm.oauth
+	         * @returns {Promise} true/false
+	         */
+	        validateCredentials: function () {
 	            var deferred = $q.defer();
 	            this.getUserDetails().then(function (data) {
 	                var users = data.getElementsByTagName('user');
@@ -176,33 +143,75 @@ webpackJsonp([1],[
 	            });
 	            return deferred.promise;
 	        },
-	        setCredentials: function setCredentials(username, password) {
+	        /**
+	         * @ngdoc method
+	         * @name setCredentials
+	         * @param {string} username
+	         * @param {string} password
+	         * @methodOf osm.api.osmAPI
+	         * @description store the credentials in the settings service
+	         * @returns {string} credentials encoded as base64
+	         */
+	        setCredentials: function (username, password) {
 	            osmSettingsService.setUserName(username);
 	            var credentials = $base64.encode(username + ':' + password);
 	            osmSettingsService.setCredentials(credentials);
 	            return credentials;
 	        },
-	        getCredentials: function getCredentials() {
+	        /**
+	         * @ngdoc method
+	         * @name setCredentials
+	         * @methodOf osm.api.osmAPI
+	         * @description get the credentials from the settings
+	         * @returns {string} credentials encoded as base64
+	         */
+	        getCredentials: function () {
 	            return osmSettingsService.getCredentials();
 	        },
-	        getAuthorization: function getAuthorization() {
+	        /**
+	         * @ngdoc method
+	         * @name getAuthorization
+	         * @methodOf osm.api.osmAPI
+	         * @description get the credentials from the settings
+	         * @returns {string} credentials encoded as base64
+	         */
+	        getAuthorization: function () {
 	            return 'Basic ' + osmSettingsService.getCredentials();
 	        },
-	        clearCredentials: function clearCredentials() {
+	        /**
+	         * @ngdoc method
+	         * @name clearCredentials
+	         * @methodOf osm.api.osmAPI
+	         * @description remove credentials from the settings
+	         */
+	        clearCredentials: function () {
 	            osmSettingsService.setCredentials('');
 	        },
-	        parseXML: function parseXML(data) {
-	            //bug: this return nothing with firefox ...
-	            return parseXml(data);
-	        },
-	        getAuthenticated: function getAuthenticated(method, config) {
+	        /**
+	         * @ngdoc method
+	         * @name getAuthenticated
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} method path of the API, /foo/bar
+	         * @param {Object} config $http config
+	         * @returns {Promise} result of the get call
+	         */
+	        getAuthenticated: function (method, config) {
 	            if (config === undefined) {
 	                config = {};
 	            }
 	            config.headers = { Authorization: this.getAuthorization() };
 	            return this.get(method, config);
 	        },
-	        get: function get(method, config) {
+	        /**
+	         * @ngdoc method
+	         * @name get
+	         * @description $http.get call
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} method path of the API, /foo/bar
+	         * @param {Object} config $http config
+	         * @returns {Promise} response
+	         */
+	        get: function (method, config) {
 	            var deferred = $q.defer();
 	            var self = this;
 	            var url = osmSettingsService.getOSMAPI() + method;
@@ -210,10 +219,12 @@ webpackJsonp([1],[
 	                var contentType = data.headers()['content-type'];
 	                var results;
 	                if (contentType.indexOf('application/xml;') === 0) {
-	                    results = self.parseXML(data.data);
-	                } else if (contentType.indexOf('text/xml;') === 0) {
-	                    results = self.parseXML(data.data);
-	                } else {
+	                    results = osmUtils.parseXML(data.data);
+	                }
+	                else if (contentType.indexOf('text/xml;') === 0) {
+	                    results = osmUtils.parseXML(data.data);
+	                }
+	                else {
 	                    results = data.data;
 	                }
 	                deferred.resolve(results);
@@ -222,10 +233,19 @@ webpackJsonp([1],[
 	            });
 	            return deferred.promise;
 	        },
-	        put: function put(method, content, config) {
+	        /**
+	         * @ngdoc method
+	         * @name put
+	         * @description $http.put call
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} method path of the API, /foo/bar
+	         * @param {Object} content $http.put content
+	         * @param {Object} config $http config
+	         * @returns {Promise} response
+	         */
+	        put: function (method, content, config) {
 	            var deferred = $q.defer();
 	            var self = this;
-
 	            if (config === undefined) {
 	                config = {};
 	            }
@@ -235,10 +255,12 @@ webpackJsonp([1],[
 	                var contentType = data.headers()['content-type'];
 	                var results;
 	                if (contentType.indexOf('application/xml;') === 0) {
-	                    results = self.parseXML(data.data);
-	                } else if (contentType.indexOf('text/xml;') === 0) {
-	                    results = self.parseXML(data.data);
-	                } else {
+	                    results = osmUtils.parseXML(data.data);
+	                }
+	                else if (contentType.indexOf('text/xml;') === 0) {
+	                    results = osmUtils.parseXML(data.data);
+	                }
+	                else {
 	                    results = data.data;
 	                }
 	                deferred.resolve(results);
@@ -247,10 +269,18 @@ webpackJsonp([1],[
 	            });
 	            return deferred.promise;
 	        },
-	        delete: function _delete(method, config) {
+	        /**
+	         * @ngdoc method
+	         * @name delete
+	         * @description $http.delete
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} method path of the object to delete
+	         * @param {Object} config $http config
+	         * @returns {Promise} response
+	         */
+	        delete: function (method, config) {
 	            var deferred = $q.defer();
 	            var self = this;
-
 	            if (config === undefined) {
 	                config = {};
 	            }
@@ -261,10 +291,12 @@ webpackJsonp([1],[
 	                var contentType = data.headers()['content-type'];
 	                var results;
 	                if (contentType.indexOf('application/xml;') === 0) {
-	                    results = self.parseXML(data.data);
-	                } else if (contentType.indexOf('text/xml;') === 0) {
-	                    results = self.parseXML(data.data);
-	                } else {
+	                    results = osmUtils.parseXML(data.data);
+	                }
+	                else if (contentType.indexOf('text/xml;') === 0) {
+	                    results = osmUtils.parseXML(data.data);
+	                }
+	                else {
 	                    results = data.data;
 	                }
 	                deferred.resolve(results);
@@ -273,7 +305,16 @@ webpackJsonp([1],[
 	            });
 	            return deferred.promise;
 	        },
-	        createChangeset: function createChangeset(comment) {
+	        /**
+	         * @ngdoc method
+	         * @name createChangeset
+	         * @description create a changeset to manipulate osm data
+	         * put('/0.6/changeset/create')
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} comment the comment
+	         * @returns {Promise} response
+	         */
+	        createChangeset: function (comment) {
 	            var deferred = $q.defer();
 	            var changeset = '<osm><changeset><tag k="created_by" v="OSM-Relation-Editor"/><tag k="comment" v="';
 	            changeset += comment + '"/></changeset></osm>';
@@ -283,7 +324,15 @@ webpackJsonp([1],[
 	            });
 	            return deferred.promise;
 	        },
-	        getLastOpenedChangesetId: function getLastOpenedChangesetId() {
+	        /**
+	         * @ngdoc method
+	         * @name getLastOpenedChangesetId
+	         * @description get the last opened changeset (while reload the app)
+	         * get('/0.6/changesets')
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} response
+	         */
+	        getLastOpenedChangesetId: function () {
 	            var deferred = $q.defer();
 	            var config = {
 	                params: { user: osmSettingsService.getUserID(), open: true }
@@ -293,26 +342,57 @@ webpackJsonp([1],[
 	                if (changesets.length > 0) {
 	                    osmSettingsService.setChangeset(changesets[0].id);
 	                    deferred.resolve(changesets[0].id);
-	                } else {
+	                }
+	                else {
 	                    osmSettingsService.setChangeset();
 	                    deferred.resolve();
 	                }
 	            });
 	            return deferred.promise;
 	        },
-	        closeChangeset: function closeChangeset() {
+	        /**
+	         * @ngdoc method
+	         * @name closeChangeset
+	         * @description put('/0.6/changesets/ID/close')
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} response
+	         */
+	        closeChangeset: function () {
 	            var changeset = osmSettingsService.getChangeset();
 	            var results = this.put('/0.6/changeset/' + changeset + '/close');
 	            osmSettingsService.setChangeset();
 	            return results;
 	        },
-	        getUserDetails: function getUserDetails() {
+	        /**
+	         * @ngdoc method
+	         * @name closeChangeset
+	         * @description get('/0.6/user/details')
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} response
+	         */
+	        getUserDetails: function () {
 	            return this.getAuthenticated('/0.6/user/details');
 	        },
-	        getMap: function getMap(bbox) {
+	        /**
+	         * @ngdoc method
+	         * @name getMap
+	         * @description get('/0.6/map?bbox=')
+	         * @param {string} bbox
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} response
+	         */
+	        getMap: function (bbox) {
 	            return this.get('/0.6/map?bbox=' + bbox);
 	        },
-	        updateNode: function updateNode(currentNode, updatedNode) {
+	        /**
+	         * @ngdoc method
+	         * @name updateNode
+	         * @param {Object} currentNode
+	         * @param {Object} updatedNode
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} put response
+	         */
+	        updateNode: function (currentNode, updatedNode) {
 	            //we need to do the diff and build the xml
 	            //first try to find the node by id
 	            var nodes = osmSettingsService.getNodes();
@@ -351,11 +431,14 @@ webpackJsonp([1],[
 	            var nodeType;
 	            if (updatedNode.geometry.type === 'Polygon') {
 	                nodeType = 'way';
-	            } else if (updatedNode.geometry.type === 'Point') {
+	            }
+	            else if (updatedNode.geometry.type === 'Point') {
 	                nodeType = 'node';
-	            } else if (updatedNode.geometry.type === 'LineString') {
+	            }
+	            else if (updatedNode.geometry.type === 'LineString') {
 	                nodeType = 'way';
-	            } else {
+	            }
+	            else {
 	                deferred.reject({
 	                    msg: 'geojson type not supported',
 	                    currentNode: currentNode,
@@ -367,7 +450,14 @@ webpackJsonp([1],[
 	            //put request !!
 	            return this.put('/0.6/' + nodeType + '/' + currentNode.properties.id, osm.outerHTML);
 	        },
-	        createNode: function createNode(node) {
+	        /**
+	         * @ngdoc method
+	         * @name createNode
+	         * @methodOf osm.api.osmAPI
+	         * @param {Object} node
+	         * @returns {Promise} put response
+	         */
+	        createNode: function (node) {
 	            var newNode = '<osm><node changeset="CHANGESET" lat="LAT" lon="LNG">TAGS</node></osm>';
 	            var tagTPL = '<tag k="KEY" v="VALUE"/>';
 	            var tags = '';
@@ -378,7 +468,8 @@ webpackJsonp([1],[
 	                    value = node.tags[property];
 	                    if (value === undefined || value === null) {
 	                        continue;
-	                    } else {
+	                    }
+	                    else {
 	                        tags = tags + tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
 	                    }
 	                }
@@ -389,11 +480,11 @@ webpackJsonp([1],[
 	            console.log('create new node with ' + newNode);
 	            return this.put('/0.6/node/create', newNode);
 	        },
-	        getMapGeoJSON: function getMapGeoJSON(bbox) {
+	        getMapGeoJSON: function (bbox) {
 	            var self = this;
 	            var deferred = $q.defer();
 	            self.getMap(bbox).then(function (xmlNodes) {
-	                var geojsonNodes = self.getNodesInJSON(xmlNodes);
+	                var geojsonNodes = osmUtils.getNodesInJSON(xmlNodes);
 	                //TODO: load row node (xml)
 	                /*                    var node;
 	                                for (var i = 0; i < geojsonNodes.length; i++) {
@@ -406,10 +497,10 @@ webpackJsonp([1],[
 	            });
 	            return deferred.promise;
 	        },
-	        serialiseXmlToString: function serialiseXmlToString(xml) {
+	        serialiseXmlToString: function (xml) {
 	            return serializer.serializeToString(xml);
 	        },
-	        getTagsFromChildren: function getTagsFromChildren(element) {
+	        getTagsFromChildren: function (element) {
 	            var children, tags;
 	            tags = {};
 	            for (var i = 0; i < element.children.length; i++) {
@@ -421,7 +512,7 @@ webpackJsonp([1],[
 	            }
 	            return tags;
 	        },
-	        getNameFromTags: function getNameFromTags(element) {
+	        getNameFromTags: function (element) {
 	            var children;
 	            for (var i = 0; i < element.children.length; i++) {
 	                children = element.children[i];
@@ -433,7 +524,7 @@ webpackJsonp([1],[
 	                }
 	            }
 	        },
-	        relationXmlToGeoJSON: function relationXmlToGeoJSON(relationID, relationXML) {
+	        relationXmlToGeoJSON: function (relationID, relationXML) {
 	            var self = this;
 	            var features = [];
 	            var relations = [];
@@ -495,22 +586,30 @@ webpackJsonp([1],[
 	                            child = memberElement.children[j];
 	                            if (child.tagName === 'nd') {
 	                                node = relationXML.getElementById(child.getAttribute('ref'));
-	                                coordinates.push([parseFloat(node.getAttribute('lon')), parseFloat(node.getAttribute('lat'))]);
+	                                coordinates.push([
+	                                    parseFloat(node.getAttribute('lon')),
+	                                    parseFloat(node.getAttribute('lat'))
+	                                ]);
 	                            }
 	                        }
 	                        features.push(feature);
-	                    } else if (memberElement.tagName === 'node') {
+	                    }
+	                    else if (memberElement.tagName === 'node') {
 	                        feature = {
 	                            type: 'Feature',
 	                            properties: properties,
 	                            id: m.getAttribute('ref'),
 	                            geometry: {
 	                                type: 'Point',
-	                                coordinates: [parseFloat(memberElement.getAttribute('lon')), parseFloat(memberElement.getAttribute('lat'))]
+	                                coordinates: [
+	                                    parseFloat(memberElement.getAttribute('lon')),
+	                                    parseFloat(memberElement.getAttribute('lat'))
+	                                ]
 	                            }
 	                        };
 	                        features.push(feature);
-	                    } else if (memberElement.tagName === 'relation') {
+	                    }
+	                    else if (memberElement.tagName === 'relation') {
 	                        member.tags = properties;
 	                    }
 	                }
@@ -518,59 +617,31 @@ webpackJsonp([1],[
 	            result.tags = self.getTagsFromChildren(relation);
 	            return result;
 	        },
-	        encodeXML: function encodeXML(str) {
-	            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+	        encodeXML: function (str) {
+	            return str.replace(/&/g, '&amp;')
+	                .replace(/</g, '&lt;')
+	                .replace(/>/g, '&gt;')
+	                .replace(/"/g, '&quot;')
+	                .replace(/'/g, '&apos;');
 	        },
-	        relationGeoJSONToXml: function relationGeoJSONToXml(relationGeoJSON) {
-	            var i;
-	            var pp = relationGeoJSON.properties;
-	            var members = relationGeoJSON.members;
-	            var settings = osmSettingsService;
-	            var output = '<?xml version="1.0" encoding="UTF-8"?>\n';
-	            output += '<osm version="0.6" generator="angular-osm 0.2" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">\n';
-	            output += '  <relation id="' + pp.id + '" visible="' + pp.visible + '" ';
-	            output += 'version="' + pp.version + '" ';
-	            output += 'changeset="' + settings.getChangeset() + '" timestamp="' + new Date().toISOString() + '" ';
-	            output += 'user="' + settings.getUserName() + '" uid="' + pp.uid + '">\n';
-
-	            for (i = 0; i < members.length; i++) {
-	                output += '    <member type="' + members[i].type + '" ';
-	                output += 'ref="' + members[i].ref;
-	                //role depends on the type of member
-	                if (members[i].type === 'relation') {
-	                    output += '" role="' + members[i].role + '"/>\n';
-	                } else {
-	                    output += '" role="' + members[i].role + '"/>\n';
-	                }
-	            }
-
-	            var tags = relationGeoJSON.tags;
-	            for (var k in tags) {
-	                output += '    <tag k="' + k + '" v="' + this.encodeXML(tags[k]) + '"/>\n';
-	            }
-	            output += '  </relation>\n';
-	            output += '</osm>';
-	            return output;
-	        },
-	        sortRelationMembers: function sortRelationMembers(relationGeoJSON) {
+	        sortRelationMembers: function (relationGeoJSON) {
 	            //sort members
 	            var members = relationGeoJSON.members;
 	            var features = relationGeoJSON.features;
 	            var sorted = [];
 	            var f, i, m, j, k;
 	            var first, last;
-	            var insertBefore = function insertBefore(item) {
+	            var insertBefore = function (item) {
 	                sorted.splice(0, 0, item);
 	            };
-	            var insertAfter = function insertAfter(item) {
+	            var insertAfter = function (item) {
 	                sorted.push(item);
 	            };
-	            var getCoordinates = function getCoordinates(i) {
+	            var getCoordinates = function (i) {
 	                return features[i].geometry.coordinates;
 	            };
 	            var c, cfirst, clast, alreadySorted;
-	            var foundFirst,
-	                foundLast = false;
+	            var foundFirst, foundLast = false;
 	            for (i = 0; i < members.length; i++) {
 	                m = members[i];
 	                if (m.type !== 'way') {
@@ -610,7 +681,6 @@ webpackJsonp([1],[
 	                    if (alreadySorted) {
 	                        continue;
 	                    }
-
 	                    c = getCoordinates(j);
 	                    first = c[0];
 	                    last = c[c.length - 1];
@@ -652,7 +722,7 @@ webpackJsonp([1],[
 	                //Fix orders of features
 	                //var features = relationGeoJSON.features;
 	                var cache = { loaded: false };
-	                var getFeatureById = function getFeatureById(id) {
+	                var getFeatureById = function (id) {
 	                    if (!cache.loaded) {
 	                        for (var i = 0; i < features.length; i++) {
 	                            cache[features[i].id] = features[i];
@@ -664,218 +734,35 @@ webpackJsonp([1],[
 	                for (var l = 0; l < sorted.length; l++) {
 	                    relationGeoJSON.features.push(getFeatureById(sorted[l].ref));
 	                }
-	                //feature order fixed
-	            } else {
-	                    console.error('can t sort this relation');
-	                }
-	        },
-	        getNodesInJSON: function getNodesInJSON(xmlNodes, flatProperties) {
-	            osmSettingsService.setNodes(xmlNodes);
-	            var options = {};
-	            if (flatProperties !== undefined) {
-	                options.flatProperties = flatProperties;
 	            }
-	            return osmtogeojson(xmlNodes, options);
-	        },
-	        yqlJSON: function yqlJSON(featuresURL) {
-	            var deferred = $q.defer();
-	            var url, config;
-	            config = {
-	                params: {
-	                    q: 'select * from json where url=\'' + featuresURL + '\';',
-	                    format: 'json'
-	                }
-	            };
-	            url = 'http://query.yahooapis.com/v1/public/yql';
-	            $http.get(url, config).then(function (data) {
-	                if (data.data.query.results === null) {
-	                    deferred.resolve([]);
-	                } else {
-	                    deferred.resolve(data.data.query.results.json);
-	                }
-	            }, function (error) {
-	                deferred.reject(error);
-	            });
-	            return deferred.promise;
-	        },
-	        getElementTypeFromFeature: function getElementTypeFromFeature(feature) {
-	            var gtype = feature.geometry.type;
-	            if (gtype === 'LineString') {
-	                return 'way';
-	            } else if (gtype === 'Point') {
-	                return 'node';
-	            } else {
-	                console.error('not supported type ' + gtype);
+	            else {
+	                console.error('can t sort this relation');
 	            }
 	        }
 	    };
 	    return service;
 	}
+	exports.__esModule = true;
+	exports["default"] = osmAPI;
 
-	exports.default = osmAPI;
 
 /***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+	var taginfo_service_1 = __webpack_require__(20);
+	var osmTagInfoModule = angular.module('osm.taginfo', [])
+	    .factory('osmTagInfoAPI', taginfo_service_1["default"]);
+	exports.__esModule = true;
+	exports["default"] = osmTagInfoModule;
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _overpass = __webpack_require__(20);
-
-	var _overpass2 = _interopRequireDefault(_overpass);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var osmOverpassModule = angular.module('osm.overpass', ['osm.settings']).factory('osmOverpassAPI', _overpass2.default);
-
-	exports.default = osmOverpassModule;
 
 /***/ },
 /* 20 */
 /***/ function(module, exports) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-
-	/**
-	 * @ngdoc service
-	 * @name overpassAPI
-	 * @param  {any} $http
-	 * @param  {any} $q
-	 * @param  {any} osmSettingsService
-	 */
-	osmOverpassAPI.$inject = ['$http', '$q', 'osmSettingsService'];
-	function osmOverpassAPI($http, $q, osmSettingsService) {
-	    var service = {
-	        overpass: function overpass(query) {
-	            var url = osmSettingsService.getOverpassAPI();
-	            var deferred = $q.defer();
-	            var self = this;
-	            var headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
-	            $http.post(url, 'data=' + encodeURIComponent(query), { headers: headers }).then(function (data) {
-	                deferred.resolve(data.data);
-	            }, function (data) {
-	                deferred.reject(data);
-	            });
-	            return deferred.promise;
-	        },
-	        overpassToGeoJSON: function overpassToGeoJSON(query, filter) {
-	            var deferred = $q.defer();
-	            var features = [];
-	            var relations = [];
-	            var result = {
-	                type: 'FeatureCollection',
-	                features: features,
-	                relations: relations
-	            };
-	            if (filter === undefined) {
-	                filter = function filter() {};
-	            }
-	            this.overpass(query).then(function (data) {
-	                //TODO check if data is XML or JSON, here it's JSON
-	                var node, feature, coordinates;
-	                var cache = { loaded: false };
-	                function getNodeById(id) {
-	                    if (!cache.loaded) {
-	                        var tmp;
-	                        for (var i = 0; i < data.elements.length; i++) {
-	                            tmp = data.elements[i];
-	                            cache[tmp.id] = tmp;
-	                        }
-	                    }
-	                    return cache[id];
-	                };
-	                for (var i = 0; i < data.elements.length; i++) {
-	                    node = data.elements[i];
-	                    if (node.type === 'node') {
-	                        feature = {
-	                            type: 'Feature',
-	                            properties: node.tags,
-	                            id: node.id,
-	                            geometry: {
-	                                type: 'Point',
-	                                coordinates: [node.lon, node.lat]
-	                            }
-	                        };
-	                        if (!filter(feature)) {
-	                            features.push(feature);
-	                        }
-	                    } else if (node.type === 'way') {
-	                        coordinates = [];
-	                        feature = {
-	                            type: 'Feature',
-	                            properties: node.tags,
-	                            id: node.id,
-	                            geometry: {
-	                                type: 'LineString',
-	                                coordinates: coordinates
-	                            }
-	                        };
-	                        for (var j = 0; j < node.nodes.length; j++) {
-	                            coordinates.push([getNodeById(node.nodes[j]).lon, getNodeById(node.nodes[j]).lat]);
-	                        }
-	                        if (!filter(feature)) {
-	                            features.push(feature);
-	                        }
-	                    } else if (node.type === 'relation') {
-	                        result.relations.push({
-	                            ref: node.id,
-	                            tags: node.tags,
-	                            type: 'relation',
-	                            members: node.members
-	                        });
-	                    }
-	                }
-	                deferred.resolve(result);
-	            }, function (error) {
-	                deferred.reject(error);
-	            });
-	            return deferred.promise;
-	        }
-	    };
-	    return service;
-	}
-
-	exports.default = osmOverpassAPI;
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _taginfo = __webpack_require__(22);
-
-	var _taginfo2 = _interopRequireDefault(_taginfo);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var osmTagInfoModule = angular.module('osm.taginfo', []).factory('osmTagInfoAPI', _taginfo2.default);
-
-	exports.default = osmTagInfoModule;
-
-/***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
+	"use strict";
 	osmTagInfoAPI.$inject = ['$http', '$q'];
 	/**
 	 * @ngdoc service
@@ -887,7 +774,7 @@ webpackJsonp([1],[
 	 */
 	function osmTagInfoAPI($http, $q) {
 	    var service = {
-	        get: function get(method, config) {
+	        get: function (method, config) {
 	            var deferred = $q.defer();
 	            $http.get('https://taginfo.openstreetmap.org/api/4' + method, config).then(function (data) {
 	                deferred.resolve(data.data);
@@ -904,7 +791,7 @@ webpackJsonp([1],[
 	            key — Tag key (required).
 	            query — Only show results where the other_key matches this query (substring match, optional).
 	         */
-	        getKeyCombinations: function getKeyCombinations(params) {
+	        getKeyCombinations: function (params) {
 	            return this.get('/key/combinations', { params: params });
 	        },
 	        /**
@@ -914,7 +801,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            key — Tag key (required).
 	         */
-	        getKeyDistributionNodes: function getKeyDistributionNodes(params) {
+	        getKeyDistributionNodes: function (params) {
 	            return this.get('/key/distribution/nodes', { params: params });
 	        },
 	        /**
@@ -924,7 +811,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	         * key — Tag key (required).
 	         */
-	        getKeyDistributionWays: function getKeyDistributionWays(params) {
+	        getKeyDistributionWays: function (params) {
 	            return this.get('/key/distribution/ways', { params: params });
 	        },
 	        /**
@@ -934,7 +821,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	         * key — Tag key (required).
 	         */
-	        getKeyStats: function getKeyStats(params) {
+	        getKeyStats: function (params) {
 	            return this.get('/key/stats', { params: params });
 	        },
 	        /**
@@ -946,7 +833,7 @@ webpackJsonp([1],[
 	            lang — Language for description (optional, default: 'en').
 	            query — Only show results where the value matches this query (substring match, optional).
 	         */
-	        getKeyValues: function getKeyValues(params) {
+	        getKeyValues: function (params) {
 	            return this.get('/key/values', { params: params });
 	        },
 	        /**
@@ -956,7 +843,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            key — Tag key (required).
 	         */
-	        getKeyWikiPages: function getKeyWikiPages(params) {
+	        getKeyWikiPages: function (params) {
 	            return this.get('/key/wiki_pages', { params: params });
 	        },
 	        /**
@@ -966,7 +853,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Only show keys matching this query (substring match, optional).
 	         */
-	        getKeysAll: function getKeysAll(params) {
+	        getKeysAll: function (params) {
 	            return this.get('/keys/all', { params: params });
 	        },
 	        /**
@@ -976,7 +863,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Only show keys matching this query (substring match, optional).
 	         */
-	        getKeysWikiPages: function getKeysWikiPages(params) {
+	        getKeysWikiPages: function (params) {
 	            return this.get('/keys/wiki_pages', { params: params });
 	        },
 	        /**
@@ -988,7 +875,7 @@ webpackJsonp([1],[
 	            min_count — How many tags with this key must there be at least to show up here? (default 10000).
 	            query — Only show results where the key matches this query (substring match, optional).
 	         */
-	        getKeysWithoutWikiPage: function getKeysWithoutWikiPage(params) {
+	        getKeysWithoutWikiPage: function (params) {
 	            return this.get('/keys/without_wiki_page', { params: params });
 	        },
 	        /**
@@ -999,7 +886,7 @@ webpackJsonp([1],[
 	            query — Only show results where the role matches this query (substring match, optional).
 	            rtype — Relation type (required).
 	         */
-	        getRelationRoles: function getRelationRoles(params) {
+	        getRelationRoles: function (params) {
 	            return this.get('/relation/roles', { params: params });
 	        },
 	        /**
@@ -1009,7 +896,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            rtype — Relation type (required).
 	         */
-	        getRelationStats: function getRelationStats(params) {
+	        getRelationStats: function (params) {
 	            return this.get('/relation/stats', { params: params });
 	        },
 	        /**
@@ -1019,7 +906,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            rtype — Relation type (required).
 	         */
-	        getRelationWikiPages: function getRelationWikiPages(params) {
+	        getRelationWikiPages: function (params) {
 	            return this.get('/relation/wiki_pages', { params: params });
 	        },
 	        /**
@@ -1029,7 +916,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Only show results where the relation type matches this query (substring match, optional).
 	         */
-	        getRelationsAll: function getRelationsAll(params) {
+	        getRelationsAll: function (params) {
 	            return this.get('/relations/all', { params: params });
 	        },
 	        /**
@@ -1039,7 +926,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Value to search for (substring search, required).
 	         */
-	        getSearchByKeyAndValue: function getSearchByKeyAndValue(params) {
+	        getSearchByKeyAndValue: function (params) {
 	            return this.get('/search/by_key_and_value', { params: params });
 	        },
 	        /**
@@ -1049,7 +936,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Value to search for (substring search, required).
 	         */
-	        getSearchByKeyword: function getSearchByKeyword(params) {
+	        getSearchByKeyword: function (params) {
 	            return this.get('/search/by_keyword', { params: params });
 	        },
 	        /**
@@ -1059,7 +946,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Role to search for (substring search, required).
 	         */
-	        getSearchByRole: function getSearchByRole(params) {
+	        getSearchByRole: function (params) {
 	            return this.get('/search/by_role', { params: params });
 	        },
 	        /**
@@ -1069,7 +956,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Value to search for (substring search, required).
 	         */
-	        getSearchByValue: function getSearchByValue(params) {
+	        getSearchByValue: function (params) {
 	            return this.get('/search/by_value', { params: params });
 	        },
 	        /**
@@ -1079,7 +966,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	           param: No params
 	         */
-	        getSiteInfo: function getSiteInfo(params) {
+	        getSiteInfo: function (params) {
 	            return this.get('/site/info', { params: params });
 	        },
 	        /**
@@ -1089,7 +976,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	           param: No params
 	         */
-	        getSiteSources: function getSiteSources(params) {
+	        getSiteSources: function (params) {
 	            return this.get('/site/sources', { params: params });
 	        },
 	        /**
@@ -1101,7 +988,7 @@ webpackJsonp([1],[
 	            query — Only show results where the other_key or other_value matches this query (substring match, optional).
 	            value — Tag value (required).
 	         */
-	        getTagCombinations: function getTagCombinations(params) {
+	        getTagCombinations: function (params) {
 	            return this.get('/tag/combinations', { params: params });
 	        },
 	        /**
@@ -1112,7 +999,7 @@ webpackJsonp([1],[
 	            key — Tag key (required).
 	            value — Tag value (required).
 	         */
-	        getTagDistributionNodes: function getTagDistributionNodes(params) {
+	        getTagDistributionNodes: function (params) {
 	            return this.get('/tag/distribution/nodes', { params: params });
 	        },
 	        /**
@@ -1123,7 +1010,7 @@ webpackJsonp([1],[
 	            key — Tag key (required).
 	            value — Tag value (required).
 	         */
-	        getTagDistributionWays: function getTagDistributionWays(params) {
+	        getTagDistributionWays: function (params) {
 	            return this.get('/tag/distribution/ways', { params: params });
 	        },
 	        /**
@@ -1134,7 +1021,7 @@ webpackJsonp([1],[
 	            key — Tag key (required).
 	            value — Tag value (required).
 	         */
-	        getTagStats: function getTagStats(params) {
+	        getTagStats: function (params) {
 	            return this.get('/tag/stats', { params: params });
 	        },
 	        /**
@@ -1145,7 +1032,7 @@ webpackJsonp([1],[
 	            key — Tag key (required).
 	            value — Tag value (required).
 	         */
-	        getTagWikiPages: function getTagWikiPages(params) {
+	        getTagWikiPages: function (params) {
 	            return this.get('/tag/wiki_pages', { params: params });
 	        },
 	        /**
@@ -1155,7 +1042,7 @@ webpackJsonp([1],[
 	         * @param {any} params
 	            query — Only show tags matching this query (substring match in key and value, optional).
 	         */
-	        getTagsPopular: function getTagsPopular(params) {
+	        getTagsPopular: function (params) {
 	            return this.get('/tags/popular', { params: params });
 	        },
 	        /**
@@ -1165,49 +1052,36 @@ webpackJsonp([1],[
 	         * @param {any} params
 	           param: No params
 	         */
-	        getWikiLanguages: function getWikiLanguages(params) {
+	        getWikiLanguages: function (params) {
 	            return this.get('/wiki/languages', { params: params });
 	        }
 	    };
 	    return service;
 	}
-	exports.default = osmTagInfoAPI;
+	exports.__esModule = true;
+	exports["default"] = osmTagInfoAPI;
+
 
 /***/ },
-/* 23 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+	var settings_service_1 = __webpack_require__(22);
+	var ngstorage_1 = __webpack_require__(14);
+	var osmSettingsModule = angular.module('osm.settings', [
+	    ngstorage_1["default"].name
+	])
+	    .factory('osmSettingsService', settings_service_1["default"]);
+	exports.__esModule = true;
+	exports["default"] = osmSettingsModule;
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _settings = __webpack_require__(24);
-
-	var _settings2 = _interopRequireDefault(_settings);
-
-	var _ngstorage = __webpack_require__(14);
-
-	var _ngstorage2 = _interopRequireDefault(_ngstorage);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var osmSettingsModule = angular.module('osm.settings', [_ngstorage2.default.name]).factory('osmSettingsService', _settings2.default);
-
-	exports.default = osmSettingsModule;
 
 /***/ },
-/* 24 */
+/* 22 */
 /***/ function(module, exports) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-
+	"use strict";
 	/**
 	 * @ngdoc service
 	 * @name osmSettingsService
@@ -1226,67 +1100,70 @@ webpackJsonp([1],[
 	            osmAPI: '',
 	            overpassAPI: ''
 	        }),
-	        getUserName: function getUserName() {
+	        getUserName: function () {
 	            return this.localStorage.userName;
 	        },
-	        setUserName: function setUserName(username) {
+	        setUserName: function (username) {
 	            this.localStorage.userName = username;
 	        },
-	        getUserID: function getUserID() {
+	        getUserID: function () {
 	            return this.localStorage.userID;
 	        },
-	        setUserID: function setUserID(userid) {
+	        setUserID: function (userid) {
 	            this.localStorage.userID = userid;
 	        },
-	        getCredentials: function getCredentials() {
+	        getCredentials: function () {
 	            return this.localStorage.credentials;
 	        },
-	        setCredentials: function setCredentials(credentials) {
+	        setCredentials: function (credentials) {
 	            this.localStorage.credentials = credentials;
 	        },
-	        getOSMAPI: function getOSMAPI() {
+	        getOSMAPI: function () {
 	            if (this.localStorage.osmAPI) {
 	                return this.localStorage.osmAPI;
-	            } else {
+	            }
+	            else {
 	                return 'http://api.openstreetmap.org/api';
 	            }
 	        },
-	        setOSMAPI: function setOSMAPI(osmAPI) {
+	        setOSMAPI: function (osmAPI) {
 	            this.localStorage.osmAPI = osmAPI;
 	        },
-	        getOverpassAPI: function getOverpassAPI() {
+	        getOverpassAPI: function () {
 	            if (this.localStorage.overpassAPI) {
 	                return this.localStorage.overpassAPI;
-	            } else {
+	            }
+	            else {
 	                //return 'http://api.openstreetmap.org/api';
 	                return 'http://overpass-api.de/api/interpreter';
 	            }
 	        },
-	        setOverpassAPI: function setOverpassAPI(overpassAPI) {
+	        setOverpassAPI: function (overpassAPI) {
 	            this.localStorage.overpassAPI = overpassAPI;
 	        },
-	        getNodes: function getNodes() {
+	        getNodes: function () {
 	            return this.localStorage.nodes;
 	        },
-	        setNodes: function setNodes(nodes) {
+	        setNodes: function (nodes) {
 	            this.localStorage.nodes = nodes;
 	        },
-	        getChangeset: function getChangeset() {
+	        getChangeset: function () {
 	            return this.localStorage.changeset;
 	        },
-	        setChangeset: function setChangeset(changeset) {
+	        setChangeset: function (changeset) {
 	            this.localStorage.changeset = changeset;
 	        },
-	        getOsmAuth: function getOsmAuth() {
+	        getOsmAuth: function () {
 	            return this.localStorage.osmAuth;
 	        },
-	        setOsmAuth: function setOsmAuth(options) {
+	        setOsmAuth: function (options) {
 	            return this.localStorage.osmAuth = options;
 	        }
 	    };
 	}
+	exports.__esModule = true;
+	exports["default"] = osmSettingsService;
 
-	exports.default = osmSettingsService;
 
 /***/ }
 ]);

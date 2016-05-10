@@ -7,28 +7,16 @@
  * @param  {any} osmSettingsService
  */
 osmAPI.$inject = ['$base64', '$http', '$q', 'osmSettingsService'];
-function osmAPI($base64, $http, $q, osmSettingsService) {
-    var parseXml;
-    var parser;
-    var serializer = new XMLSerializer();
-
-    if (typeof window.DOMParser !== 'undefined') {
-        parser = new window.DOMParser();
-        parseXml = function(xmlStr) {
-            return parser.parseFromString(xmlStr, 'application/xml');
-        };
-    } else if (typeof window.ActiveXObject !== 'undefined') {
-        parseXml = function(xmlStr) {
-            var xmlDoc = new window.ActiveXObject('Microsoft.XMLDOM');
-            xmlDoc.async = 'false';
-            xmlDoc.loadXML(xmlStr);
-            return xmlDoc;
-        };
-    } else {
-        throw new Error('No XML parser found');
-    }
+function osmAPI($base64, $http, $q, osmSettingsService, osmUtils) {
 
     var service = {
+        /**
+         * @ngdoc method
+         * @name validateCredentials
+         * @methodOf osm.api.osmAPI
+         * @description in the case you don't want to use osm.oauth
+         * @returns {Promise} true/false
+         */
         validateCredentials: function(){
             var deferred = $q.defer();
             this.getUserDetails().then(function(data){
@@ -42,25 +30,58 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             });
             return deferred.promise;
         },
+        /**
+         * @ngdoc method
+         * @name setCredentials
+         * @param {string} username
+         * @param {string} password
+         * @methodOf osm.api.osmAPI
+         * @description store the credentials in the settings service
+         * @returns {string} credentials encoded as base64
+         */
         setCredentials: function(username, password){
             osmSettingsService.setUserName(username);
             var credentials = $base64.encode(username + ':' + password);
             osmSettingsService.setCredentials(credentials);
             return credentials;
         },
+        /**
+         * @ngdoc method
+         * @name setCredentials
+         * @methodOf osm.api.osmAPI
+         * @description get the credentials from the settings
+         * @returns {string} credentials encoded as base64
+         */
         getCredentials: function(){
             return osmSettingsService.getCredentials();
         },
+        /**
+         * @ngdoc method
+         * @name getAuthorization
+         * @methodOf osm.api.osmAPI
+         * @description get the credentials from the settings
+         * @returns {string} credentials encoded as base64
+         */
         getAuthorization: function(){
             return 'Basic ' + osmSettingsService.getCredentials();
         },
+        /**
+         * @ngdoc method
+         * @name clearCredentials
+         * @methodOf osm.api.osmAPI
+         * @description remove credentials from the settings
+         */
         clearCredentials: function () {
             osmSettingsService.setCredentials('');
         },
-        parseXML: function(data){
-            //bug: this return nothing with firefox ...
-            return parseXml(data);
-        },
+        /**
+         * @ngdoc method
+         * @name getAuthenticated
+         * @methodOf osm.api.osmAPI
+         * @param {string} method path of the API, /foo/bar
+         * @param {Object} config $http config
+         * @returns {Promise} result of the get call
+         */
         getAuthenticated: function(method, config){
             if (config === undefined){
                 config = {};
@@ -68,6 +89,15 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             config.headers = {Authorization: this.getAuthorization()};
             return this.get(method, config);
         },
+        /**
+         * @ngdoc method
+         * @name get
+         * @description $http.get call
+         * @methodOf osm.api.osmAPI
+         * @param {string} method path of the API, /foo/bar
+         * @param {Object} config $http config
+         * @returns {Promise} response
+         */
         get: function(method, config){
             var deferred = $q.defer();
             var self = this;
@@ -76,9 +106,9 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
                 var contentType = data.headers()['content-type'];
                 var results;
                 if (contentType.indexOf('application/xml;') === 0){
-                    results = self.parseXML(data.data);
+                    results = osmUtils.parseXML(data.data);
                 }else if (contentType.indexOf('text/xml;') === 0){
-                    results = self.parseXML(data.data);
+                    results = osmUtils.parseXML(data.data);
                 }else{
                     results = data.data;
                 }
@@ -88,6 +118,16 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             });
             return deferred.promise;
         },
+        /**
+         * @ngdoc method
+         * @name put
+         * @description $http.put call
+         * @methodOf osm.api.osmAPI
+         * @param {string} method path of the API, /foo/bar
+         * @param {Object} content $http.put content
+         * @param {Object} config $http config
+         * @returns {Promise} response
+         */
         put: function(method, content, config){
             var deferred = $q.defer();
             var self = this;
@@ -101,9 +141,9 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
                 var contentType = data.headers()['content-type'];
                 var results;
                 if (contentType.indexOf('application/xml;') === 0){
-                    results = self.parseXML(data.data);
+                    results = osmUtils.parseXML(data.data);
                 }else if (contentType.indexOf('text/xml;') === 0){
-                    results = self.parseXML(data.data);
+                    results = osmUtils.parseXML(data.data);
                 }else{
                     results = data.data;
                 }
@@ -113,6 +153,15 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             });
             return deferred.promise;
         },
+        /**
+         * @ngdoc method
+         * @name delete
+         * @description $http.delete
+         * @methodOf osm.api.osmAPI
+         * @param {string} method path of the object to delete
+         * @param {Object} config $http config
+         * @returns {Promise} response
+         */
         delete: function(method, config){
             var deferred = $q.defer();
             var self = this;
@@ -127,9 +176,9 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
                 var contentType = data.headers()['content-type'];
                 var results;
                 if (contentType.indexOf('application/xml;') === 0){
-                    results = self.parseXML(data.data);
+                    results = osmUtils.parseXML(data.data);
                 }else if (contentType.indexOf('text/xml;') === 0){
-                    results = self.parseXML(data.data);
+                    results = osmUtils.parseXML(data.data);
                 }else{
                     results = data.data;
                 }
@@ -139,6 +188,15 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             });
             return deferred.promise;
         },
+        /**
+         * @ngdoc method
+         * @name createChangeset
+         * @description create a changeset to manipulate osm data
+         * put('/0.6/changeset/create')
+         * @methodOf osm.api.osmAPI
+         * @param {string} comment the comment
+         * @returns {Promise} response
+         */
         createChangeset: function(comment){
             var deferred = $q.defer();
             var changeset = '<osm><changeset><tag k="created_by" v="OSM-Relation-Editor"/><tag k="comment" v="';
@@ -149,6 +207,14 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             });
             return deferred.promise;
         },
+        /**
+         * @ngdoc method
+         * @name getLastOpenedChangesetId
+         * @description get the last opened changeset (while reload the app)
+         * get('/0.6/changesets')
+         * @methodOf osm.api.osmAPI
+         * @returns {Promise} response
+         */
         getLastOpenedChangesetId: function(){
             var deferred = $q.defer();
             var config = {
@@ -166,18 +232,48 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             });
             return deferred.promise;
         },
+        /**
+         * @ngdoc method
+         * @name closeChangeset
+         * @description put('/0.6/changesets/ID/close')
+         * @methodOf osm.api.osmAPI
+         * @returns {Promise} response
+         */
         closeChangeset: function(){
             var changeset = osmSettingsService.getChangeset();
             var results = this.put('/0.6/changeset/'+ changeset +'/close');
             osmSettingsService.setChangeset();
             return results;
         },
+        /**
+         * @ngdoc method
+         * @name closeChangeset
+         * @description get('/0.6/user/details')
+         * @methodOf osm.api.osmAPI
+         * @returns {Promise} response
+         */
         getUserDetails: function(){
             return this.getAuthenticated('/0.6/user/details');
         },
+        /**
+         * @ngdoc method
+         * @name getMap
+         * @description get('/0.6/map?bbox=')
+         * @param {string} bbox
+         * @methodOf osm.api.osmAPI
+         * @returns {Promise} response
+         */
         getMap: function(bbox){
             return this.get('/0.6/map?bbox='+bbox);
         },
+        /**
+         * @ngdoc method
+         * @name updateNode
+         * @param {Object} currentNode
+         * @param {Object} updatedNode
+         * @methodOf osm.api.osmAPI
+         * @returns {Promise} put response
+         */
         updateNode: function(currentNode, updatedNode){
             //we need to do the diff and build the xml
             //first try to find the node by id
@@ -233,6 +329,13 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             //put request !!
             return this.put('/0.6/' + nodeType + '/' + currentNode.properties.id, osm.outerHTML);
         },
+        /**
+         * @ngdoc method
+         * @name createNode
+         * @methodOf osm.api.osmAPI
+         * @param {Object} node
+         * @returns {Promise} put response
+         */
         createNode: function(node){
             var newNode = '<osm><node changeset="CHANGESET" lat="LAT" lon="LNG">TAGS</node></osm>';
             var tagTPL = '<tag k="KEY" v="VALUE"/>';
@@ -259,7 +362,7 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
             var self = this;
             var deferred = $q.defer();
             self.getMap(bbox).then(function(xmlNodes){
-                var geojsonNodes = self.getNodesInJSON(xmlNodes);
+                var geojsonNodes = osmUtils.getNodesInJSON(xmlNodes);
                 //TODO: load row node (xml)
 /*                    var node;
                 for (var i = 0; i < geojsonNodes.length; i++) {
@@ -397,38 +500,8 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
                         .replace(/"/g, '&quot;')
                         .replace(/'/g, '&apos;');
         },
-        relationGeoJSONToXml: function(relationGeoJSON){
-            var i;
-            var pp = relationGeoJSON.properties;
-            var members = relationGeoJSON.members;
-            var settings = osmSettingsService;
-            var output = '<?xml version="1.0" encoding="UTF-8"?>\n';
-            output += '<osm version="0.6" generator="angular-osm 0.2" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">\n';
-            output += '  <relation id="'+ pp.id + '" visible="' + pp.visible + '" ';
-            output += 'version="' + pp.version + '" ';
-            output += 'changeset="'+settings.getChangeset() +'" timestamp="' + new Date().toISOString() + '" ';
-            output += 'user="' + settings.getUserName() + '" uid="' + pp.uid + '">\n';
 
-            for (i = 0; i < members.length; i++) {
-                output += '    <member type="'+ members[i].type +'" ';
-                output += 'ref="'+members[i].ref;
-                //role depends on the type of member
-                if (members[i].type === 'relation'){
-                    output += '" role="'+ members[i].role+'"/>\n';
-                }else{
-                    output += '" role="'+ members[i].role+'"/>\n';
-                }
-            }
-
-            var tags = relationGeoJSON.tags;
-            for (var k in tags) {
-                output += '    <tag k="'+ k +'" v="'+ this.encodeXML(tags[k]) +'"/>\n';
-            }
-            output += '  </relation>\n';
-            output += '</osm>';
-            return output;
-        },
-        sortRelationMembers: function(relationGeoJSON){
+        sortRelationMembers: function (relationGeoJSON){
             //sort members
             var members = relationGeoJSON.members;
             var features = relationGeoJSON.features;
@@ -540,48 +613,8 @@ function osmAPI($base64, $http, $q, osmSettingsService) {
                     relationGeoJSON.features.push(getFeatureById(sorted[l].ref));
                 }
                 //feature order fixed
-            }else{
+            } else{
                 console.error('can t sort this relation');
-            }
-        },
-        getNodesInJSON: function(xmlNodes, flatProperties){
-            osmSettingsService.setNodes(xmlNodes);
-            var options = {};
-            if (flatProperties !== undefined){
-                options.flatProperties = flatProperties;
-            }
-            return osmtogeojson(xmlNodes, options);
-        },
-        yqlJSON: function(featuresURL){
-            var deferred = $q.defer();
-            var url, config;
-            config = {
-                params: {
-                    q: 'select * from json where url=\'' + featuresURL + '\';',
-                    format: 'json'
-                }
-            };
-            url = 'http://query.yahooapis.com/v1/public/yql';
-            $http.get(url, config).then(
-                function(data){
-                    if (data.data.query.results === null){
-                        deferred.resolve([]);
-                    }else{
-                        deferred.resolve(data.data.query.results.json);
-                    }
-                }, function(error){
-                    deferred.reject(error);
-                });
-            return deferred.promise;
-        },
-        getElementTypeFromFeature: function(feature){
-            var gtype = feature.geometry.type;
-            if (gtype === 'LineString'){
-                return 'way';
-            }else if (gtype === 'Point'){
-                return 'node';
-            }else{
-                console.error('not supported type '+gtype);
             }
         }
     };

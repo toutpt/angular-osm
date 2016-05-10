@@ -1,24 +1,23 @@
 var path = require('path');
 var webpack = require('webpack');
+var src = path.join(__dirname, 'src');
 
 module.exports = {
     entry: {
-        osm: './src/osm.js',
+        osm: './src/osm.ts',
         dependencies: ['angular', 'osm-auth', 'ngstorage']
     },
     output: {
         path: __dirname,
         filename: 'dist/osm.js'
     },
+    resolve: {
+    // Add `.ts` and `.tsx` as a resolvable extension. 
+        extensions: ['', '.ts', '.js']
+    },
     module: {
         loaders: [
-            {
-               test: path.join(__dirname, 'src'),
-               loader: 'babel-loader',
-               query: {
-                   presets: ['es2015']
-               }
-            }
+            { test: /\.ts$/, loader: 'ts'}
         ]
     },
     plugins: [
@@ -30,5 +29,5 @@ module.exports = {
         inline: true,
         progress: true,
         color: true
-    },
+    }
 };

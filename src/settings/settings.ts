@@ -1,4 +1,4 @@
-import osmSettingsService from './settings.component';
+import osmSettingsService from './settings.service';
 import ngstorage from 'ngstorage';
 
 var osmSettingsModule = angular.module('osm.settings', [

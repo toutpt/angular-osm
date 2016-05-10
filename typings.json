@@ -1,0 +1,10 @@
+{
+  "name": "angular-osm",
+  "version": false,
+  "ambientDependencies": {
+    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts#6d0e826824da52204c1c93f92cecbc961ac84fa9",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#6d0e826824da52204c1c93f92cecbc961ac84fa9",
+    "ngstorage": "github:DefinitelyTyped/DefinitelyTyped/ngstorage/ngstorage.d.ts#6d0e826824da52204c1c93f92cecbc961ac84fa9",
+    "node": "registry:dt/node#4.0.0+20160509154515"
+  }
+}
