@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "karma start karma/karma.travis.conf.js --single-run",
-    "build": "webpack"
+    "build": "webpack && webpack --config webpack.config.min.js",
+    "dev": "webpack-dev-server --watch"
   },
   "author": "Jean-Michel FRANCOIS <toutpt@gmail.com>",
   "license": "MIT",

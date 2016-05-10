@@ -1,14 +1,27 @@
 var path = require('path');
 var webpack = require('webpack');
 
-module.exports = {
+var config = {
     entry: {
-        osm: './src/osm.js',
-        dependencies: ['angular', 'osm-auth', 'ngstorage']
+        full: './src/osm.js',
+        api: ['./src/api/api.js'],
+        oauth: ['./src/oauth/oauth.js'],
+        overpass: ['./src/overpass/overpass.js'],
+        taginfo: ['./src/taginfo/taginfo.js'],
+        utils: ['./src/utils/utils.js']
+    },
+    externals: {
+        angular: 'angular',
+        'osm-auth': 'osm-auth',
+        'angular-base64': 'angular-base64',
+        ngstorage: 'ngstorage',
+        osmtogeojson: 'osmtogeojson'
     },
     output: {
-        path: __dirname,
-        filename: 'dist/osm.js'
+        path: path.join(__dirname, 'dist'),
+        filename: 'osm-[name].js',
+        libraryTarget: 'umd',
+        library: ['angular-osm', 'name']
     },
     module: {
         loaders: [
@@ -22,7 +35,11 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"dependencies", /* filename= */"dist/dependencies.js"),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // })
     ],
     devServer: {
         contentBase: __dirname,
@@ -32,3 +49,4 @@ module.exports = {
         color: true
     },
 };
+module.exports = config;
