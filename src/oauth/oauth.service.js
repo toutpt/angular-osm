@@ -1,4 +1,4 @@
-import osmAuth from 'osm-auth';
+import osmAuthLib from 'osm-auth';
 
 /**
 * @ngdoc service
