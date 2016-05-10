@@ -1,4 +1,4 @@
-import osmOverpassAPI from './overpass.component';
+import osmOverpassAPI from './overpass.service';
 
 var osmOverpassModule = angular.module('osm.overpass', ['osm.settings'])
 .factory('osmOverpassAPI', osmOverpassAPI);

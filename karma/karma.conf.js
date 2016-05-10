@@ -12,10 +12,10 @@ module.exports = function(config){
         exclude : [],
         autoWatch : true,
         frameworks: ['jasmine'],
-        browsers : ['PhantomJS'],
         plugins : [
             'karma-jasmine',
-            'karma-phantomjs-launcher'
+            'karma-chrome-launcher',
+            'karma-firefox-launcher'
         ],
         reporters: ['dots'],
         logLevel: 'LOG_DEBUG'

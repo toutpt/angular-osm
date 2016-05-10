@@ -1,4 +1,4 @@
-import osmTagInfoAPI from './taginfo.component';
+import osmTagInfoAPI from './taginfo.service';
 
 var osmTagInfoModule = angular.module('osm.taginfo', [])
 .factory('osmTagInfoAPI', osmTagInfoAPI);
