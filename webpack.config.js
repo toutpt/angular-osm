@@ -13,13 +13,14 @@ var config = {
     externals: {
         angular: 'angular',
         'osm-auth': 'osm-auth',
+        'osmAuth': 'osmAuth',
         'angular-base64': 'angular-base64',
         ngstorage: 'ngstorage',
         osmtogeojson: 'osmtogeojson'
     },
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'osm-[name].js',
+        path: __dirname,
+        filename: 'dist/osm-[name].js',
         libraryTarget: 'umd',
         library: ['angular-osm', 'name']
     },
@@ -34,13 +35,6 @@ var config = {
             }
         ]
     },
-    plugins: [
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false
-        //     }
-        // })
-    ],
     devServer: {
         contentBase: __dirname,
         //hot: true,
