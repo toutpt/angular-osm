@@ -1,6 +1,7 @@
 {
     "esnext": true,
     "globalstrict": true,
+    "strict": "implied",
     "globals": {
         "angular": false,
         "describe": false,
@@ -10,9 +11,7 @@
         "afterEach": false,
         "module": false,
         "inject": false,
-        "ngDescribe": false,
-        "it": false,
-        "expect": false
+        "ngDescribe": false
     },
     "camelcase": false,
     "latedef": "nofunc"
