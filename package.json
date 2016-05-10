@@ -32,8 +32,9 @@
   },
   "dependencies": {
     "angular": "1.5.5",
-    "osm-auth": "0.2.8",
+    "angular-base64": "^2.0.5",
     "ngstorage": "0.3.10",
+    "osm-auth": "0.2.8",
     "osmtogeojson": "https://github.com/tyrasd/osmtogeojson.git#2.2.11"
   }
 }
