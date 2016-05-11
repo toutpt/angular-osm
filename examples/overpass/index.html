@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>angular-osm overpass</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script type="text/javascript" src="https://npmcdn.com/angular@1.5.5/angular.min.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/angular-base64@2.0.5/angular-base64.min.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/ngstorage@0.3.10/ngStorage.min.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/osm-auth@0.2.8/osmauth.min.js"></script>
+	<script type="text/javascript" src="../../dist/osm-overpass.js"></script>
+	<script type="text/javascript" src="example.js"></script>
+</head>
+<body ng-app="example" ng-controller="ExampleCtrl as $ctrl">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<p>This example show you how to use osmOAuthService</p>
+				<form name="overpass">
+					<div class="form-group">
+						<textarea class="form-control" rows="10" ng-model="$ctrl.query"></textarea>
+					</div>
+					<button class="btn btn-default" ng-click="$ctrl.doQuery()">query</button>
+					<button class="btn btn-default" ng-click="$ctrl.doQueryToGeoJSON()">query geojson</button>
+				</form>
+			</div>
+			<div class="col-md-6">
+				<span ng-show="$ctrl.loading" class="ng-hide">loading...</span>
+				<pre ng-show="$ctrl.data">{{$ctrl.data | json}}</pre>
+				<div class="alert alert-danger ng-hide" ng-show="$ctrl.error">
+					{{$ctrl.error}}
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

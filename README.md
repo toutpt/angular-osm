@@ -1,6 +1,8 @@
 Angular OSM
 ===========
 
+[![Build Status](https://travis-ci.org/toutpt/angular-osm.svg?branch=master)](https://travis-ci.org/toutpt/angular-osm) [![Dependencies](https://david-dm.org/toutpt/angular-osm.svg)](https://david-dm.org/toutpt/angular-osm)
+
 Angular OSM is a set of services for Angular which provides interfaces with OSM APIs.
 
 OpenStreetMap (OSM)
