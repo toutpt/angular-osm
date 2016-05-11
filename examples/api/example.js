@@ -14,6 +14,20 @@
                 }
             });
         }
+        function onData(data) {
+            $ctrl.loading = false;
+            delete $ctrl.data;
+            delete $ctrl.data_str;
+            if (typeof data === 'object') {
+                $ctrl.data = data;
+            } else {
+                $ctrl.data_str = data;
+            }
+        }
+        function onError(error) {
+            $ctrl.loading = false;
+            $ctrl.error = error;
+        }
         if (credentials) {
             validateCredentials();
         }
@@ -25,6 +39,19 @@
             osmAPI.clearCredentials();
             validateCredentials();
         };
+        this.getUserDetails = function () {
+            this.loading = true;
+            osmAPI.getUserDetails().then(onData, onError);
+        };
+        $ctrl.bbox = '11.5430,48.144,11.5435,48.145';
+        this.getMap = function () {
+            this.loading = true;
+            osmAPI.getMap($ctrl.bbox).then(onData, onError);
+        };
+        this.getNotes = function () {
+            this.loading = true;
+            osmAPI.getNotes($ctrl.bbox, $ctrl.format).then(onData, onError);
+        }
     }
 
 })();

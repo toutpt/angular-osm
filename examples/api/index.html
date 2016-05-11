@@ -17,8 +17,12 @@
 			<div class="col-md-6">
 				<div class="ng-hide" ng-show="$ctrl.username">
 					<p>Hello {{$ctrl.username}}</p>
-					<button ng-click="$ctrl.doLogout()">logout</button>
+					<div class="btn-group">
+						<button class="btn btn-default" ng-click="$ctrl.doLogout()">logout</button>
+						<button class="btn btn-default" ng-click="$ctrl.getUserDetails()">getUserDetails</button>
+					</div>
 				</div>
+				<hr/>
 				<form name="login" ng-show="!$ctrl.username">
 					<div class="form-group">
 						<input class="form-control" placeholder="login"
@@ -30,12 +34,37 @@
 							type="password"
 							ng-model="$ctrl.password"/>
 					</div>
-					<button ng-click="$ctrl.doLogin()">login</button>
+					<button class="btn btn-default" ng-click="$ctrl.doLogin()">login</button>
 				</form>
+				<hr/>
+				<form name="bbox">
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="$ctrl.bbox" placeholder="bbox"/>
+					</div>
+					<button class="btn btn-default" ng-click="$ctrl.getMap()">getMap</button>
+				</form>
+				<hr/>
+				<form name="notes">
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="$ctrl.bbox" placeholder="bbox"/>
+					</div>
+					<div class="form-group">
+						<select class="form-control" ng-model="$ctrl.format">
+							<option value="">-</option>
+							<option value="rss">rss</option>
+							<option value="xml">xml</option>
+							<option value="json">json</option>
+							<option value="gpx">gpx</option>
+						</select>
+					</div>
+					<button class="btn btn-default" ng-click="$ctrl.getNotes()">getNotes</button>
+				</form>
+
 			</div>
 			<div class="col-md-6">
 				<span ng-show="$ctrl.loading" class="ng-hide">loading...</span>
 				<pre ng-show="$ctrl.data">{{$ctrl.data | json}}</pre>
+				<pre ng-show="$ctrl.data_str">{{$ctrl.data_str}}</pre>
 				<div class="alert alert-danger ng-hide" ng-show="$ctrl.error">
 					{{$ctrl.error}}
 				</div>
