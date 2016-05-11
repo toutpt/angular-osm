@@ -4,7 +4,7 @@
     
     function ExampleCtrl (osmOverpassAPI) {
         var $ctrl = this;
-        this.query = '[out:json];node[amenity=drinking_water]\n'
+        this.query = '[out:json];node[amenity=bar]\n'
         this.query += '(41.88403598409956,12.479889392852781,41.896191943449324,12.499651908874512);out;';
         this.doQuery = function () {
             this.loading = true;
