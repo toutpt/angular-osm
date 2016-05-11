@@ -1,8 +1,8 @@
 {
   "name": "angular-osm",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "OpenStreetMap APIs as services for angular",
-  "main": "dist/osm.js",
+  "main": "dist/osm-full.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/toutpt/angular-osm.git"
@@ -11,7 +11,8 @@
     "test": "karma start karma/karma.travis.conf.js --single-run",
     "build": "webpack && webpack --config webpack.config.min.js",
     "dev": "webpack-dev-server --watch",
-    "gh-pages": "rm -rf gh-pages/dist && webpack && mv dist gh-pages/"
+    "gh-pages": "rm -rf gh-pages/dist && webpack && mv dist gh-pages/",
+    "prepublish": "webpack && webpack --config webpack.config.min.js"
   },
   "author": "Jean-Michel FRANCOIS <toutpt@gmail.com>",
   "license": "MIT",
