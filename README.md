@@ -5,4 +5,4 @@ Angular OSM
 
 Angular OSM is a set of angular services which provides API to use OSM APIs.
 
-For more information please check the website : http://toutpt.github.io/angular-osm/examples/
+For more information please check the website : http://toutpt.github.io/angular-osm
