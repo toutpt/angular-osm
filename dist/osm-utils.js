@@ -242,7 +242,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	        throw new Error('No XML parser found');
 	    }
-	    this.createNode = function (node) {
+
+	    /**
+	     * @ngdoc method
+	     * @name createNodeXML
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} node geojson
+	     * @return {string} XML
+	     * <osm>
+	        <node changeset="12" lat="..." lon="...">
+	            <tag k="note" v="Just a node"/>
+	            ...
+	        </node>
+	        </osm>
+	     */
+	    this.createNodeXML = function (node) {
 	        var newNode = '<osm><node changeset="CHANGESET" lat="LAT" lon="LNG">TAGS</node></osm>';
 	        var tagTPL = '<tag k="KEY" v="VALUE"/>';
 	        var tags = '';
@@ -254,7 +268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if (value === undefined || value === null) {
 	                    continue;
 	                } else {
-	                    tags = tags + tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
+	                    tags += tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
 	                }
 	            }
 	        }
@@ -263,9 +277,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        newNode = newNode.replace('LAT', node.lat);
 	        return newNode;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name serialiseXmlToString
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} xml document object
+	     * @return {string} XML
+	     */
 	    this.serialiseXmlToString = function (xml) {
 	        return this.serializer.serializeToString(xml);
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getTagsFromChildren
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} element document element object
+	     * @return {Object} tags {k1:v1,k2: v2}
+	     */
 	    this.getTagsFromChildren = function (element) {
 	        var children, tags;
 	        tags = {};
@@ -278,6 +306,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return tags;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getNameFromTags
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} element document element object
+	     * @return {string} name value
+	     */
 	    this.getNameFromTags = function (element) {
 	        var children;
 	        for (var i = 0; i < element.children.length; i++) {
@@ -290,6 +325,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name relationXmlToGeoJSON
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Number} relationId id of the relation
+	     * @param {Object} relationXML document element object
+	     * @return {Object} geojson
+	     */
 	    this.relationXmlToGeoJSON = function (relationID, relationXML) {
 	        var self = this;
 	        var features = [];
@@ -376,9 +419,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return result;
 	    };
 
+	    /**
+	     * @ngdoc method
+	     * @name encodeXML
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {string} str the string to encode
+	     * @return {string} the encoded string
+	     */
 	    this.encodeXML = function (str) {
 	        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name relationGeoJSONToXml
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} relationGeoJSON geojson
+	     * @return {string} relation as xml
+	     */
 	    this.relationGeoJSONToXml = function (relationGeoJSON) {
 	        var i;
 	        var pp = relationGeoJSON.properties;
@@ -410,6 +467,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        output += '</osm>';
 	        return output;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name sortRelationMembers
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} relationGeoJSON geojson
+	     * @return {Object} relation as geojson sorted
+	     */
 	    this.sortRelationMembers = function (relationGeoJSON) {
 	        //sort members
 	        var members = relationGeoJSON.members;
@@ -526,7 +590,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	                console.error('can t sort this relation');
 	            }
+	        return relationGeoJSON;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getNodesInJSON
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} relationGeoJSON geojson
+	     * @return {Object} relation as geojson sorted
+	     */
 	    this.getNodesInJSON = function (xmlNodes, flatProperties) {
 	        osmSettingsService.setNodes(xmlNodes);
 	        var options = {};
@@ -535,6 +607,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return osmtogeojson(xmlNodes, options);
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name yqlJSON
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {string} featuresURL url of the geojson you want to get
+	     * @return {Promise} $http response
+	     */
 	    this.yqlJSON = function (featuresURL) {
 	        var deferred = $q.defer();
 	        var url, config;
@@ -556,6 +635,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        return deferred.promise;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getElementTypeFromFeature
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {string} feature geojson feature
+	     * @return {string} type 'node' or 'way'
+	     */
 	    this.getElementTypeFromFeature = function (feature) {
 	        var gtype = feature.geometry.type;
 	        if (gtype === 'LineString') {

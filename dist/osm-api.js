@@ -106,6 +106,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	/**
 	 * @ngdoc service
 	 * @name osm.oauth.osmAuthService
@@ -127,8 +130,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.validateCredentials = function () {
 	        var deferred = $q.defer();
 	        this.getUserDetails().then(function (data) {
-	            var users = data.getElementsByTagName('user');
-	            if (users.length > 0) {
+	            var parsed = osmUtilsService.parseXml(data);
+	            var users = parsed.getElementsByTagName('user');
+	            if (users.length === 1) {
 	                osmSettingsService.setUserID(users[0].id);
 	            }
 	            deferred.resolve(users.length > 0);
@@ -204,23 +208,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @methodOf osm.api.osmAPI
 	     * @param {string} method the api method
 	     * @param {Object} config the $http.get config
-	     * @returns {Promise} $http response
+	     * @returns {Promise} $http response with XML as string
 	    */
 	    this.get = function (method, config) {
 	        var deferred = $q.defer();
 	        var self = this;
 	        var url = osmSettingsService.getOSMAPI() + method;
 	        $http.get(url, config).then(function (data) {
-	            var contentType = data.headers()['content-type'];
-	            var results;
-	            if (contentType.indexOf('application/xml;') === 0) {
-	                results = osmUtilsService.parseXml(data.data);
-	            } else if (contentType.indexOf('text/xml;') === 0) {
-	                results = osmUtilsService.parseXml(data.data);
-	            } else {
-	                results = data.data;
-	            }
-	            deferred.resolve(results);
+	            deferred.resolve(data.data);
 	        }, function (data) {
 	            deferred.reject(data);
 	        });
@@ -246,16 +241,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        config.headers = { Authorization: this.getAuthorization() };
 	        var url = osmSettingsService.getOSMAPI() + method;
 	        $http.put(url, content, config).then(function (data) {
-	            var contentType = data.headers()['content-type'];
-	            var results;
-	            if (contentType.indexOf('application/xml;') === 0) {
-	                results = osmUtilsService.parseXml(data.data);
-	            } else if (contentType.indexOf('text/xml;') === 0) {
-	                results = osmUtilsService.parseXml(data.data);
-	            } else {
-	                results = data.data;
-	            }
-	            deferred.resolve(results);
+	            deferred.resolve(data.data);
 	        }, function (data) {
 	            deferred.reject(data);
 	        });
@@ -281,16 +267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        config.url = osmSettingsService.getOSMAPI() + method;
 	        config.method = 'delete';
 	        $http(config).then(function (data) {
-	            var contentType = data.headers()['content-type'];
-	            var results;
-	            if (contentType.indexOf('application/xml;') === 0) {
-	                results = osmUtilsService.parseXml(data.data);
-	            } else if (contentType.indexOf('text/xml;') === 0) {
-	                results = osmUtilsService.parseXml(data.data);
-	            } else {
-	                results = data.data;
-	            }
-	            deferred.resolve(results);
+	            deferred.resolve(data.data);
 	        }, function (data) {
 	            deferred.reject(data);
 	        });
@@ -326,7 +303,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            params: { user: osmSettingsService.getUserID(), open: true }
 	        };
 	        this.get('/0.6/changesets', config).then(function (data) {
-	            var changesets = data.getElementsByTagName('changeset');
+	            var parsed = osmUtilsService.parseXml(data);
+	            var changesets = parsed.getElementsByTagName('changeset');
 	            if (changesets.length > 0) {
 	                osmSettingsService.setChangeset(changesets[0].id);
 	                deferred.resolve(changesets[0].id);
@@ -346,9 +324,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    */
 	    this.closeChangeset = function () {
 	        var changeset = osmSettingsService.getChangeset();
-	        var results = this.put('/0.6/changeset/' + changeset + '/close');
-	        osmSettingsService.setChangeset();
-	        return results;
+	        return this.put('/0.6/changeset/' + changeset + '/close').then(function (data) {
+	            osmSettingsService.setChangeset();
+	            return data;
+	        });
 	    };
 	    /**
 	     * @ngdoc method
@@ -364,12 +343,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @ngdoc method
 	     * @name getMap
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} bbox
+	     * @param {string} bbox left,bottom,right,top
+	     * where:
+	        left is the longitude of the left (westernmost) side of the bounding box.
+	        bottom is the latitude of the bottom (southernmost) side of the bounding box.
+	        right is the longitude of the right (easternmost) side of the bounding box.
+	        top is the latitude of the top (northernmost) side of the bounding box.
 	     * @returns {Promise} $http.get response
 	     * /0.6/map?bbox=bbox
 	    */
 	    this.getMap = function (bbox) {
 	        return this.get('/0.6/map?bbox=' + bbox);
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name getNotes
+	     * @methodOf osm.api.osmAPI
+	     * @param {string} bbox left,bottom,right,top
+	     * where:
+	        left is the longitude of the left (westernmost) side of the bounding box.
+	        bottom is the latitude of the bottom (southernmost) side of the bounding box.
+	        right is the longitude of the right (easternmost) side of the bounding box.
+	        top is the latitude of the top (northernmost) side of the bounding box.
+	     * @param {string} format  Currently the format rss, xml, json and gpx are supported.
+	     * @returns {Promise} $http.get response
+	     * /0.6/notes[.format]?bbox=bbox
+	    */
+	    this.getNotes = function (bbox, format) {
+	        var url = '/0.6/notes';
+	        if (format) {
+	            url += '.' + format;
+	        }
+	        url += '?bbox=' + bbox;
+	        return this.get(url);
 	    };
 
 	    /**
@@ -441,13 +448,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @ngdoc method
 	     * @name createNode
 	     * @methodOf osm.api.osmAPI
-	     * @param {Object} node geojson
+	     * @param {Object/string} node as xml or geojson
 	     * @returns {Promise} $http.put response
 	     * /0.6/node/create
 	    */
 	    this.createNode = function (node) {
-	        var newNode = osmUtilsService.createNode(node);
-	        return this.put('/0.6/node/create', newNode);
+	        var xmlnode = node;
+	        if ((typeof node === 'undefined' ? 'undefined' : _typeof(node)) === 'object') {
+	            xmlnode = osmUtilsService.createNodeXML(node);
+	        }
+	        return this.put('/0.6/node/create', xmlnode);
 	    };
 	    /**
 	     * @ngdoc method
@@ -459,14 +469,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.getMapGeoJSON = function (bbox) {
 	        var self = this;
 	        var deferred = $q.defer();
-	        self.getMap(bbox).then(function (xmlNodes) {
-	            var geojsonNodes = self.getNodesInJSON(xmlNodes);
-	            //TODO: load row node (xml)
-	            /*                    var node;
-	                        for (var i = 0; i < geojsonNodes.length; i++) {
-	                            node = geojsonNodes[i];
-	                            node.rawXMLNode = xmlNodes.getElementById(node.id.split('/')[1]);
-	                        }*/
+	        self.getMap(bbox).then(function (strNodes) {
+	            var xmlNodes = osmUtilsService.parseXml(strNodes);
+	            var geojsonNodes = osmUtilsService.getNodesInJSON(xmlNodes);
 	            deferred.resolve(geojsonNodes);
 	        }, function (error) {
 	            deferred.reject(error);
@@ -659,7 +664,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	        throw new Error('No XML parser found');
 	    }
-	    this.createNode = function (node) {
+
+	    /**
+	     * @ngdoc method
+	     * @name createNodeXML
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} node geojson
+	     * @return {string} XML
+	     * <osm>
+	        <node changeset="12" lat="..." lon="...">
+	            <tag k="note" v="Just a node"/>
+	            ...
+	        </node>
+	        </osm>
+	     */
+	    this.createNodeXML = function (node) {
 	        var newNode = '<osm><node changeset="CHANGESET" lat="LAT" lon="LNG">TAGS</node></osm>';
 	        var tagTPL = '<tag k="KEY" v="VALUE"/>';
 	        var tags = '';
@@ -671,7 +690,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if (value === undefined || value === null) {
 	                    continue;
 	                } else {
-	                    tags = tags + tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
+	                    tags += tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
 	                }
 	            }
 	        }
@@ -680,9 +699,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        newNode = newNode.replace('LAT', node.lat);
 	        return newNode;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name serialiseXmlToString
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} xml document object
+	     * @return {string} XML
+	     */
 	    this.serialiseXmlToString = function (xml) {
 	        return this.serializer.serializeToString(xml);
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getTagsFromChildren
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} element document element object
+	     * @return {Object} tags {k1:v1,k2: v2}
+	     */
 	    this.getTagsFromChildren = function (element) {
 	        var children, tags;
 	        tags = {};
@@ -695,6 +728,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return tags;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getNameFromTags
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} element document element object
+	     * @return {string} name value
+	     */
 	    this.getNameFromTags = function (element) {
 	        var children;
 	        for (var i = 0; i < element.children.length; i++) {
@@ -707,6 +747,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name relationXmlToGeoJSON
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Number} relationId id of the relation
+	     * @param {Object} relationXML document element object
+	     * @return {Object} geojson
+	     */
 	    this.relationXmlToGeoJSON = function (relationID, relationXML) {
 	        var self = this;
 	        var features = [];
@@ -793,9 +841,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return result;
 	    };
 
+	    /**
+	     * @ngdoc method
+	     * @name encodeXML
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {string} str the string to encode
+	     * @return {string} the encoded string
+	     */
 	    this.encodeXML = function (str) {
 	        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name relationGeoJSONToXml
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} relationGeoJSON geojson
+	     * @return {string} relation as xml
+	     */
 	    this.relationGeoJSONToXml = function (relationGeoJSON) {
 	        var i;
 	        var pp = relationGeoJSON.properties;
@@ -827,6 +889,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        output += '</osm>';
 	        return output;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name sortRelationMembers
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} relationGeoJSON geojson
+	     * @return {Object} relation as geojson sorted
+	     */
 	    this.sortRelationMembers = function (relationGeoJSON) {
 	        //sort members
 	        var members = relationGeoJSON.members;
@@ -943,7 +1012,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	                console.error('can t sort this relation');
 	            }
+	        return relationGeoJSON;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getNodesInJSON
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {Object} relationGeoJSON geojson
+	     * @return {Object} relation as geojson sorted
+	     */
 	    this.getNodesInJSON = function (xmlNodes, flatProperties) {
 	        osmSettingsService.setNodes(xmlNodes);
 	        var options = {};
@@ -952,6 +1029,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return osmtogeojson(xmlNodes, options);
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name yqlJSON
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {string} featuresURL url of the geojson you want to get
+	     * @return {Promise} $http response
+	     */
 	    this.yqlJSON = function (featuresURL) {
 	        var deferred = $q.defer();
 	        var url, config;
@@ -973,6 +1057,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        return deferred.promise;
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getElementTypeFromFeature
+	     * @methodOf osm.utils.osmUtilsService
+	     * @param {string} feature geojson feature
+	     * @return {string} type 'node' or 'way'
+	     */
 	    this.getElementTypeFromFeature = function (feature) {
 	        var gtype = feature.geometry.type;
 	        if (gtype === 'LineString') {
