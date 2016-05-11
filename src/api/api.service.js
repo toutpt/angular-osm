@@ -23,7 +23,6 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
             var users = parsed.getElementsByTagName('user');
             if (users.length === 1){
                 osmSettingsService.setUserID(users[0].id);
-                console.log(users[0].getAttribute('display_name'));
             }
             deferred.resolve(users.length > 0);
         }, function(error){
@@ -339,13 +338,16 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
      * @ngdoc method
      * @name createNode
      * @methodOf osm.api.osmAPI
-     * @param {Object} node geojson
+     * @param {Object/string} node as xml or geojson
      * @returns {Promise} $http.put response
      * /0.6/node/create
     */
-    this.createNode = function(node){
-        var newNode = osmUtilsService.createNode(node);
-        return this.put('/0.6/node/create', newNode);
+    this.createNode = function (node) {
+        var xmlnode = node;
+        if (typeof node === 'object') {
+            xmlnode = osmUtilsService.createNodeXML(node);
+        }
+        return this.put('/0.6/node/create', xmlnode);
     };
     /**
      * @ngdoc method
@@ -357,21 +359,15 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
     this.getMapGeoJSON = function(bbox){
         var self = this;
         var deferred = $q.defer();
-        self.getMap(bbox).then(function(xmlNodes){
-            var geojsonNodes = self.getNodesInJSON(xmlNodes);
-            //TODO: load row node (xml)
-/*                    var node;
-            for (var i = 0; i < geojsonNodes.length; i++) {
-                node = geojsonNodes[i];
-                node.rawXMLNode = xmlNodes.getElementById(node.id.split('/')[1]);
-            }*/
+        self.getMap(bbox).then(function(strNodes){
+            var xmlNodes = osmUtilsService.parseXml(strNodes);
+            var geojsonNodes = osmUtilsService.getNodesInJSON(xmlNodes);
             deferred.resolve(geojsonNodes);
         }, function(error){
             deferred.reject(error);
         });
         return deferred.promise;
     };
-
 }
 
 export default osmAPI;

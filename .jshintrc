@@ -5,6 +5,7 @@
     "globals": {
         "window": false,
         "document": false,
+        "console": false,
         "XMLSerializer": false,
         "angular": false,
         "describe": false,

@@ -20,7 +20,21 @@ function osmUtilsService(osmSettingsService) {
     } else {
         throw new Error('No XML parser found');
     }
-    this.createNode = function(node){
+
+    /**
+     * @ngdoc method
+     * @name createNodeXML
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Object} node geojson
+     * @return {string} XML
+     * <osm>
+        <node changeset="12" lat="..." lon="...">
+            <tag k="note" v="Just a node"/>
+            ...
+        </node>
+        </osm>
+     */
+    this.createNodeXML = function (node) {
         var newNode = '<osm><node changeset="CHANGESET" lat="LAT" lon="LNG">TAGS</node></osm>';
         var tagTPL = '<tag k="KEY" v="VALUE"/>';
         var tags = '';
@@ -29,10 +43,11 @@ function osmUtilsService(osmSettingsService) {
         for (var property in node.tags) {
             if (node.tags.hasOwnProperty(property)) {
                 value = node.tags[property];
-                if (value === undefined || value === null){
+                if (value === undefined || value === null) {
                     continue;
                 }else{
-                    tags = tags + tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
+                    tags += tagTPL.replace('KEY', property)
+                    .replace('VALUE', node.tags[property]);
                 }
             }
         }
@@ -41,34 +56,63 @@ function osmUtilsService(osmSettingsService) {
         newNode = newNode.replace('LAT', node.lat);
         return newNode;
     };
-    this.serialiseXmlToString = function(xml){
+    /**
+     * @ngdoc method
+     * @name serialiseXmlToString
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Object} xml document object
+     * @return {string} XML
+     */
+    this.serialiseXmlToString = function(xml) {
         return this.serializer.serializeToString(xml);
     };
-    this.getTagsFromChildren = function(element){
+    /**
+     * @ngdoc method
+     * @name getTagsFromChildren
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Object} element document element object
+     * @return {Object} tags {k1:v1,k2: v2}
+     */
+    this.getTagsFromChildren = function(element) {
         var children, tags;
         tags = {};
         for (var i = 0; i < element.children.length; i++) {
             children = element.children[i];
-            if (children.tagName !== 'tag'){
+            if (children.tagName !== 'tag') {
                 continue;
             }
             tags[children.getAttribute('k')] = children.getAttribute('v');
         }
         return tags;
     };
-    this.getNameFromTags = function(element){
+    /**
+     * @ngdoc method
+     * @name getNameFromTags
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Object} element document element object
+     * @return {string} name value
+     */
+    this.getNameFromTags = function(element) {
         var children;
         for (var i = 0; i < element.children.length; i++) {
             children = element.children[i];
-            if (children.tagName !== 'tag'){
+            if (children.tagName !== 'tag') {
                 continue;
             }
-            if (children.getAttribute('k') === 'name'){
+            if (children.getAttribute('k') === 'name') {
                 return children.getAttribute('v');
             }
         }
     };
-    this.relationXmlToGeoJSON = function(relationID, relationXML){
+    /**
+     * @ngdoc method
+     * @name relationXmlToGeoJSON
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Number} relationId id of the relation
+     * @param {Object} relationXML document element object
+     * @return {Object} geojson
+     */
+    this.relationXmlToGeoJSON = function(relationID, relationXML) {
         var self = this;
         var features = [];
         var relations = [];
@@ -94,7 +138,7 @@ function osmUtilsService(osmSettingsService) {
         var child, node, properties, coordinates, feature, member, memberElement;
         for (i = 0; i < relation.children.length; i++) {
             m = relation.children[i];
-            if (m.tagName === 'member'){
+            if (m.tagName === 'member') {
                 //<member type="way" ref="148934766" role=""/>
                 member = {
                     type: m.getAttribute('type'),
@@ -115,7 +159,7 @@ function osmUtilsService(osmSettingsService) {
                 //get tags -> geojson properties
                 properties = self.getTagsFromChildren(memberElement);
                 member.name = properties.name;
-                if (memberElement.tagName === 'way'){
+                if (memberElement.tagName === 'way') {
                     coordinates = [];
                     feature = {
                         type: 'Feature',
@@ -128,7 +172,7 @@ function osmUtilsService(osmSettingsService) {
                     };
                     for (var j = 0; j < memberElement.children.length; j++) {
                         child = memberElement.children[j];
-                        if (child.tagName === 'nd'){
+                        if (child.tagName === 'nd') {
                             node = relationXML.getElementById(child.getAttribute('ref'));
                             coordinates.push([
                                 parseFloat(node.getAttribute('lon')),
@@ -137,7 +181,7 @@ function osmUtilsService(osmSettingsService) {
                         }
                     }
                     features.push(feature);
-                }else if (memberElement.tagName === 'node'){
+                }else if (memberElement.tagName === 'node') {
                     feature = {
                         type: 'Feature',
                         properties: properties,
@@ -151,7 +195,7 @@ function osmUtilsService(osmSettingsService) {
                         }
                     };
                     features.push(feature);
-                }else if (memberElement.tagName === 'relation'){
+                }else if (memberElement.tagName === 'relation') {
                     member.tags = properties;
                 }
             }
@@ -160,6 +204,13 @@ function osmUtilsService(osmSettingsService) {
         return result;
     };
 
+    /**
+     * @ngdoc method
+     * @name encodeXML
+     * @methodOf osm.utils.osmUtilsService
+     * @param {string} str the string to encode
+     * @return {string} the encoded string
+     */
     this.encodeXML = function (str) {
         return str.replace(/&/g, '&amp;')
                     .replace(/</g, '&lt;')
@@ -167,7 +218,14 @@ function osmUtilsService(osmSettingsService) {
                     .replace(/"/g, '&quot;')
                     .replace(/'/g, '&apos;');
     };
-    this.relationGeoJSONToXml = function(relationGeoJSON){
+    /**
+     * @ngdoc method
+     * @name relationGeoJSONToXml
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Object} relationGeoJSON geojson
+     * @return {string} relation as xml
+     */
+    this.relationGeoJSONToXml = function(relationGeoJSON) {
         var i;
         var pp = relationGeoJSON.properties;
         var members = relationGeoJSON.members;
@@ -183,7 +241,7 @@ function osmUtilsService(osmSettingsService) {
             output += '    <member type="'+ members[i].type +'" ';
             output += 'ref="'+members[i].ref;
             //role depends on the type of member
-            if (members[i].type === 'relation'){
+            if (members[i].type === 'relation') {
                 output += '" role="'+ members[i].role+'"/>\n';
             }else{
                 output += '" role="'+ members[i].role+'"/>\n';
@@ -198,41 +256,48 @@ function osmUtilsService(osmSettingsService) {
         output += '</osm>';
         return output;
     };
-    this.sortRelationMembers = function(relationGeoJSON){
+    /**
+     * @ngdoc method
+     * @name sortRelationMembers
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Object} relationGeoJSON geojson
+     * @return {Object} relation as geojson sorted
+     */
+    this.sortRelationMembers = function(relationGeoJSON) {
         //sort members
         var members = relationGeoJSON.members;
         var features = relationGeoJSON.features;
         var sorted = [];
         var f,i,m,j,k;
         var first, last;
-        var insertBefore = function(item){
+        var insertBefore = function(item) {
             sorted.splice(0, 0, item);
         };
-        var insertAfter = function(item){
+        var insertAfter = function(item) {
             sorted.push(item);
         };
-        var getCoordinates = function(i){
+        var getCoordinates = function(i) {
             return features[i].geometry.coordinates;
         };
         var c, cfirst, clast, alreadySorted;
         var foundFirst, foundLast = false;
         for (i = 0; i < members.length; i++) {
             m = members[i];
-            if (m.type !== 'way'){
+            if (m.type !== 'way') {
                 sorted.push(m);
                 continue;
             }
             //check if the member is already in
             alreadySorted = false;
             for (k = 0; k < sorted.length; k++) {
-                if (sorted[k].ref === m.ref){
+                if (sorted[k].ref === m.ref) {
                     alreadySorted = true;
                 }
             }
-            if (alreadySorted){
+            if (alreadySorted) {
                 continue;
             }
-            if (sorted.length === 0){
+            if (sorted.length === 0) {
                 sorted.push(m);
                 c = getCoordinates(i);
                 cfirst = c[0];
@@ -243,62 +308,62 @@ function osmUtilsService(osmSettingsService) {
             foundFirst = foundLast = false;
             for (j = 0; j < features.length; j++) {
                 f = features[j];
-                if (f.geometry.type !== 'LineString'){
+                if (f.geometry.type !== 'LineString') {
                     continue;
                 }
                 alreadySorted = false;
                 for (k = 0; k < sorted.length; k++) {
-                    if (sorted[k].ref === f.id){
+                    if (sorted[k].ref === f.id) {
                         alreadySorted = true;
                     }
                 }
-                if (alreadySorted){
+                if (alreadySorted) {
                     continue;
                 }
 
                 c = getCoordinates(j);
                 first = c[0];
                 last = c[c.length-1];
-                if (cfirst[0] === last[0] && cfirst[1] === last[1]){
+                if (cfirst[0] === last[0] && cfirst[1] === last[1]) {
                     insertBefore(members[j]);
                     cfirst = first;
                     foundFirst = true;
                     continue;
                 }
-                if (clast[0] === first[0] && clast[1] === first[1]){
+                if (clast[0] === first[0] && clast[1] === first[1]) {
                     insertAfter(members[j]);
                     clast = last;
                     foundLast = true;
                     continue;
                 }
                 //weird; order of linestring coordinates is not stable
-                if (cfirst[0] === first[0] && cfirst[1] === first[1]){
+                if (cfirst[0] === first[0] && cfirst[1] === first[1]) {
                     insertBefore(members[j]);
                     cfirst = last;
                     foundFirst = true;
                     continue;
                 }
-                if (clast[0] === last[0] && clast[1] === last[1]){
+                if (clast[0] === last[0] && clast[1] === last[1]) {
                     insertAfter(members[j]);
                     clast = first;
                     foundLast = true;
                     continue;
                 }
             }
-            if (!foundFirst && !foundLast){
+            if (!foundFirst && !foundLast) {
                 //cas du rond point ... ?
                 console.log('not found connected ways for '+m.ref);
                 console.log(cfirst);
                 console.log(clast);
             }
         }
-        if (members.length === sorted.length){
+        if (members.length === sorted.length) {
             relationGeoJSON.members = sorted;
             //Fix orders of features
             //var features = relationGeoJSON.features;
             var cache = {loaded:false};
-            var getFeatureById = function(id){
-                if (!cache.loaded){
+            var getFeatureById = function(id) {
+                if (!cache.loaded) {
                     for (var i = 0; i < features.length; i++) {
                         cache[features[i].id] = features[i];
                     }
@@ -310,19 +375,34 @@ function osmUtilsService(osmSettingsService) {
                 relationGeoJSON.features.push(getFeatureById(sorted[l].ref));
             }
             //feature order fixed
-        }else{
+        } else {
             console.error('can t sort this relation');
         }
+        return relationGeoJSON;
     };
-    this.getNodesInJSON = function(xmlNodes, flatProperties){
+    /**
+     * @ngdoc method
+     * @name getNodesInJSON
+     * @methodOf osm.utils.osmUtilsService
+     * @param {Object} relationGeoJSON geojson
+     * @return {Object} relation as geojson sorted
+     */
+    this.getNodesInJSON = function(xmlNodes, flatProperties) {
         osmSettingsService.setNodes(xmlNodes);
         var options = {};
-        if (flatProperties !== undefined){
+        if (flatProperties !== undefined) {
             options.flatProperties = flatProperties;
         }
         return osmtogeojson(xmlNodes, options);
     };
-    this.yqlJSON = function(featuresURL){
+    /**
+     * @ngdoc method
+     * @name yqlJSON
+     * @methodOf osm.utils.osmUtilsService
+     * @param {string} featuresURL url of the geojson you want to get
+     * @return {Promise} $http response
+     */
+    this.yqlJSON = function(featuresURL) {
         var deferred = $q.defer();
         var url, config;
         config = {
@@ -333,25 +413,32 @@ function osmUtilsService(osmSettingsService) {
         };
         url = 'http://query.yahooapis.com/v1/public/yql';
         $http.get(url, config).then(
-            function(data){
-                if (data.data.query.results === null){
+            function(data) {
+                if (data.data.query.results === null) {
                     deferred.resolve([]);
                 }else{
                     deferred.resolve(data.data.query.results.json);
                 }
-            }, function(error){
+            }, function(error) {
                 deferred.reject(error);
             });
         return deferred.promise;
     };
-    this.getElementTypeFromFeature = function(feature){
+    /**
+     * @ngdoc method
+     * @name getElementTypeFromFeature
+     * @methodOf osm.utils.osmUtilsService
+     * @param {string} feature geojson feature
+     * @return {string} type 'node' or 'way'
+     */
+    this.getElementTypeFromFeature = function(feature) {
         var gtype = feature.geometry.type;
-        if (gtype === 'LineString'){
+        if (gtype === 'LineString') {
             return 'way';
-        } else if (gtype === 'Point'){
+        } else if (gtype === 'Point') {
             return 'node';
         } else {
-            console.error('not supported type '+gtype);
+            console.error('not supported type ' + gtype);
         }
     };
 }
