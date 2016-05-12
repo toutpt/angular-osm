@@ -123,7 +123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	    this.logout = function () {
-	        return this.auth.logout();
+	        this.auth.logout();
 	    };
 	    this.authenticated = function () {
 	        return this.auth.authenticated();

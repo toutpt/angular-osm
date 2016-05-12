@@ -195,7 +195,77 @@ return /******/ (function(modules) { // webpackBootstrap
 	        osmSettingsService.setCredentials('');
 	    };
 
+	    /**
+	     * @ngdoc method
+	     * @name setOauth
+	     * @description use oauth object to call API
+	     * @methodOf osm.api.osmAPI
+	    */
+	    this.setOauth = function setOauth(oauth) {
+	        this._oauth = oauth;
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name setOauth
+	     * @description use oauth object to call API
+	     * @methodOf osm.api.osmAPI
+	     * @return {Object} oauth
+	    */
+	    this.getOauth = function getOauth() {
+	        return this._oauth;
+	    };
+
 	    // ------------------ INTERNAL CALL SERVER (API) -----------------
+
+	    /**
+	     * @ngdoc method
+	     * @name xhr
+	     * @description call the API
+	     * @param {Object} options
+	     * @comment
+	     * ```
+	        var options = {
+	            method: 'GET' // POST, DELETE, PUT
+	            path: '/0.6/changesets' //without the /api,
+	            data: content //if you need a payload
+	        };
+	        osmAPI.xhr(options);
+	        ```
+	     * @methodOf osm.api.osmAPI
+	     * @return {Object} oauth
+	    */
+
+	    this.xhr = function (options) {
+	        var deferred = $q.defer();
+	        var promise = void 0;
+	        var hasOauth = this._oauth;
+	        if (hasOauth) {
+	            options.path = '/api' + options.path;
+	            if (options.data) {
+	                options.body = options.data;
+	                options.data = undefined;
+	            }
+	            promise = this._oauth.xhr(options);
+	        } else {
+	            var fct = options.method.toLowerCase();
+	            if (options.config === undefined) {
+	                options.config = {};
+	            }
+	            options.config.headers = { Authorization: this.getAuthorization() };
+	            promise = $http[fct](options.path, options.config);
+	        }
+	        promise.then(function (data) {
+	            if (hasOauth) {
+	                deferred.resolve(osmUtilsService.x2js.dom2js(data));
+	            } else {
+	                deferred.resolve(osmUtilsService.xml2js(data.data));
+	            }
+	        }, function (error) {
+	            deferred.reject(error);
+	        });
+	        return deferred.promise;
+	    };
 
 	    /**
 	     * @ngdoc method
@@ -206,11 +276,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Promise} $http response
 	    */
 	    this.getAuthenticated = function (method, config) {
-	        if (config === undefined) {
-	            config = {};
+	        var _config = angular.copy(config);
+	        if (!_config) {
+	            _config = {};
 	        }
-	        config.headers = { Authorization: this.getAuthorization() };
-	        return this.get(method, config);
+	        _config.method = 'GET';
+	        _config.path = method;
+	        return this.xhr(_config);
 	    };
 	    /**
 	     * @ngdoc method
@@ -243,20 +315,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Promise} $http response
 	    */
 	    this.put = function (method, content, config) {
-	        var deferred = $q.defer();
-	        var self = this;
-
-	        if (config === undefined) {
-	            config = {};
-	        }
-	        config.headers = { Authorization: this.getAuthorization() };
-	        var url = this.url + method;
-	        $http.put(url, content, config).then(function (data) {
-	            deferred.resolve(data.data);
-	        }, function (data) {
-	            deferred.reject(data);
-	        });
-	        return deferred.promise;
+	        var _config = angular.copy(config);
+	        config.method = 'PUT';
+	        config.path = method;
+	        config.data = content;
+	        return this.xhr(_config);
 	    };
 	    /**
 	     * @ngdoc method
@@ -268,21 +331,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Promise} $http response
 	    */
 	    this.delete = function (method, config) {
-	        var deferred = $q.defer();
-	        var self = this;
-
-	        if (config === undefined) {
-	            config = {};
-	        }
-	        config.headers = { Authorization: this.getAuthorization() };
-	        config.url = this.url + method;
-	        config.method = 'delete';
-	        $http(config).then(function (data) {
-	            deferred.resolve(data.data);
-	        }, function (data) {
-	            deferred.reject(data);
-	        });
-	        return deferred.promise;
+	        var _config = angular.copy(config);
+	        config.method = 'DELETE';
+	        config.path = method;
+	        return this.xhr(_config);
 	    };
 
 	    // ------------------ CHANGESET -----------------
@@ -346,7 +398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    };
 
-	    // ------------------ INTERNAL CALL SERVER (API) -----------------
+	    // ------------------ USER API -----------------
 
 	    /**
 	     * @ngdoc method
