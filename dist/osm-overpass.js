@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(13);
+	module.exports = __webpack_require__(14);
 
 
 /***/ },
@@ -111,9 +111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            userID: '',
 	            credentials: '',
 	            nodes: [],
-	            changeset: '',
-	            osmAPI: '',
-	            overpassAPI: ''
+	            changeset: ''
 	        }),
 	        getUserName: function getUserName() {
 	            return this.localStorage.userName;
@@ -133,27 +131,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        setCredentials: function setCredentials(credentials) {
 	            this.localStorage.credentials = credentials;
 	        },
-	        getOSMAPI: function getOSMAPI() {
-	            if (this.localStorage.osmAPI) {
-	                return this.localStorage.osmAPI;
-	            } else {
-	                return 'http://api.openstreetmap.org/api';
-	            }
-	        },
-	        setOSMAPI: function setOSMAPI(osmAPI) {
-	            this.localStorage.osmAPI = osmAPI;
-	        },
-	        getOverpassAPI: function getOverpassAPI() {
-	            if (this.localStorage.overpassAPI) {
-	                return this.localStorage.overpassAPI;
-	            } else {
-	                //return 'http://api.openstreetmap.org/api';
-	                return 'http://overpass-api.de/api/interpreter';
-	            }
-	        },
-	        setOverpassAPI: function setOverpassAPI(overpassAPI) {
-	            this.localStorage.overpassAPI = overpassAPI;
-	        },
 	        getNodes: function getNodes() {
 	            return this.localStorage.nodes;
 	        },
@@ -170,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.localStorage.osmAuth;
 	        },
 	        setOsmAuth: function setOsmAuth(options) {
-	            return this.localStorage.osmAuth = options;
+	            this.localStorage.osmAuth = options;
 	        }
 	    };
 	}
@@ -190,16 +167,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */
+/* 13 */,
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
-	var _overpass = __webpack_require__(14);
+	var _overpass = __webpack_require__(15);
 
 	var _overpass2 = _interopRequireDefault(_overpass);
 
@@ -209,12 +187,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmOverpassModule = angular.module('osm.overpass', [_settings2.default.name]).factory('osmOverpassAPI', _overpass2.default);
+	var osmOverpassModule = angular.module('osm.overpass', [_settings2.default.name]).factory('osmOverpassAPI', _overpass2.default).provider('osmOverpassAPI', function osmOverpassAPIProvider() {
+	    this.options = {
+	        url: 'http://overpass-api.de/api/interpreter'
+	    };
+	    this.$get = function osmOverpassAPIFactory($http, $q, osmSettingsService) {
+	        return new _overpass2.default($http, $q, osmSettingsService, this.options);
+	    };
+	    this.$get.$inject = ['$http', '$q', 'osmSettingsService'];
+	});
 
 	exports.default = osmOverpassModule;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -231,96 +217,92 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param  {any} $q
 	 * @param  {any} osmSettingsService
 	 */
-	osmOverpassAPI.$inject = ['$http', '$q', 'osmSettingsService'];
-	function osmOverpassAPI($http, $q, osmSettingsService) {
-	    var service = {
-	        overpass: function overpass(query) {
-	            var url = osmSettingsService.getOverpassAPI();
-	            var deferred = $q.defer();
-	            var self = this;
-	            var headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
-	            $http.post(url, 'data=' + encodeURIComponent(query), { headers: headers }).then(function (data) {
-	                deferred.resolve(data.data);
-	            }, function (data) {
-	                deferred.reject(data);
-	            });
-	            return deferred.promise;
-	        },
-	        overpassToGeoJSON: function overpassToGeoJSON(query, filter) {
-	            var deferred = $q.defer();
-	            var features = [];
-	            var relations = [];
-	            var result = {
-	                type: 'FeatureCollection',
-	                features: features,
-	                relations: relations
-	            };
-	            if (filter === undefined) {
-	                filter = function filter() {};
-	            }
-	            this.overpass(query).then(function (data) {
-	                //TODO check if data is XML or JSON, here it's JSON
-	                var node, feature, coordinates;
-	                var cache = { loaded: false };
-	                function getNodeById(id) {
-	                    if (!cache.loaded) {
-	                        var tmp;
-	                        for (var i = 0; i < data.elements.length; i++) {
-	                            tmp = data.elements[i];
-	                            cache[tmp.id] = tmp;
-	                        }
-	                    }
-	                    return cache[id];
-	                };
-	                for (var i = 0; i < data.elements.length; i++) {
-	                    node = data.elements[i];
-	                    if (node.type === 'node') {
-	                        feature = {
-	                            type: 'Feature',
-	                            properties: node.tags,
-	                            id: node.id,
-	                            geometry: {
-	                                type: 'Point',
-	                                coordinates: [node.lon, node.lat]
-	                            }
-	                        };
-	                        if (!filter(feature)) {
-	                            features.push(feature);
-	                        }
-	                    } else if (node.type === 'way') {
-	                        coordinates = [];
-	                        feature = {
-	                            type: 'Feature',
-	                            properties: node.tags,
-	                            id: node.id,
-	                            geometry: {
-	                                type: 'LineString',
-	                                coordinates: coordinates
-	                            }
-	                        };
-	                        for (var j = 0; j < node.nodes.length; j++) {
-	                            coordinates.push([getNodeById(node.nodes[j]).lon, getNodeById(node.nodes[j]).lat]);
-	                        }
-	                        if (!filter(feature)) {
-	                            features.push(feature);
-	                        }
-	                    } else if (node.type === 'relation') {
-	                        result.relations.push({
-	                            ref: node.id,
-	                            tags: node.tags,
-	                            type: 'relation',
-	                            members: node.members
-	                        });
+	function osmOverpassAPI($http, $q, osmSettingsService, options) {
+	    this.overpass = function (query) {
+	        var url = this.url;
+	        var deferred = $q.defer();
+	        var self = this;
+	        var headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
+	        $http.post(url, 'data=' + encodeURIComponent(query), { headers: headers }).then(function (data) {
+	            deferred.resolve(data.data);
+	        }, function (data) {
+	            deferred.reject(data);
+	        });
+	        return deferred.promise;
+	    };
+	    this.overpassToGeoJSON = function (query, filter) {
+	        var deferred = $q.defer();
+	        var features = [];
+	        var relations = [];
+	        var result = {
+	            type: 'FeatureCollection',
+	            features: features,
+	            relations: relations
+	        };
+	        if (filter === undefined) {
+	            filter = function filter() {};
+	        }
+	        this.overpass(query).then(function (data) {
+	            //TODO check if data is XML or JSON, here it's JSON
+	            var node, feature, coordinates;
+	            var cache = { loaded: false };
+	            function getNodeById(id) {
+	                if (!cache.loaded) {
+	                    var tmp;
+	                    for (var i = 0; i < data.elements.length; i++) {
+	                        tmp = data.elements[i];
+	                        cache[tmp.id] = tmp;
 	                    }
 	                }
-	                deferred.resolve(result);
-	            }, function (error) {
-	                deferred.reject(error);
-	            });
-	            return deferred.promise;
-	        }
+	                return cache[id];
+	            };
+	            for (var i = 0; i < data.elements.length; i++) {
+	                node = data.elements[i];
+	                if (node.type === 'node') {
+	                    feature = {
+	                        type: 'Feature',
+	                        properties: node.tags,
+	                        id: node.id,
+	                        geometry: {
+	                            type: 'Point',
+	                            coordinates: [node.lon, node.lat]
+	                        }
+	                    };
+	                    if (!filter(feature)) {
+	                        features.push(feature);
+	                    }
+	                } else if (node.type === 'way') {
+	                    coordinates = [];
+	                    feature = {
+	                        type: 'Feature',
+	                        properties: node.tags,
+	                        id: node.id,
+	                        geometry: {
+	                            type: 'LineString',
+	                            coordinates: coordinates
+	                        }
+	                    };
+	                    for (var j = 0; j < node.nodes.length; j++) {
+	                        coordinates.push([getNodeById(node.nodes[j]).lon, getNodeById(node.nodes[j]).lat]);
+	                    }
+	                    if (!filter(feature)) {
+	                        features.push(feature);
+	                    }
+	                } else if (node.type === 'relation') {
+	                    result.relations.push({
+	                        ref: node.id,
+	                        tags: node.tags,
+	                        type: 'relation',
+	                        members: node.members
+	                    });
+	                }
+	            }
+	            deferred.resolve(result);
+	        }, function (error) {
+	            deferred.reject(error);
+	        });
+	        return deferred.promise;
 	    };
-	    return service;
 	}
 
 	exports.default = osmOverpassAPI;

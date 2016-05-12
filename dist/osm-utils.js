@@ -111,9 +111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            userID: '',
 	            credentials: '',
 	            nodes: [],
-	            changeset: '',
-	            osmAPI: '',
-	            overpassAPI: ''
+	            changeset: ''
 	        }),
 	        getUserName: function getUserName() {
 	            return this.localStorage.userName;
@@ -133,27 +131,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        setCredentials: function setCredentials(credentials) {
 	            this.localStorage.credentials = credentials;
 	        },
-	        getOSMAPI: function getOSMAPI() {
-	            if (this.localStorage.osmAPI) {
-	                return this.localStorage.osmAPI;
-	            } else {
-	                return 'http://api.openstreetmap.org/api';
-	            }
-	        },
-	        setOSMAPI: function setOSMAPI(osmAPI) {
-	            this.localStorage.osmAPI = osmAPI;
-	        },
-	        getOverpassAPI: function getOverpassAPI() {
-	            if (this.localStorage.overpassAPI) {
-	                return this.localStorage.overpassAPI;
-	            } else {
-	                //return 'http://api.openstreetmap.org/api';
-	                return 'http://overpass-api.de/api/interpreter';
-	            }
-	        },
-	        setOverpassAPI: function setOverpassAPI(overpassAPI) {
-	            this.localStorage.overpassAPI = overpassAPI;
-	        },
 	        getNodes: function getNodes() {
 	            return this.localStorage.nodes;
 	        },
@@ -170,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.localStorage.osmAuth;
 	        },
 	        setOsmAuth: function setOsmAuth(options) {
-	            return this.localStorage.osmAuth = options;
+	            this.localStorage.osmAuth = options;
 	        }
 	    };
 	}
@@ -201,9 +178,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _settings2 = _interopRequireDefault(_settings);
 
+	var _x2js = __webpack_require__(9);
+
+	var _x2js2 = _interopRequireDefault(_x2js);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmUtilsModule = angular.module('osm.utils', [_settings2.default.name]).service('osmUtilsService', _utils2.default);
+	var osmUtilsModule = angular.module('osm.utils', [_settings2.default.name, _x2js2.default.name]).service('osmUtilsService', _utils2.default);
 
 	exports.default = osmUtilsModule;
 
@@ -220,120 +201,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @ngdoc service
 	 * @name osm.utils.osmUtilsService
 	 */
-	function osmUtilsService(osmSettingsService) {
-	    var _this = this;
-
-	    this.serializer = new XMLSerializer();
-
-	    if (typeof window.DOMParser !== 'undefined') {
-	        (function () {
-	            var parser = new window.DOMParser();
-	            _this.parseXml = function parseXml(xmlStr) {
-	                return parser.parseFromString(xmlStr, 'application/xml');
-	            };
-	        })();
-	    } else if (typeof window.ActiveXObject !== 'undefined') {
-	        this.parseXml = function parseXml(xmlStr) {
-	            var xmlDoc = new window.ActiveXObject('Microsoft.XMLDOM');
-	            xmlDoc.async = 'false';
-	            xmlDoc.loadXML(xmlStr);
-	            return xmlDoc;
-	        };
-	    } else {
-	        throw new Error('No XML parser found');
-	    }
+	function osmUtilsService($http, osmSettingsService, osmx2js) {
 
 	    /**
 	     * @ngdoc method
-	     * @name createNodeXML
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Object} node geojson
-	     * @return {string} XML
-	     * <osm>
-	        <node changeset="12" lat="..." lon="...">
-	            <tag k="note" v="Just a node"/>
-	            ...
-	        </node>
-	        </osm>
-	     */
-	    this.createNodeXML = function (node) {
-	        var newNode = '<osm><node changeset="CHANGESET" lat="LAT" lon="LNG">TAGS</node></osm>';
-	        var tagTPL = '<tag k="KEY" v="VALUE"/>';
-	        var tags = '';
-	        var value;
-	        newNode = newNode.replace('CHANGESET', osmSettingsService.getChangeset());
-	        for (var property in node.tags) {
-	            if (node.tags.hasOwnProperty(property)) {
-	                value = node.tags[property];
-	                if (value === undefined || value === null) {
-	                    continue;
-	                } else {
-	                    tags += tagTPL.replace('KEY', property).replace('VALUE', node.tags[property]);
-	                }
-	            }
-	        }
-	        newNode = newNode.replace('TAGS', tags);
-	        newNode = newNode.replace('LNG', node.lng);
-	        newNode = newNode.replace('LAT', node.lat);
-	        return newNode;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name serialiseXmlToString
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Object} xml document object
-	     * @return {string} XML
-	     */
-	    this.serialiseXmlToString = function (xml) {
-	        return this.serializer.serializeToString(xml);
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagsFromChildren
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Object} element document element object
-	     * @return {Object} tags {k1:v1,k2: v2}
-	     */
-	    this.getTagsFromChildren = function (element) {
-	        var children, tags;
-	        tags = {};
-	        for (var i = 0; i < element.children.length; i++) {
-	            children = element.children[i];
-	            if (children.tagName !== 'tag') {
-	                continue;
-	            }
-	            tags[children.getAttribute('k')] = children.getAttribute('v');
-	        }
-	        return tags;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getNameFromTags
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Object} element document element object
-	     * @return {string} name value
-	     */
-	    this.getNameFromTags = function (element) {
-	        var children;
-	        for (var i = 0; i < element.children.length; i++) {
-	            children = element.children[i];
-	            if (children.tagName !== 'tag') {
-	                continue;
-	            }
-	            if (children.getAttribute('k') === 'name') {
-	                return children.getAttribute('v');
-	            }
-	        }
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name relationXmlToGeoJSON
+	     * @name relationToGeoJSON
 	     * @methodOf osm.utils.osmUtilsService
 	     * @param {Number} relationId id of the relation
-	     * @param {Object} relationXML document element object
+	     * @param {Object} relation json object
 	     * @return {Object} geojson
 	     */
-	    this.relationXmlToGeoJSON = function (relationID, relationXML) {
+	    this.relationToGeoJSON = function (relationID, relation) {
 	        var self = this;
 	        var features = [];
 	        var relations = [];
@@ -592,20 +470,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        return relationGeoJSON;
 	    };
-	    /**
-	     * @ngdoc method
-	     * @name getNodesInJSON
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Object} relationGeoJSON geojson
-	     * @return {Object} relation as geojson sorted
-	     */
-	    this.getNodesInJSON = function (xmlNodes, flatProperties) {
-	        osmSettingsService.setNodes(xmlNodes);
-	        var options = {};
-	        if (flatProperties !== undefined) {
-	            options.flatProperties = flatProperties;
-	        }
-	        return osmtogeojson(xmlNodes, options);
+	    this.x2js = osmx2js;
+	    this.xml2js = function (xml_str) {
+	        return osmx2js.xml2js(xml_str);
+	    };
+	    this.js2xml = function (json) {
+	        return osmx2js.js2xml(json);
 	    };
 	    /**
 	     * @ngdoc method
@@ -654,6 +524,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	}
 	exports.default = osmUtilsService;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	//https://github.com/abdmob/x2js as angular service
+	var osmx2jsModule = angular.module('osm.x2js', []).provider('osmx2js', function osmx2jsProvider() {
+	    this.options = {};
+	    this.$get = function osmx2jsFactory() {
+	        return new X2JS(this.options); //X2JS must be global
+	    };
+	});
+
+	exports.default = osmx2jsModule;
 
 /***/ }
 /******/ ])

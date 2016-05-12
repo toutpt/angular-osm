@@ -7,7 +7,7 @@
 		exports["name"] = factory(require("osm-auth"));
 	else
 		root["angular-osm"] = root["angular-osm"] || {}, root["angular-osm"]["name"] = factory(root["osm-auth"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_12__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_13__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(10);
+	module.exports = __webpack_require__(11);
 
 
 /***/ },
@@ -67,7 +67,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */,
 /* 8 */,
 /* 9 */,
-/* 10 */
+/* 10 */,
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -76,7 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _oauth = __webpack_require__(11);
+	var _oauth = __webpack_require__(12);
 
 	var _oauth2 = _interopRequireDefault(_oauth);
 
@@ -94,7 +95,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmOAuthModule;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103,7 +104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _osmAuth = __webpack_require__(12);
+	var _osmAuth = __webpack_require__(13);
 
 	var _osmAuth2 = _interopRequireDefault(_osmAuth);
 
@@ -157,10 +158,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmAuthService;
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_12__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_13__;
 
 /***/ }
 /******/ ])
