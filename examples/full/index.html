@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>angular-osm utils</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<script type="text/javascript" src="https://npmcdn.com/x2js@2.0.1/x2js.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/angular@1.5.5/angular.min.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/angular-base64@2.0.5/angular-base64.min.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/osm-auth@0.2.8/osmauth.min.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/ngstorage@0.3.10/ngStorage.min.js"></script>
+	<script type="text/javascript" src="../../dist/osm-full.js"></script>
+	<script type="text/javascript" src="example.js"></script>
+</head>
+<body ng-app="example" ng-controller="ExampleCtrl as $ctrl">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<ng-include src="'../api/urlused.html'"></ng-include>
+				<div class="ng-hide" ng-show="$ctrl.authenticated">
+					<p>Hello {{$ctrl.user._display_name}}</p>
+					<img ng-src="{{$ctrl.user.img._href}}"/>
+					<div class="btn-group">
+						<button class="btn btn-default" ng-click="$ctrl.logout()">logout</button>
+						<button class="btn btn-default" ng-click="$ctrl.osmAPI.getUserDetails().then($ctrl.onData, $ctrl.onError)">getUserDetails</button>
+					</div>
+				</div>
+				<hr/>
+				<form name="login" ng-show="!$ctrl.authenticated">
+					<button class="btn btn-default" ng-click="$ctrl.doLogin()">login</button>
+				</form>
+				<hr/>
+				<ng-include src="'../api/testcase.html'"></ng-include>
+			</div>
+			<ng-include src="'../display.html'"></ng-include>
+		</div>
+	</div>
+</body>
+</html>

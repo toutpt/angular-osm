@@ -27,17 +27,12 @@
         $ctrl.onData = function onData(data) {
             $ctrl.loading = false;
             delete $ctrl.data;
-            delete $ctrl.data_str;
-            if (typeof data === 'object') {
-                $ctrl.data = data;
-            } else {
-                $ctrl.data_str = data;
-            }
+            $ctrl.data = data;
         };
         $ctrl.onError = function onError(error) {
             $ctrl.loading = false;
             $ctrl.error = error;
-        }
+        };
         if (credentials) {
             validateCredentials();
         }
