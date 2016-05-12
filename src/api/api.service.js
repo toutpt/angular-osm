@@ -121,7 +121,6 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
      * @methodOf osm.api.osmAPI
      * @return {Object} oauth
     */
-
     this.xhr = function (options) {
         let deferred = $q.defer();
         let promise;

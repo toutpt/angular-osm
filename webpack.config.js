@@ -8,6 +8,7 @@ var config = {
         oauth: ['./src/oauth/oauth.js'],
         overpass: ['./src/overpass/overpass.js'],
         taginfo: ['./src/taginfo/taginfo.js'],
+        nominatim: ['./src/nominatim/nominatim.js'],
         utils: ['./src/utils/utils.js']
     },
     externals: {
