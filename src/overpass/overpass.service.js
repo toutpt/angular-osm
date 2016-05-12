@@ -8,10 +8,19 @@
  * @param  {any} osmSettingsService
  */
 function osmOverpassAPI($http, $q, osmSettingsService, options) {
+    this.url = options.url;
+    /**
+     * @ngdoc method
+     * @name overpass
+     * @param {Object/String} query
+     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API
+     * @methodOf osm.overpass.osmOverpassAPI
+     * @return {Promise} $http.get
+    */
     this.overpass = function (query) {
-        var url = this.url;
-        var deferred = $q.defer();
         var self = this;
+        var url = self.url;
+        var deferred = $q.defer();
         var headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
         $http.post(
             url,
@@ -23,6 +32,30 @@ function osmOverpassAPI($http, $q, osmSettingsService, options) {
             deferred.reject(data);
         });
         return deferred.promise;
+    };
+    /**
+     * @ngdoc method
+     * @name overpass
+     * @description
+     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
+        By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
+     * @param {String} type 'r'/'relation' or 'w'/'way'
+     * @param {String/Number} osmId the id of the element
+     * @methodOf osm.overpass.osmOverpassAPI
+     * @return {Number} the area id
+    */
+    this.getAreaId = function (type, osmId) {
+        var id;
+        if (typeof osmId === 'string') {
+            id = parseInt(osmId, 10);
+        } else {
+            id = osmId;
+        }
+        if (type === 'r' || type === 'relation') {
+            return 3600000000 + id;
+        } else if (type === 'w' || type === 'way') {
+            return 2400000000 + id;
+        }
     };
     this.overpassToGeoJSON = function (query, filter) {
         var deferred = $q.defer();
