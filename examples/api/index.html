@@ -16,11 +16,18 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
+				<div class="alert alert-info">
+					<p>This page use the following API url: 
+					<a target="_blank" ng-href="{{$ctrl.osmAPI.url.slice(0,-4)}}">{{$ctrl.osmAPI.url}}</a>
+					</p>
+					<p>Your account may / may not exists on it, You may change your password to make the following examples working.
+					</p>
+				</div>
 				<div class="ng-hide" ng-show="$ctrl.username">
 					<p>Hello {{$ctrl.username}}</p>
 					<div class="btn-group">
 						<button class="btn btn-default" ng-click="$ctrl.doLogout()">logout</button>
-						<button class="btn btn-default" ng-click="$ctrl.getUserDetails()">getUserDetails</button>
+						<button class="btn btn-default" ng-click="$ctrl.osmAPI.getUserDetails().then($ctrl.onData, $ctrl.onError)">getUserDetails</button>
 					</div>
 				</div>
 				<hr/>
@@ -38,28 +45,34 @@
 					<button class="btn btn-default" ng-click="$ctrl.doLogin()">login</button>
 				</form>
 				<hr/>
-				<form name="bbox">
-					<div class="form-group">
-						<input type="text" class="form-control" ng-model="$ctrl.bbox" placeholder="bbox"/>
-					</div>
-					<button class="btn btn-default" ng-click="$ctrl.getMap()">getMap</button>
-				</form>
+				<div class="form-group">
+					<label>BBOX</label>
+					<input type="text" class="form-control" ng-model="$ctrl.bbox" placeholder="bbox"/>
+				</div>
+				<div class="btn-group">
+					<button class="btn btn-default" ng-click="$ctrl.osmAPI.getMap($ctrl.bbox).then($ctrl.onData, $ctrl.onError)">getMap</button>
+					<button class="btn btn-default" ng-click="$ctrl.osmAPI.getNotes($ctrl.bbox).then($ctrl.onData, $ctrl.onError)">getNotes</button>
+				</div>
 				<hr/>
-				<form name="notes">
+				<form name="getelement">
 					<div class="form-group">
-						<input type="text" class="form-control" ng-model="$ctrl.bbox" placeholder="bbox"/>
+						<input type="text" class="form-control" ng-model="$ctrl.element_id" placeholder="element_id"/>
 					</div>
-					<button class="btn btn-default" ng-click="$ctrl.getNotes()">getNotes</button>
+					<div class="btn-group">
+						<button class="btn btn-default" ng-click="$ctrl.osmAPI.getNode($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getNode</button>
+						<button class="btn btn-default" ng-click="$ctrl.osmAPI.getWay($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getWay</button>
+						<button class="btn btn-default" ng-click="$ctrl.osmAPI.getRelation($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getRelation</button>
+					</div>
 				</form>
 
 			</div>
 			<div class="col-md-6">
 				<span ng-show="$ctrl.loading" class="ng-hide">loading...</span>
-				<pre ng-show="$ctrl.data">{{$ctrl.data | json}}</pre>
-				<pre ng-show="$ctrl.data_str">{{$ctrl.data_str}}</pre>
 				<div class="alert alert-danger ng-hide" ng-show="$ctrl.error">
 					{{$ctrl.error}}
 				</div>
+				<pre ng-show="$ctrl.data">{{$ctrl.data | json}}</pre>
+				<pre ng-show="$ctrl.data_str">{{$ctrl.data_str}}</pre>
 			</div>
 		</div>
 	</div>

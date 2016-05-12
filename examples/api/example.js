@@ -1,9 +1,19 @@
 (function() {
     angular.module('example', ['osm.api'])
+    .config(config)
     .controller('ExampleCtrl', ExampleCtrl);
-    
+    function config(osmAPIProvider) {
+        osmAPIProvider.options = {
+//            url: 'http://api06.dev.openstreetmap.org/api'
+//            url: 'http://www.openstreetmap.org/api'
+            url: 'http://master.apis.dev.openstreetmap.org/api'
+        };
+    }
+
     function ExampleCtrl (osmAPI, osmSettingsService) {
         var $ctrl = this;
+        $ctrl.osmAPI = osmAPI;
+        $ctrl.bbox = '-1.5590554475784302,47.21250296746172,-1.5530633926391602,47.21564395777462';
         var credentials = osmAPI.getCredentials();
         function validateCredentials() {
             osmAPI.validateCredentials().then(function (isValid) {
@@ -14,7 +24,7 @@
                 }
             });
         }
-        function onData(data) {
+        $ctrl.onData = function onData(data) {
             $ctrl.loading = false;
             delete $ctrl.data;
             delete $ctrl.data_str;
@@ -23,8 +33,8 @@
             } else {
                 $ctrl.data_str = data;
             }
-        }
-        function onError(error) {
+        };
+        $ctrl.onError = function onError(error) {
             $ctrl.loading = false;
             $ctrl.error = error;
         }
@@ -38,19 +48,6 @@
         this.doLogout = function () {
             osmAPI.clearCredentials();
             validateCredentials();
-        };
-        this.getUserDetails = function () {
-            this.loading = true;
-            osmAPI.getUserDetails().then(onData, onError);
-        };
-        $ctrl.bbox = '11.5430,48.144,11.5435,48.145';
-        this.getMap = function () {
-            this.loading = true;
-            osmAPI.getMap($ctrl.bbox).then(onData, onError);
-        };
-        this.getNotes = function () {
-            this.loading = true;
-            osmAPI.getNotes($ctrl.bbox).then(onData, onError);
         };
     }
 
