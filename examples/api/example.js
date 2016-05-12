@@ -50,8 +50,8 @@
         };
         this.getNotes = function () {
             this.loading = true;
-            osmAPI.getNotes($ctrl.bbox, $ctrl.format).then(onData, onError);
-        }
+            osmAPI.getNotes($ctrl.bbox).then(onData, onError);
+        };
     }
 
 })();
