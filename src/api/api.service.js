@@ -1,13 +1,18 @@
 /**
  * @ngdoc service
  * @name osm.oauth.osmAuthService
+ * @description The main idea is use geojson object where it is possible
+ * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
  * @param  {any} $base64
  * @param  {any} $http
  * @param  {any} $q
  * @param  {any} osmSettingsService
  */
-osmAPI.$inject = ['$base64', '$http', '$q', 'osmSettingsService', 'osmUtilsService'];
-function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
+function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options) {
+
+    this.url = options.url;
+    // ------------------ CREDENTIALS -----------------
+
     /**
      * @ngdoc method
      * @name validateCredentials
@@ -19,12 +24,10 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
     this.validateCredentials = function (){
         var deferred = $q.defer();
         this.getUserDetails().then(function(data){
-            var parsed = osmUtilsService.parseXml(data);
-            var users = parsed.getElementsByTagName('user');
-            if (users.length === 1){
-                osmSettingsService.setUserID(users[0].id);
+            if (data.osm.user){
+                osmSettingsService.setUserID(data.osm.user._id);
             }
-            deferred.resolve(users.length > 0);
+            deferred.resolve(data.osm.user !== undefined);
         }, function(error){
             deferred.reject(error);
         });
@@ -52,7 +55,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
      * @methodOf osm.api.osmAPI
      * @returns {string} crendentials from the last set
     */
-    this.getCredentials = function(){
+    this.getCredentials = function () {
         return osmSettingsService.getCredentials();
     };
     /**
@@ -62,7 +65,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
      * @methodOf osm.api.osmAPI
      * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
     */
-    this.getAuthorization = function(){
+    this.getAuthorization = function () {
         return 'Basic ' + osmSettingsService.getCredentials();
     };
     /**
@@ -75,6 +78,12 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
     this.clearCredentials = function () {
         osmSettingsService.setCredentials('');
     };
+
+
+
+    // ------------------ INTERNAL CALL SERVER (API) -----------------
+
+
     /**
      * @ngdoc method
      * @name getAuthenticated
@@ -102,11 +111,11 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
     this.get = function(method, config){
         var deferred = $q.defer();
         var self = this;
-        var url = osmSettingsService.getOSMAPI() + method;
+        var url = this.url + method;
         $http.get(url, config).then(function(data){
-            deferred.resolve(data.data);
-        }, function(data) {
-            deferred.reject(data);
+            deferred.resolve(osmUtilsService.xml2js(data.data));
+        }, function(error) {
+            deferred.reject(error);
         });
         return deferred.promise;
     };
@@ -128,7 +137,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
             config = {};
         }
         config.headers = {Authorization: this.getAuthorization()};
-        var url = osmSettingsService.getOSMAPI() + method;
+        var url = this.url + method;
         $http.put(url, content, config).then(function(data){
             deferred.resolve(data.data);
         },function(data) {
@@ -153,7 +162,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
             config = {};
         }
         config.headers = {Authorization: this.getAuthorization()};
-        config.url = osmSettingsService.getOSMAPI() + method;
+        config.url = this.url + method;
         config.method = 'delete';
         $http(config).then(function(data){
             deferred.resolve(data.data);
@@ -162,6 +171,11 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
         });
         return deferred.promise;
     };
+
+
+    // ------------------ CHANGESET -----------------
+
+
     /**
      * @ngdoc method
      * @name createChangeset
@@ -171,8 +185,14 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
     */
     this.createChangeset = function(comment){
         var deferred = $q.defer();
-        var changeset = '<osm><changeset><tag k="created_by" v="Angular-OSM"/><tag k="comment" v="';
-        changeset += comment + '"/></changeset></osm>';
+        var changeset = {osm: {
+            changeset: {
+                tag: [
+                    {_k:'created_by', _v: 'Angular-OSM'},
+                    {_k:'comment', _v: comment},
+                ]
+            }
+        }};
         this.put('/0.6/changeset/create', changeset).then(function(data){
             osmSettingsService.setChangeset(data);
             deferred.resolve(data);
@@ -186,14 +206,13 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
      * @returns {Promise} $http response with the last changeset id
      * or undefined if no changeset was opened
     */
-    this.getLastOpenedChangesetId = function(){
+    this.getLastOpenedChangesetId = function () {
         var deferred = $q.defer();
         var config = {
             params:{user: osmSettingsService.getUserID(), open: true}
         };
         this.get('/0.6/changesets', config).then(function(data){
-            var parsed = osmUtilsService.parseXml(data);
-            var changesets = parsed.getElementsByTagName('changeset');
+            var changesets = data.osm.changeset;
             if (changesets.length > 0){
                 osmSettingsService.setChangeset(changesets[0].id);
                 deferred.resolve(changesets[0].id);
@@ -211,7 +230,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
      * @returns {Promise} $http.put response of
      * /0.6/changeset/CHANGESET_ID/close
     */
-    this.closeChangeset = function(){
+    this.closeChangeset = function () {
         var changeset = osmSettingsService.getChangeset();
         return this.put('/0.6/changeset/'+ changeset +'/close')
         .then(function (data) {
@@ -219,6 +238,23 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
             return data;
         });
     };
+
+
+    // ------------------ INTERNAL CALL SERVER (API) -----------------
+
+    /**
+     * @ngdoc method
+     * @name getUserById
+     * @methodOf osm.api.osmAPI
+     * @param {string} id of the user
+     * @returns {Promise} $http.get response
+     * /0.6/user/#id
+    */
+    this.getUserById = function(id){
+        return this.getAuthenticated('/0.6/user/' + id);
+    };
+
+
     /**
      * @ngdoc method
      * @name getUserDetails
@@ -226,9 +262,36 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
      * @returns {Promise} $http.get response
      * /0.6/user/details
     */
-    this.getUserDetails = function(){
+    this.getUserDetails = function () {
         return this.getAuthenticated('/0.6/user/details');
     };
+    /**
+     * @ngdoc method
+     * @name getUserPreferences
+     * @methodOf osm.api.osmAPI
+     * @returns {Promise} $http.get response
+     * /0.6/user/preferences
+    */
+    this.getUserPreferences = function () {
+        return this.getAuthenticated('/0.6/user/preferences');
+    };
+
+    /**
+     * @ngdoc method
+     * @name putUserPreferences
+     * @methodOf osm.api.osmAPI
+     * @param {string} key the preference key
+     * @param {string} value the preference value
+     * @returns {Promise} $http.get response
+     * /0.6/user/preferences
+    */
+    this.putUserPreferences = function (key, value) {
+        return this.put('/0.6/user/preferences/' + key , value);
+    };
+
+
+    //------------------ MAP DATA -------------------------
+
     /**
      * @ngdoc method
      * @name getMap
@@ -248,109 +311,6 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
 
     /**
      * @ngdoc method
-     * @name getNotes
-     * @methodOf osm.api.osmAPI
-     * @param {string} bbox left,bottom,right,top
-     * where:
-        left is the longitude of the left (westernmost) side of the bounding box.
-        bottom is the latitude of the bottom (southernmost) side of the bounding box.
-        right is the longitude of the right (easternmost) side of the bounding box.
-        top is the latitude of the top (northernmost) side of the bounding box.
-     * @param {string} format  Currently the format rss, xml, json and gpx are supported.
-     * @returns {Promise} $http.get response
-     * /0.6/notes[.format]?bbox=bbox
-    */
-    this.getNotes = function (bbox, format) {
-        var url = '/0.6/notes';
-        if (format) {
-            url += '.' + format;
-        }
-        url += '?bbox=' + bbox;
-        return this.get(url);
-    };
-
-    /**
-     * @ngdoc method
-     * @name updateNode
-     * @methodOf osm.api.osmAPI
-     * @param {Object} currentNode geojson
-     * @param {Object} updatedNode geojson
-     * @returns {Promise} $http.get response
-     * /0.6/map?bbox=bbox
-    */
-    this.updateNode = function(currentNode, updatedNode){
-        //we need to do the diff and build the xml
-        //first try to find the node by id
-        var nodes = osmSettingsService.getNodes();
-        var node = nodes.getElementById(currentNode.properties.id);
-        var deferred = $q.defer(); //only for errors
-        if (node === null) {
-            deferred.reject({
-                msg: 'can t find node',
-                currentNode: currentNode,
-                updatedNode: updatedNode,
-                osmNode: node
-            });
-            return deferred.promise;
-        }
-        var tag;
-        node.setAttribute('changeset', osmSettingsService.getChangeset());
-        node.setAttribute('user', osmSettingsService.getUserName());
-        while (node.getElementsByTagName('tag')[0]){
-            node.removeChild(node.getElementsByTagName('tag')[0]);
-        }
-        var osm = document.createElement('osm');
-        var value;
-        osm.appendChild(node);
-        for (var property in updatedNode.properties.tags) {
-            if (updatedNode.properties.tags.hasOwnProperty(property)) {
-                value = updatedNode.properties.tags[property];
-                if (value === undefined){
-                    continue;
-                }
-                tag = document.createElement('tag');
-                tag.setAttribute('k', property);
-                tag.setAttribute('v', value);
-                node.appendChild(tag);
-            }
-        }
-        var nodeType;
-        if (updatedNode.geometry.type === 'Polygon') {
-            nodeType = 'way';
-        } else if (updatedNode.geometry.type === 'Point') {
-            nodeType = 'node';
-        } else if (updatedNode.geometry.type === 'LineString') {
-            nodeType = 'way';
-         } else {
-            deferred.reject({
-                msg: 'geojson type not supported',
-                currentNode: currentNode,
-                updatedNode: updatedNode,
-                osmNode: node
-            });
-            return deferred.promise;
-        }
-        //put request !!
-        var url = '/0.6/' + nodeType + '/' + currentNode.properties.id;
-        return this.put(url, osm.outerHTML);
-    };
-    /**
-     * @ngdoc method
-     * @name createNode
-     * @methodOf osm.api.osmAPI
-     * @param {Object/string} node as xml or geojson
-     * @returns {Promise} $http.put response
-     * /0.6/node/create
-    */
-    this.createNode = function (node) {
-        var xmlnode = node;
-        if (typeof node === 'object') {
-            xmlnode = osmUtilsService.createNodeXML(node);
-        }
-        return this.put('/0.6/node/create', xmlnode);
-    };
-    /**
-     * @ngdoc method
      * @name getMapGeoJSON
      * @methodOf osm.api.osmAPI
      * @param {string} bbox the bounding box
@@ -359,15 +319,181 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService) {
     this.getMapGeoJSON = function(bbox){
         var self = this;
         var deferred = $q.defer();
-        self.getMap(bbox).then(function(strNodes){
-            var xmlNodes = osmUtilsService.parseXml(strNodes);
-            var geojsonNodes = osmUtilsService.getNodesInJSON(xmlNodes);
+        self.getMap(bbox).then(function(nodes){
+            var geojsonNodes = osmUtilsService.js2geojson(nodes);
             deferred.resolve(geojsonNodes);
         }, function(error){
             deferred.reject(error);
         });
         return deferred.promise;
     };
+
+
+    /**
+     * @ngdoc method
+     * @name getNotes
+     * @methodOf osm.api.osmAPI
+     * @param {string} bbox left,bottom,right,top
+     * where:
+        left is the longitude of the left (westernmost) side of the bounding box.
+        bottom is the latitude of the bottom (southernmost) side of the bounding box.
+        right is the longitude of the right (easternmost) side of the bounding box.
+        top is the latitude of the top (northernmost) side of the bounding box.
+     * @returns {Promise} $http.get response
+    */
+    this.getNotes = function (bbox) {
+        var url = '/0.6/notes?bbox=' + bbox;
+        return this.get(url);
+    };
+
+
+
+    //------------------ ELEMENTS: Node ----------------
+
+    /**
+     * @ngdoc method
+     * @name createNode
+     * @methodOf osm.api.osmAPI
+     * @param {Object/string} node
+         var node = {osm: {node: {
+            _changeset: '12', _lat: '...', _lon: '...',
+            tags: [
+                {_k: '...', _v: '...'}
+            ]
+        }}};
+     * @returns {Promise} $http.put response
+     * PUT /0.6/node/create
+    */
+    this.createNode = function (node) {
+        return this.put('/0.6/node/create', node);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getNode
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id
+    */
+    this.getNode = function (id) {
+        return this.get('/0.6/node/' + id);
+    };
+
+    /**
+     * @ngdoc method
+     * @name deleteNode
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.delete response
+     * DELETE /0.6/node/#id
+    */
+    this.deleteNode = function (id) {
+        return this.delete('/0.6/node/' + id);
+    };
+
+
+
+    //------------------ ELEMENTS: WAY ----------------
+
+
+    /**
+     * @ngdoc method
+     * @name createWay
+     * @methodOf osm.api.osmAPI
+     * @param {Object/string} way
+        var way = {osm: {way: {
+            _changeset: '12', _lat: '...', _lon: '...',
+            tags: [
+                {_k: '...', _v: '...'}
+            ],
+            nd: [
+                {_ref: '123'},
+                {_ref: '456'},
+            ]
+        }}};
+     * @returns {Promise} $http.put response
+     * PUT /0.6/way/create
+    */
+    this.createWay = function (way) {
+        return this.put('/0.6/way/create', way);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getWay
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/way/#id
+    */
+    this.getWay = function (id) {
+        return this.get('/0.6/way/' + id);
+    };
+
+    /**
+     * @ngdoc method
+     * @name deleteWay
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.delete response
+     * DELETE /0.6/way/#id
+    */
+    this.deleteWay = function (id) {
+        return this.delete('/0.6/way/' + id);
+    };
+
+    //------------------ ELEMENTS: RELATION ----------------
+
+
+    /**
+     * @ngdoc method
+     * @name createRelation
+     * @methodOf osm.api.osmAPI
+     * @param {Object/string} relation
+        var relation = {osm: {relation: {
+            _changeset: '12', _lat: '...', _lon: '...',
+            tags: [
+                {_k: '...', _v: '...'}
+            ],
+            member: [
+                {_type: 'node', _role: 'stop', 'ref': '123'},
+                {_type: 'way', 'ref': '234'}
+            ]
+        }}};
+     * @returns {Promise} $http.put response
+     * PUT /0.6/relation/create
+    */
+    this.createRelation = function (relation) {
+        return this.put('/0.6/relation/create', relation);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getRelation
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/relation/#id
+    */
+    this.getRelation = function (id) {
+        return this.get('/0.6/relation/' + id);
+    };
+
+    /**
+     * @ngdoc method
+     * @name deleteRelation
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.delete response
+     * DELETE /0.6/relation/#id
+    */
+    this.deleteRelation = function (id) {
+        return this.delete('/0.6/relation/' + id);
+    };
+
+
+
 }
 
 export default osmAPI;

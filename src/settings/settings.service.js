@@ -15,9 +15,7 @@ function osmSettingsService ($localStorage) {
             userID: '',
             credentials: '',
             nodes: [],
-            changeset: '',
-            osmAPI: '',
-            overpassAPI: ''
+            changeset: ''
         }),
         getUserName: function(){
             return this.localStorage.userName;
@@ -37,27 +35,6 @@ function osmSettingsService ($localStorage) {
         setCredentials: function(credentials){
             this.localStorage.credentials = credentials;
         },
-        getOSMAPI: function(){
-            if (this.localStorage.osmAPI){
-                return this.localStorage.osmAPI;
-            }else{
-                return 'http://api.openstreetmap.org/api';
-            }
-        },
-        setOSMAPI: function(osmAPI){
-            this.localStorage.osmAPI = osmAPI;
-        },
-        getOverpassAPI: function(){
-            if (this.localStorage.overpassAPI){
-                return this.localStorage.overpassAPI;
-            }else{
-                //return 'http://api.openstreetmap.org/api';
-                return 'http://overpass-api.de/api/interpreter';
-            }
-        },
-        setOverpassAPI: function(overpassAPI){
-            this.localStorage.overpassAPI = overpassAPI;
-        },
         getNodes: function(){
             return this.localStorage.nodes;
         },
@@ -74,7 +51,7 @@ function osmSettingsService ($localStorage) {
             return this.localStorage.osmAuth;
         },
         setOsmAuth: function (options) {
-            return this.localStorage.osmAuth = options;
+            this.localStorage.osmAuth = options;
         }
     };
 }

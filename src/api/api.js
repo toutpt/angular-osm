@@ -10,6 +10,15 @@ var osmAPIModule = angular.module('osm.api', [
     osmUtilsModule.name,
     'base64'
 ])
-.service('osmAPI', osmAPI);
+.service('osmAPI', osmAPI)
+.provider('osmAPI', function osmAPIProvider () {
+    this.options = {
+        url: 'http://api.openstreetmap.org/api'
+    };
+    this.$get = function osmAPIFactory($base64, $http, $q, osmSettingsService, osmUtilsService) {
+        return new osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, this.options);
+    };
+    this.$get.$inject = ['$base64', '$http', '$q', 'osmSettingsService', 'osmUtilsService'];
+});
 
 export default osmAPIModule;

@@ -1,6 +1,6 @@
 {
   "name": "angular-osm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "OpenStreetMap APIs as services for angular",
   "main": "dist/osm-full.js",
   "repository": {
@@ -38,6 +38,6 @@
     "angular-base64": "^2.0.5",
     "ngstorage": "0.3.10",
     "osm-auth": "0.2.8",
-    "osmtogeojson": "https://github.com/tyrasd/osmtogeojson.git#2.2.11"
+    "x2js": "^2.0.1"
   }
 }
