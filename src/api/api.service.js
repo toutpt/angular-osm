@@ -542,8 +542,6 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
         return this.delete('/0.6/relation/' + id);
     };
 
-
-
 }
 
 export default osmAPI;

@@ -6,7 +6,7 @@ var ngStorageModuleName = ngstorage ? ngstorage.name : 'ngStorage';
 var osmSettingsModule = angular.module('osm.settings', [
     ngStorageModuleName
 ])
-.factory('osmSettingsService', osmSettingsService);
+.service('osmSettingsService', osmSettingsService);
 
 export default osmSettingsModule;
 
