@@ -80,9 +80,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _settings2 = _interopRequireDefault(_settings);
 
+	var _nominatim = __webpack_require__(18);
+
+	var _nominatim2 = _interopRequireDefault(_nominatim);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_angular2.default.module('osm', [_settings2.default.name, _api2.default.name, _overpass2.default.name, _taginfo2.default.name, _oauth2.default.name]);
+	_angular2.default.module('osm', [_settings2.default.name, _api2.default.name, _overpass2.default.name, _taginfo2.default.name, _oauth2.default.name, _nominatim2.default.name]);
 
 /***/ },
 /* 1 */
@@ -262,7 +266,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @methodOf osm.api.osmAPI
 	     * @return {Object} oauth
 	    */
-
 	    this.xhr = function (options) {
 	        var deferred = $q.defer();
 	        var promise = void 0;
@@ -1720,6 +1723,141 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	}
 	exports.default = osmTagInfoAPI;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _nominatim = __webpack_require__(19);
+
+	var _nominatim2 = _interopRequireDefault(_nominatim);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var osmNominatimModule = angular.module('osm.nominatim', []).factory('osmNominatim', _nominatim2.default).provider('osmNominatim', function osmNominatimProvider() {
+	    this.options = {
+	        url: 'https://nominatim.openstreetmap.org'
+	    };
+	    this.$get = function osmNominatimFactory($q) {
+	        return new _nominatim2.default($q, this.options);
+	    };
+	    this.$get.$inject = ['$http'];
+	});
+
+	exports.default = osmNominatimModule;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	/**
+	* @ngdoc service
+	* @name osm.nominatim.osmNominatim
+	* @description handle nominatim query
+	*/
+	function osmNominatim($http, options) {
+	    this.url = options.url;
+
+	    /**
+	     * @ngdoc method
+	     * @name search
+	     * @param {Object/String} query
+	     * http://wiki.openstreetmap.org/wiki/Nominatim
+	     * @methodOf osm.nominatim.osmNominatim
+	     * @return {Promise} $http.get
+	    */
+	    this.search = function search(query) {
+	        //https://nominatim.openstreetmap.org/search
+	        //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	        //params['accept-language'] = 'fr';
+	        var params;
+	        if (typeof query === 'string') {
+	            params = {
+	                format: 'json',
+	                q: query
+	            };
+	        } else {
+	            params = angular.copy(query);
+	            params.format = 'json';
+	        }
+	        var config = {
+	            params: params
+	        };
+	        var url = this.url + '/search';
+	        return $http.get(url, config);
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name reverse
+	     * @param {Object/String} query
+	     * http://wiki.openstreetmap.org/wiki/Nominatim
+	     * @methodOf osm.nominatim.osmNominatim
+	     * @return {Promise} $http.get
+	    */
+	    this.reverse = function reverse(query) {
+	        //https://nominatim.openstreetmap.org/reverse
+	        //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	        //params['accept-language'] = 'fr';
+	        var params;
+	        if (typeof query === 'string') {
+	            params = {
+	                format: 'json',
+	                q: query
+	            };
+	        } else {
+	            params = angular.copy(query);
+	            params.format = 'json';
+	        }
+	        var config = {
+	            params: params
+	        };
+	        var url = this.url + '/reverse';
+	        return $http.get(url, config);
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name lookup
+	     * @description
+	     *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
+	     * @param {Object/String} query
+	     * http://wiki.openstreetmap.org/wiki/Nominatim
+	     * @methodOf osm.nominatim.osmNominatim
+	     * @return {Promise} $http.get
+	    */
+	    this.lookup = function lookup(query) {
+	        var params;
+	        if (typeof query === 'string') {
+	            params = {
+	                format: 'json',
+	                q: query
+	            };
+	        } else {
+	            params = angular.copy(query);
+	            params.format = 'json';
+	        }
+	        var config = {
+	            params: params
+	        };
+	        var url = this.url + '/lookup';
+	        return $http.get(url, config);
+	    };
+	}
+
+	exports.default = osmNominatim;
 
 /***/ }
 /******/ ])

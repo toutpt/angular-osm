@@ -235,7 +235,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @methodOf osm.api.osmAPI
 	     * @return {Object} oauth
 	    */
-
 	    this.xhr = function (options) {
 	        var deferred = $q.defer();
 	        var promise = void 0;
