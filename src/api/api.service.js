@@ -103,6 +103,20 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
 
     // ------------------ INTERNAL CALL SERVER (API) -----------------
 
+    function isElement(obj) {
+        try {
+            //Using W3 DOM2 (works for FF, Opera and Chrom)
+            return obj instanceof HTMLElement;
+        }
+        catch(e){
+            //Browsers not supporting W3 DOM2 don't have HTMLElement and
+            //an exception is thrown and we end up here. Testing some
+            //properties that all elements have. (works on IE7)
+            return (typeof obj==="object") &&
+            (obj.nodeType===1) && (typeof obj.style === "object") &&
+            (typeof obj.ownerDocument ==="object");
+        }
+    }
 
     /**
      * @ngdoc method
@@ -112,8 +126,8 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
      * @comment
      * ```
         var options = {
-            method: 'GET' // POST, DELETE, PUT
-            path: '/0.6/changesets' //without the /api,
+            method: 'GET', // POST, DELETE, PUT
+            path: '/0.6/changesets', //without the /api
             data: content //if you need a payload
         };
         osmAPI.xhr(options);
@@ -133,19 +147,33 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
             }
             promise = this._oauth.xhr(options);
         } else {
-            let fct = options.method.toLowerCase();
-            if (options.config === undefined) {
-                options.config = {};
-            }
-            options.config.headers = {Authorization: this.getAuthorization()};
-            promise = $http[fct](options.path, options.config);
+            options.url = this.url + options.path;
+            options.headers = {
+                Authorization: this.getAuthorization()
+            };
+            promise = $http(options);
         }
         promise.then(function (data) {
+            var d;
+            var t = function (d) {
+                if (!d) {
+                    return d;
+                }
+                if (d.startsWith) {
+                    if (d.startsWith('<?xml')) {
+                        return osmUtilsService.xml2js(d);
+                    }
+                } else if (isElement(d)) {
+                    return osmUtilsService.x2js.dom2js(d);
+                }
+                return d;
+            };
             if (hasOauth) {
-                deferred.resolve(osmUtilsService.x2js.dom2js(data));
+                d = data;
             } else {
-                deferred.resolve(osmUtilsService.xml2js(data.data));
+                d = data.data;
             }
+            deferred.resolve(t(d));
         }, function (error) {
             deferred.reject(error);
         });
@@ -200,10 +228,13 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
      * @returns {Promise} $http response
     */
     this.put = function (method, content, config) {
+        if (!config) {
+            config = {};
+        }
         var _config = angular.copy(config);
-        config.method = 'PUT';
-        config.path = method;
-        config.data = content;
+        _config.method = 'PUT';
+        _config.path = method;
+        _config.data = osmUtilsService.js2xml(content);
         return this.xhr(_config);
     };
     /**
@@ -216,9 +247,12 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
      * @returns {Promise} $http response
     */
     this.delete = function (method, config) {
+        if (!config) {
+            config = {};
+        }
         var _config = angular.copy(config);
-        config.method = 'DELETE';
-        config.path = method;
+        _config.method = 'DELETE';
+        _config.path = method;
         return this.xhr(_config);
     };
 
@@ -266,7 +300,10 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
             if (changesets.length > 0) {
                 osmSettingsService.setChangeset(changesets[0].id);
                 deferred.resolve(changesets[0].id);
-            }else{
+            } else if (changesets._id) {
+                osmSettingsService.setChangeset(changesets._id);
+                deferred.resolve(changesets._id);
+            } else {
                 osmSettingsService.setChangeset();
                 deferred.resolve();
             }

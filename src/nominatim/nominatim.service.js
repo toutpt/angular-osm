@@ -20,7 +20,7 @@ function osmNominatim($http, options) {
         //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
         //params['accept-language'] = 'fr';
         var params;
-        if (typeof query === 'string') {
+        if (typeof query === 'string' || !query) {
             params = {
                 format: 'json',
                 q: query
