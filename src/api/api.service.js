@@ -159,8 +159,8 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
                 if (!d) {
                     return d;
                 }
-                if (d.startsWith) {
-                    if (d.startsWith('<?xml')) {
+                if (d.substr) {
+                    if (d.substr(0, 5) === '<?xml') {
                         return osmUtilsService.xml2js(d);
                     }
                 } else if (isElement(d)) {
