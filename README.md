@@ -17,7 +17,7 @@ Angular OSM
 [npm-icon]: https://nodei.co/npm/angular-osm.png?downloads=true
 [npm-url]: https://npmjs.org/package/angular-osm
 [travis-ci-image]: https://travis-ci.org/toutpt/angular-osm.png?branch=master
-[travis-ci-ci-url]: https://travis-ci.org/toutpt/travis-ci
+[travis-ci-url]: https://travis-ci.org/toutpt/travis-ci
 
 [coverage-image]: https://coveralls.io/repos/toutpt/angular-osm/badge.png
 [coverage-url]: https://coveralls.io/r/toutpt/angular-osm
