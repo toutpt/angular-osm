@@ -30,41 +30,45 @@ function factory(options) {
         }
 
         for (let i = 0; i < data.length; i++) {
-            var feature = {};
             var d = data[i];
-            feature.properties = {
-                id: d._id,
-                tags: d.tags
+            var feature = {
+                type: 'Feature',
+                geometry: {},
+                properties: {
+                    id: d.id,
+                    tags: d.tags
+                }
             };
             if (d.type === "changeset") {
                 //build rectangle
                 // X = Long; Y = Lat, lets do it clockwise
-                feature.type = 'Polygon';
+                feature.geometry.type = 'Polygon';
                 var bounds = d.latLngBounds;
-                feature.coordinates = [
-                    [bounds._min_lon, bounds._min_lat],
-                    [bounds._min_lon, bounds._max_lat],
-                    [bounds._max_lon, bounds._max_lat],
-                    [bounds._max_lon, bounds._min_lat]
+                feature.geometry.coordinates = [
+                    [parseFloat(bounds._min_lon), parseFloat(bounds._min_lat)],
+                    [parseFloat(bounds._min_lon), parseFloat(bounds._max_lat)],
+                    [parseFloat(bounds._max_lon), parseFloat(bounds._max_lat)],
+                    [parseFloat(bounds._max_lon), parseFloat(bounds._min_lat)]
                 ];
             } else if (d.type === "node") {
                 //add a Point
-                feature.type = 'Point';
-                feature.coordinates = [d.latLng[1], d.latLng[0]];
+                feature.geometry.type = 'Point';
+                feature.geometry.coordinates = [d.latLng[1], d.latLng[0]];
             } else {
                 var lngLats = new Array(d.nodes.length);
 
                 for (let j = 0; j < d.nodes.length; j++) {
-                    lngLats[j] = d.nodes[j].latLng;
+                    let latLng = d.nodes[j].latLng;
+                    lngLats[j] = [latLng[1], latLng[0]];
                 }
 
                 if (isWayArea(d)) {
                     lngLats.pop(); // Remove last == first.
-                    feature.type = 'Polygon';
-                    feature.coordinates = lngLats;
+                    feature.geometry.type = 'Polygon';
+                    feature.geometry.coordinates = lngLats;
                 } else {
-                    feature.type = 'MultiLineString';
-                    feature.coordinates = lngLats;
+                    feature.geometry.type = 'LineString';
+                    feature.geometry.coordinates = lngLats;
                 }
             }
             features.push(feature);
@@ -113,7 +117,7 @@ function factory(options) {
             nodesById[node._id] = {
                 id: node._id,
                 type: 'node',
-                latLng: [node._lon, node._lat],
+                latLng: [parseFloat(node._lat), parseFloat(node._lon)],
                 tags: getTags(node)
             };
         });
@@ -215,12 +219,6 @@ function factory(options) {
 
         for (let i = 0; i < relations.length; i++) {
             if (relations[i].members.indexOf(node) >= 0) {
-                return true;
-            }
-        }
-
-        for (let key in node.tags) {
-            if (options.uninterestingTags.indexOf(key) < 0) {
                 return true;
             }
         }

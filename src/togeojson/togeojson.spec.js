@@ -62,8 +62,8 @@ ngDescribe({
             expect(nodes['3'].id).toBe(3);
             expect(nodes['3'].type).toBe('node');
             expect(nodes['3'].latLng.length).toBe(2);
-            expect(nodes['3'].latLng[0]).toBe(321);
-            expect(nodes['3'].latLng[1]).toBe(123);
+            expect(nodes['3'].latLng[0]).toBe(123);
+            expect(nodes['3'].latLng[1]).toBe(321);
             expect(nodes['3'].tags.highway).toBe('mini_roundabout');
 
             //must work the same if node is array & tag is array of tags
@@ -76,8 +76,8 @@ ngDescribe({
             expect(nodes['3'].id).toBe(3);
             expect(nodes['3'].type).toBe('node');
             expect(nodes['3'].latLng.length).toBe(2);
-            expect(nodes['3'].latLng[0]).toBe(321);
-            expect(nodes['3'].latLng[1]).toBe(123);
+            expect(nodes['3'].latLng[0]).toBe(123);
+            expect(nodes['3'].latLng[1]).toBe(321);
             expect(nodes['3'].tags.highway).toBe(undefined);
 
         });
@@ -251,14 +251,6 @@ ngDescribe({
             result = deps.osmtogeojson.interestingNode(node, ways, relations);
             expect(result).toBe(true);
 
-            relations = [];
-            node.tags = {name: 'toto'};
-            result = deps.osmtogeojson.interestingNode(node, ways, relations);
-            expect(result).toBe(true);
-
-            node.tags = {source: 'uninterestingTags'};
-            result = deps.osmtogeojson.interestingNode(node, ways, relations);
-            expect(result).toBe(false);
         });
 
         it('should getFeatures to work with changeset', function() {
@@ -274,16 +266,16 @@ ngDescribe({
             }];
             var features = deps.osmtogeojson.getFeatures(data);
             expect(features.length).toBe(1);
-            expect(features[0].type).toBe('Polygon');
-            expect(features[0].coordinates[0][0]).toBe(-234);
-            expect(features[0].coordinates[0][1]).toBe(-123);
-            expect(features[0].coordinates[1][0]).toBe(-234);
-            expect(features[0].coordinates[1][1]).toBe(123);
-            expect(features[0].coordinates[2][0]).toBe(234);
-            expect(features[0].coordinates[2][1]).toBe(123);
-            expect(features[0].coordinates[3][0]).toBe(234);
-            expect(features[0].coordinates[3][1]).toBe(-123);
-            expect(features[0].coordinates[4]).toBe();
+            expect(features[0].geometry.type).toBe('Polygon');
+            expect(features[0].geometry.coordinates[0][0]).toBe(-234);
+            expect(features[0].geometry.coordinates[0][1]).toBe(-123);
+            expect(features[0].geometry.coordinates[1][0]).toBe(-234);
+            expect(features[0].geometry.coordinates[1][1]).toBe(123);
+            expect(features[0].geometry.coordinates[2][0]).toBe(234);
+            expect(features[0].geometry.coordinates[2][1]).toBe(123);
+            expect(features[0].geometry.coordinates[3][0]).toBe(234);
+            expect(features[0].geometry.coordinates[3][1]).toBe(-123);
+            expect(features[0].geometry.coordinates[4]).toBe();
         });
         it('should getFeatures to work with node', function() {
             var data = [{
@@ -294,10 +286,10 @@ ngDescribe({
             }];
             var features = deps.osmtogeojson.getFeatures(data);
             expect(features.length).toBe(1);
-            expect(features[0].type).toBe('Point');
-            expect(features[0].coordinates[0]).toBe(234);
-            expect(features[0].coordinates[1]).toBe(123);
-            expect(features[0].coordinates[2]).toBe();
+            expect(features[0].geometry.type).toBe('Point');
+            expect(features[0].geometry.coordinates[0]).toBe(234);
+            expect(features[0].geometry.coordinates[1]).toBe(123);
+            expect(features[0].geometry.coordinates[2]).toBe();
         });
         it('should getFeatures to work with way', function() {
             var n1 = {
@@ -320,13 +312,13 @@ ngDescribe({
             }];
             var features = deps.osmtogeojson.getFeatures(data);
             expect(features.length).toBe(1);
-            expect(features[0].type).toBe('MultiLineString');
+            expect(features[0].geometry.type).toBe('LineString');
             expect(features[0].properties.tags.name).toBe('my way');
-            expect(features[0].coordinates[0][0]).toBe(123);
-            expect(features[0].coordinates[0][1]).toBe(234);
-            expect(features[0].coordinates[1][0]).toBe(1234);
-            expect(features[0].coordinates[1][1]).toBe(2345);
-            expect(features[0].coordinates[2]).toBe();
+            expect(features[0].geometry.coordinates[0][0]).toBe(234);
+            expect(features[0].geometry.coordinates[0][1]).toBe(123);
+            expect(features[0].geometry.coordinates[1][0]).toBe(2345);
+            expect(features[0].geometry.coordinates[1][1]).toBe(1234);
+            expect(features[0].geometry.coordinates[2]).toBe();
         });
 
         it('should getFeatures to work with way (area)', function() {
@@ -356,14 +348,14 @@ ngDescribe({
             }];
             var features = deps.osmtogeojson.getFeatures(data);
             expect(features.length).toBe(1);
-            expect(features[0].type).toBe('Polygon');
-            expect(features[0].coordinates[0][0]).toBe(1);
-            expect(features[0].coordinates[0][1]).toBe(2);
-            expect(features[0].coordinates[1][0]).toBe(12);
-            expect(features[0].coordinates[1][1]).toBe(23);
-            expect(features[0].coordinates[2][0]).toBe(123);
-            expect(features[0].coordinates[2][1]).toBe(234);
-            expect(features[0].coordinates[3]).toBe();
+            expect(features[0].geometry.type).toBe('Polygon');
+            expect(features[0].geometry.coordinates[0][0]).toBe(2);
+            expect(features[0].geometry.coordinates[0][1]).toBe(1);
+            expect(features[0].geometry.coordinates[1][0]).toBe(23);
+            expect(features[0].geometry.coordinates[1][1]).toBe(12);
+            expect(features[0].geometry.coordinates[2][0]).toBe(234);
+            expect(features[0].geometry.coordinates[2][1]).toBe(123);
+            expect(features[0].geometry.coordinates[3]).toBe();
         });
 
 
@@ -422,8 +414,8 @@ ngDescribe({
             expect(geojson.features.length).toBe(2);
             expect(Array.isArray(geojson.features)).toBe(true);
             expect(geojson.features[1].properties.tags.highway).toBe('mini_roundabout');
-            expect(geojson.features[1].type).toBe('MultiLineString');
-            expect(geojson.features[0].type).toBe('Point');
+            expect(geojson.features[1].geometry.type).toBe('LineString');
+            expect(geojson.features[0].geometry.type).toBe('Point');
         });
 
     }
