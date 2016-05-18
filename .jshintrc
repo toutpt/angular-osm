@@ -1,7 +1,7 @@
 {
     "esnext": true,
     "globalstrict": true,
-    "strict": "implied",
+    "strict": false,
     "globals": {
         "window": false,
         "document": false,
