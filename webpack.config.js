@@ -10,8 +10,7 @@ var config = {
         overpass: ['./src/overpass/overpass.js'],
         taginfo: ['./src/taginfo/taginfo.js'],
         togeojson: ['./src/togeojson/togeojson.js'],
-        nominatim: ['./src/nominatim/nominatim.js'],
-        utils: ['./src/utils/utils.js']
+        nominatim: ['./src/nominatim/nominatim.js']
     },
     externals: {
         angular: 'angular',
