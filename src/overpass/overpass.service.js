@@ -82,7 +82,7 @@ function osmOverpassAPI($http, $q, osmSettingsService, options) {
                     }
                 }
                 return cache[id];
-            };
+            }
             for (var i = 0; i < data.elements.length; i++) {
                 node = data.elements[i];
                 if (node.type === 'node') {

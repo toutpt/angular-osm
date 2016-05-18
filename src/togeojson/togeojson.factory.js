@@ -234,7 +234,7 @@ function factory(options) {
             res.features = getFeatures(data);
         }
         return res;
-    };
+    }
 
 }
 

@@ -98,10 +98,10 @@ ngDescribe({
                     _v: 'mini_roundabout'
                 },
                 nd: [{
-                    _ref: "1"
+                    _ref: '1'
                 },
                 {
-                    _ref: "2"
+                    _ref: '2'
                 }]
             }}};
             var nodes = deps.osmtogeojson.getNodes(data);
@@ -130,32 +130,32 @@ ngDescribe({
                     _v: 'mini_roundabout'
                 },
                 nd: [{
-                    _ref: "1"
+                    _ref: '1'
                 },
                 {
-                    _ref: "2"
+                    _ref: '2'
                 }]
             }, relation: {
                 _id: 1,
                 member: [
                     {
-                        _type: "way",
-                        _ref: "1",
-                        _role: "outer"
+                        _type: 'way',
+                        _ref: '1',
+                        _role: 'outer'
                     },
                     {
-                        _type: "node",
-                        _ref: "1",
-                        _role: "outer"
+                        _type: 'node',
+                        _ref: '1',
+                        _role: 'outer'
                     }
                 ], tag: [
                     {
-                        _k: "access",
-                        _v: "yes"
+                        _k: 'access',
+                        _v: 'yes'
                     },
                     {
-                        _k: "area",
-                        _v: "yes"
+                        _k: 'area',
+                        _v: 'yes'
                     }
                 ]
             }}};
@@ -186,32 +186,32 @@ ngDescribe({
                     _v: 'mini_roundabout'
                 },
                 nd: [{
-                    _ref: "1"
+                    _ref: '1'
                 },
                 {
-                    _ref: "2"
+                    _ref: '2'
                 }]
             }, relation: {
                 _id: 1,
                 member: [
                     {
-                        _type: "way",
-                        _ref: "1",
-                        _role: "outer"
+                        _type: 'way',
+                        _ref: '1',
+                        _role: 'outer'
                     },
                     {
-                        _type: "node",
-                        _ref: "1",
-                        _role: "outer"
+                        _type: 'node',
+                        _ref: '1',
+                        _role: 'outer'
                     }
                 ], tag: [
                     {
-                        _k: "access",
-                        _v: "yes"
+                        _k: 'access',
+                        _v: 'yes'
                     },
                     {
-                        _k: "area",
-                        _v: "yes"
+                        _k: 'area',
+                        _v: 'yes'
                     }
                 ]
             }}};
@@ -303,7 +303,7 @@ ngDescribe({
                 type: 'node',
                 latLng: [1234, 2345],
                 tags: {name: 'my node 2'}
-            }
+            };
             var data = [{
                 id: 1,
                 type: 'way',
@@ -333,13 +333,13 @@ ngDescribe({
                 type: 'node',
                 latLng: [12, 23],
                 tags: {name: 'my node 2'}
-            }
+            };
             var n3 = {
                 id: 3,
                 type: 'node',
                 latLng: [123, 234],
                 tags: {name: 'my node 2'}
-            }
+            };
             var data = [{
                 id: 1,
                 type: 'way',
@@ -380,32 +380,32 @@ ngDescribe({
                     _v: 'mini_roundabout'
                 },
                 nd: [{
-                    _ref: "1"
+                    _ref: '1'
                 },
                 {
-                    _ref: "2"
+                    _ref: '2'
                 }]
             }, relation: {
                 _id: 1,
                 member: [
                     {
-                        _type: "way",
-                        _ref: "1",
-                        _role: "outer"
+                        _type: 'way',
+                        _ref: '1',
+                        _role: 'outer'
                     },
                     {
-                        _type: "node",
-                        _ref: "1",
-                        _role: "outer"
+                        _type: 'node',
+                        _ref: '1',
+                        _role: 'outer'
                     }
                 ], tag: [
                     {
-                        _k: "access",
-                        _v: "yes"
+                        _k: 'access',
+                        _v: 'yes'
                     },
                     {
-                        _k: "area",
-                        _v: "yes"
+                        _k: 'area',
+                        _v: 'yes'
                     }
                 ]
             }}};
