@@ -1,7 +1,7 @@
 module.exports = {
     basePath : '',
     files : [
-        {pattern: '../node_modules/angular/angular.min.js', watched: true, included: true, nocache: true},
+        {pattern: '../node_modules/angular/angular.js', watched: true, included: true, nocache: true},
         {pattern: '../node_modules/ngstorage/ngStorage.min.js', watched: true, included: true, nocache: true},
         {pattern: '../node_modules/angular-base64/angular-base64.min.js', watched: true, included: true, nocache: true},
         {pattern: '../node_modules/x2js/x2js.js', watched: true, included: true, nocache: true},
@@ -13,12 +13,10 @@ module.exports = {
     exclude : [],
     autoWatch : true,
     frameworks: ['jasmine'],
-    reporters: ['dots', 'coverage'],
+    reporters: ['dots'],
     coverageReporter: {
         dir: '../coverage/'
     },
-    preprocessors: {
-      '../dist/osm-full.js': ['coverage']
-    },
+    preprocessors: {},
     logLevel: 'LOG_DEBUG'
 };

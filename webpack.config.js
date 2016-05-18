@@ -6,8 +6,10 @@ var config = {
         full: './src/osm.js',
         api: ['./src/api/api.js'],
         oauth: ['./src/oauth/oauth.js'],
+        osmr: ['./src/osmr/osmr.js'],
         overpass: ['./src/overpass/overpass.js'],
         taginfo: ['./src/taginfo/taginfo.js'],
+        togeojson: ['./src/togeojson/togeojson.js'],
         nominatim: ['./src/nominatim/nominatim.js'],
         utils: ['./src/utils/utils.js']
     },

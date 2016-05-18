@@ -469,6 +469,54 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
 
     /**
      * @ngdoc method
+     * @name getNodeRelations
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id/relations
+    */
+    this.getNodeRelations = function (id) {
+        return this.get(`/0.6/node/${id}/relations`);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getNodeWays
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id/ways
+    */
+    this.getNodeWays = function (id) {
+        return this.get(`/0.6/node/${id}/ways`);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getNodeFull
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id/full
+    */
+    this.getNodeFull = function (id) {
+        return this.get(`/0.6/node/${id}/full`);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getNodes
+     * @methodOf osm.api.osmAPI
+     * @param {array} ids
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id
+    */
+    this.getNodes = function (ids) {
+        return this.get('/0.6/nodes?nodes=' + ids.join(','));
+    };
+
+    /**
+     * @ngdoc method
      * @name deleteNode
      * @methodOf osm.api.osmAPI
      * @param {string} id
@@ -520,6 +568,44 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
 
     /**
      * @ngdoc method
+     * @name getWayRelations
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/way/#id/relations
+    */
+    this.getWayRelations = function (id) {
+        return this.get(`/0.6/way/${id}/relations`);
+    };
+
+
+    /**
+     * @ngdoc method
+     * @name getWayFull
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/way/#id/full
+    */
+    this.getWayFull = function (id) {
+        return this.get(`/0.6/way/${id}/full`);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getWays
+     * @methodOf osm.api.osmAPI
+     * @param {array} ids
+     * @returns {Promise} $http.get response
+     * GET /0.6/ways?ways=ids
+    */
+    this.getWays = function (ids) {
+        return this.get('/0.6/ways?ways=' + ids.join(','));
+    };
+
+
+    /**
+     * @ngdoc method
      * @name deleteWay
      * @methodOf osm.api.osmAPI
      * @param {string} id
@@ -565,6 +651,42 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
     */
     this.getRelation = function (id) {
         return this.get('/0.6/relation/' + id);
+    };
+    /**
+     * @ngdoc method
+     * @name getRelationRelations
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/relation/#id/relations
+    */
+    this.getRelationRelations = function (id) {
+        return this.get(`/0.6/relation/${id}/relations`);
+    };
+
+
+    /**
+     * @ngdoc method
+     * @name getRelationFull
+     * @methodOf osm.api.osmAPI
+     * @param {string} id
+     * @returns {Promise} $http.get response
+     * GET /0.6/relation/#id/full
+    */
+    this.getRelationFull = function (id) {
+        return this.get(`/0.6/relation/${id}/full`);
+    };
+
+    /**
+     * @ngdoc method
+     * @name getRelations
+     * @methodOf osm.api.osmAPI
+     * @param {array} ids
+     * @returns {Promise} $http.get response
+     * GET /0.6/relations?relations=ids
+    */
+    this.getRelations = function (ids) {
+        return this.get('/0.6/relations?relations=' + ids.join(','));
     };
 
     /**
