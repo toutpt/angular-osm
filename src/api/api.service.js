@@ -8,7 +8,7 @@
  * @param  {any} $q
  * @param  {any} osmSettingsService
  */
-function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options) {
+function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
 
     this.url = options.url;
     // ------------------ CREDENTIALS -----------------
@@ -161,10 +161,10 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
                 }
                 if (d.substr) {
                     if (d.substr(0, 5) === '<?xml') {
-                        return osmUtilsService.xml2js(d);
+                        return osmx2js.xml2js(d);
                     }
                 } else if (isElement(d)) {
-                    return osmUtilsService.x2js.dom2js(d);
+                    return osmx2js.dom2js(d);
                 }
                 return d;
             };
@@ -211,7 +211,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
         var self = this;
         var url = this.url + method;
         $http.get(url, config).then(function (data) {
-            deferred.resolve(osmUtilsService.xml2js(data.data));
+            deferred.resolve(osmx2js.xml2js(data.data));
         }, function (error) {
             deferred.reject(error);
         });
@@ -234,7 +234,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
         var _config = angular.copy(config);
         _config.method = 'PUT';
         _config.path = method;
-        _config.data = osmUtilsService.js2xml(content);
+        _config.data = osmx2js.js2xml(content);
         return this.xhr(_config);
     };
     /**
@@ -394,25 +394,6 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options
     */
     this.getMap = function (bbox) {
         return this.get('/0.6/map?bbox=' + bbox);
-    };
-
-    /**
-     * @ngdoc method
-     * @name getMapGeoJSON
-     * @methodOf osm.api.osmAPI
-     * @param {string} bbox the bounding box
-     * @returns {Promise} $http.get response
-    */
-    this.getMapGeoJSON = function (bbox) {
-        var self = this;
-        var deferred = $q.defer();
-        self.getMap(bbox).then(function (nodes) {
-            var geojsonNodes = osmUtilsService.js2geojson(nodes);
-            deferred.resolve(geojsonNodes);
-        }, function (error) {
-            deferred.reject(error);
-        });
-        return deferred.promise;
     };
 
 
