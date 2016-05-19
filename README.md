@@ -38,6 +38,75 @@ Angular OSM
 [circle-url]: https://circleci.com/gh/toutpt/angular-osm
 
 
-Angular OSM is a set of angular services which provides API to use OSM APIs.
+Angular OSM is a set of angular services to use OSM APIs.
 
-For more information please check the website : http://toutpt.github.io/angular-osm
+Please visit the website (with examples) http://toutpt.github.io/angular-osm
+
+How to add angular openstreetmap to my project
+==============================================
+
+First add it to your dependencies:
+
+    npm install --save angular-osm
+
+Next it depends what you want to do. The release provide many distributed files:
+
+    node_modules/angular-osm
+    ├── README.md
+    ├── dist
+    │   ├── osm-api.js
+    │   ├── osm-api.min.js
+    │   ├── osm-full.js
+    │   ├── osm-full.min.js
+    │   ├── osm-nominatim.js
+    │   ├── osm-nominatim.min.js
+    │   ├── osm-oauth.js
+    │   ├── osm-oauth.min.js
+    │   ├── osm-overpass.js
+    │   ├── osm-overpass.min.js
+    │   ├── osm-taginfo.js
+    │   ├── osm-taginfo.min.js
+    │   ├── osm-togeojson.js
+    │   ├── osm-togeojson.min.js
+
+Each build provides one osm api integration so you can just pick the one you want.
+
+If you want all API just include osm-full.min.js.
+
+So you may need more dependencies dependening on what you want to do.
+Here is the dependencies table of angular-osm builds:
+
+| dist          | dependencies to install                          |
+|---------------|--------------------------------------------------|
+| osm-api       | npm install --save angular-base64 x2js ngstorage |
+| osm-nominatim |                                                  |
+| osm-oauth     | npm install --save osm-auth                      |
+| osm-overpass  | npm install --save ngstorage                     |
+| osm-taginfo   |                                                  |
+| osm-togeojson |                                                  |
+
+Now you have choose this you can plug the component into your angular app:
+
+
+    angular.module('example', ['osm.api'])
+
+
+
+If you want, most of provided service can be configured using correspondint providers
+
+    angular.module('example', ['osm.api'])
+    .config(function (osmAPIProvider) {
+        osmAPIProvider.options = {
+            url: 'http://api06.dev.openstreetmap.org/api'
+        };
+    });
+
+
+The complete list of injectable services:
+
+| osm.api | osm.nominatim | osm.oauth      | osm.overpass   | osm.taginfo   | osm.togeojson |
+|---------|---------------|----------------|----------------|---------------|---------------|
+| osmAPI  | osmNominatim  | osmAuthService | osmOverpassAPI | osmTagInfoAPI | osmtogeojson  |
+
+The full documentation is available at :
+
