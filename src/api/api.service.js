@@ -3,10 +3,10 @@
  * @name osm.oauth.osmAuthService
  * @description The main idea is use geojson object where it is possible
  * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
- * @param  {any} $base64
- * @param  {any} $http
- * @param  {any} $q
- * @param  {any} osmSettingsService
+ * @param  {Object} $base64 angular-base64
+ * @param  {Object} $http angular http
+ * @param  {Object} $q angular promise
+ * @param  {Object} osmSettingsService settings service
  */
 function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
 
@@ -123,7 +123,6 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @name xhr
      * @description call the API
      * @param {Object} options
-     * @comment
      * ```
         var options = {
             method: 'GET', // POST, DELETE, PUT
@@ -333,7 +332,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getUserById
      * @methodOf osm.api.osmAPI
-     * @param {string} id of the user
+     * @param {string} id id of the user
      * @returns {Promise} $http.get response
      * /0.6/user/#id
     */
@@ -440,7 +439,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getNode
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id
     */
@@ -452,7 +451,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getNodeRelations
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id/relations
     */
@@ -464,7 +463,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getNodeWays
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id/ways
     */
@@ -474,21 +473,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
 
     /**
      * @ngdoc method
-     * @name getNodeFull
-     * @methodOf osm.api.osmAPI
-     * @param {string} id
-     * @returns {Promise} $http.get response
-     * GET /0.6/node/#id/full
-    */
-    this.getNodeFull = function (id) {
-        return this.get(`/0.6/node/${id}/full`);
-    };
-
-    /**
-     * @ngdoc method
      * @name getNodes
      * @methodOf osm.api.osmAPI
-     * @param {array} ids
+     * @param {array} ids ids
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id
     */
@@ -500,7 +487,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name deleteNode
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.delete response
      * DELETE /0.6/node/#id
     */
@@ -539,7 +526,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getWay
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id
     */
@@ -551,7 +538,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getWayRelations
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id/relations
     */
@@ -564,7 +551,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getWayFull
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id/full
     */
@@ -576,7 +563,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getWays
      * @methodOf osm.api.osmAPI
-     * @param {array} ids
+     * @param {array} ids ids
      * @returns {Promise} $http.get response
      * GET /0.6/ways?ways=ids
     */
@@ -589,7 +576,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name deleteWay
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.delete response
      * DELETE /0.6/way/#id
     */
@@ -626,7 +613,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getRelation
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id
     */
@@ -637,7 +624,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getRelationRelations
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id/relations
     */
@@ -650,7 +637,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getRelationFull
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id/full
     */
@@ -662,7 +649,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name getRelations
      * @methodOf osm.api.osmAPI
-     * @param {array} ids
+     * @param {array} ids ids
      * @returns {Promise} $http.get response
      * GET /0.6/relations?relations=ids
     */
@@ -674,7 +661,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @ngdoc method
      * @name deleteRelation
      * @methodOf osm.api.osmAPI
-     * @param {string} id
+     * @param {string} id id
      * @returns {Promise} $http.delete response
      * DELETE /0.6/relation/#id
     */
