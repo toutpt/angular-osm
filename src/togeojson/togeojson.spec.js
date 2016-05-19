@@ -267,15 +267,17 @@ ngDescribe({
             var features = deps.osmtogeojson.getFeatures(data);
             expect(features.length).toBe(1);
             expect(features[0].geometry.type).toBe('Polygon');
-            expect(features[0].geometry.coordinates[0][0]).toBe(-234);
-            expect(features[0].geometry.coordinates[0][1]).toBe(-123);
-            expect(features[0].geometry.coordinates[1][0]).toBe(-234);
-            expect(features[0].geometry.coordinates[1][1]).toBe(123);
-            expect(features[0].geometry.coordinates[2][0]).toBe(234);
-            expect(features[0].geometry.coordinates[2][1]).toBe(123);
-            expect(features[0].geometry.coordinates[3][0]).toBe(234);
-            expect(features[0].geometry.coordinates[3][1]).toBe(-123);
-            expect(features[0].geometry.coordinates[4]).toBe();
+            expect(features[0].geometry.coordinates[0][0][0]).toBe(-234);
+            expect(features[0].geometry.coordinates[0][0][1]).toBe(-123);
+            expect(features[0].geometry.coordinates[0][1][0]).toBe(-234);
+            expect(features[0].geometry.coordinates[0][1][1]).toBe(123);
+            expect(features[0].geometry.coordinates[0][2][0]).toBe(234);
+            expect(features[0].geometry.coordinates[0][2][1]).toBe(123);
+            expect(features[0].geometry.coordinates[0][3][0]).toBe(234);
+            expect(features[0].geometry.coordinates[0][3][1]).toBe(-123);
+            //last must be same as first
+            expect(features[0].geometry.coordinates[0][4][0]).toBe(-234);
+            expect(features[0].geometry.coordinates[0][4][1]).toBe(-123);
         });
         it('should getFeatures to work with node', function() {
             var data = [{
@@ -349,13 +351,15 @@ ngDescribe({
             var features = deps.osmtogeojson.getFeatures(data);
             expect(features.length).toBe(1);
             expect(features[0].geometry.type).toBe('Polygon');
-            expect(features[0].geometry.coordinates[0][0]).toBe(2);
-            expect(features[0].geometry.coordinates[0][1]).toBe(1);
-            expect(features[0].geometry.coordinates[1][0]).toBe(23);
-            expect(features[0].geometry.coordinates[1][1]).toBe(12);
-            expect(features[0].geometry.coordinates[2][0]).toBe(234);
-            expect(features[0].geometry.coordinates[2][1]).toBe(123);
-            expect(features[0].geometry.coordinates[3]).toBe();
+            expect(features[0].geometry.coordinates[0][0][0]).toBe(2);
+            expect(features[0].geometry.coordinates[0][0][1]).toBe(1);
+            expect(features[0].geometry.coordinates[0][1][0]).toBe(23);
+            expect(features[0].geometry.coordinates[0][1][1]).toBe(12);
+            expect(features[0].geometry.coordinates[0][2][0]).toBe(234);
+            expect(features[0].geometry.coordinates[0][2][1]).toBe(123);
+            //last must be same as first
+            expect(features[0].geometry.coordinates[0][3][0]).toBe(2);
+            expect(features[0].geometry.coordinates[0][3][1]).toBe(1);
         });
 
 

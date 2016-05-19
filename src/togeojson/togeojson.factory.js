@@ -44,12 +44,13 @@ function factory(options) {
                 // X = Long; Y = Lat, lets do it clockwise
                 feature.geometry.type = 'Polygon';
                 var bounds = d.latLngBounds;
-                feature.geometry.coordinates = [
+                feature.geometry.coordinates = [[
                     [parseFloat(bounds._min_lon), parseFloat(bounds._min_lat)],
                     [parseFloat(bounds._min_lon), parseFloat(bounds._max_lat)],
                     [parseFloat(bounds._max_lon), parseFloat(bounds._max_lat)],
-                    [parseFloat(bounds._max_lon), parseFloat(bounds._min_lat)]
-                ];
+                    [parseFloat(bounds._max_lon), parseFloat(bounds._min_lat)],
+                    [parseFloat(bounds._min_lon), parseFloat(bounds._min_lat)]
+                ]];
             } else if (d.type === "node") {
                 //add a Point
                 feature.geometry.type = 'Point';
@@ -63,9 +64,8 @@ function factory(options) {
                 }
 
                 if (isWayArea(d)) {
-                    lngLats.pop(); // Remove last == first.
                     feature.geometry.type = 'Polygon';
-                    feature.geometry.coordinates = lngLats;
+                    feature.geometry.coordinates = [lngLats];
                 } else {
                     feature.geometry.type = 'LineString';
                     feature.geometry.coordinates = lngLats;
