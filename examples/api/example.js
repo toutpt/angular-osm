@@ -1,19 +1,32 @@
 (function() {
-    angular.module('example', ['osm.api'])
+    angular.module('example', ['osm.api', 'angular-leaflet'])
     .config(config)
     .controller('ExampleCtrl', ExampleCtrl);
     function config(osmAPIProvider) {
         osmAPIProvider.options = {
 //            url: 'http://api06.dev.openstreetmap.org/api'
-//            url: 'http://www.openstreetmap.org/api'
-            url: 'http://master.apis.dev.openstreetmap.org/api'
+            url: 'http://www.openstreetmap.org/api'
+//            url: 'http://master.apis.dev.openstreetmap.org/api'
         };
     }
 
-    function ExampleCtrl (osmAPI, osmSettingsService) {
+    function ExampleCtrl ($scope, osmAPI, osmSettingsService, leafletService) {
         var $ctrl = this;
         $ctrl.osmAPI = osmAPI;
-        $ctrl.bbox = '-1.5590554475784302,47.21250296746172,-1.5530633926391602,47.21564395777462';
+        $ctrl.bbox = 'azez';
+
+        $ctrl.onMapInitialized = function(map) {
+            $ctrl.leaflet = map;
+            $ctrl.leaflet.setZoom(18);
+            setBBox();
+            leafletService.on('move', setBBox, map, $scope);
+            leafletService.on('zoomend', setBBox, map, $scope);
+        };
+
+        function setBBox() {
+            var bounds = $ctrl.leaflet.getBounds();
+            $ctrl.bbox = bounds.toBBoxString();
+        }
         var credentials = osmAPI.getCredentials();
         function validateCredentials() {
             osmAPI.validateCredentials().then(function (isValid) {

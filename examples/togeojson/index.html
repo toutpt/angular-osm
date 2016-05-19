@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>angular-osm utils</title>
+	<title>angular-osm nominatim</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-	<script type="text/javascript" src="https://npmcdn.com/leaflet@0.7.7"></script>
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 	<script type="text/javascript" src="https://npmcdn.com/x2js@2.0.1/x2js.js"></script>
 	<script type="text/javascript" src="https://npmcdn.com/angular@1.5.5/angular.js"></script>
 	<script type="text/javascript" src="https://npmcdn.com/angular-leaflet-light@0.0.4/dist/angular-leaflet.js"></script>
 	<script type="text/javascript" src="https://npmcdn.com/angular-base64@2.0.5/angular-base64.min.js"></script>
-	<script type="text/javascript" src="https://npmcdn.com/osm-auth@0.2.8/osmauth.min.js"></script>
 	<script type="text/javascript" src="https://npmcdn.com/ngstorage@0.3.10/ngStorage.min.js"></script>
 	<script type="text/javascript" src="../../dist/osm-full.js"></script>
 	<script type="text/javascript" src="example.js"></script>
@@ -20,21 +20,18 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<ng-include src="'../api/urlused.html'"></ng-include>
-				<div class="ng-hide" ng-show="$ctrl.authenticated">
-					<p>Hello {{$ctrl.user._display_name}}</p>
-					<img ng-src="{{$ctrl.user.img._href}}"/>
-					<div class="btn-group">
-						<button class="btn btn-default" ng-click="$ctrl.logout()">logout</button>
-						<button class="btn btn-default" ng-click="$ctrl.osmAPI.getUserDetails().then($ctrl.onData, $ctrl.onError)">getUserDetails</button>
+				<p class="help-block">This example show you how to use osmtogeojson</p>
+				<form name="manual">
+					<div class="form-group">
+						<label>Your own data</label>
+						<textarea class="form-control" ng-model="$ctrl.osmdata" rows="15"></textarea>
 					</div>
-				</div>
-				<hr/>
-				<form name="login" ng-show="!$ctrl.authenticated">
-					<button class="btn btn-default" ng-click="$ctrl.doLogin()">login</button>
+					<button class="btn btn-default btn-block"
+						ng-click="$ctrl.togeojson()">togeojson</button>
 				</form>
 				<hr/>
-				<ng-include src="'../api/testcase.html'"></ng-include>
+				<leaflet on-map-initialized="$ctrl.onMapInitialized(map)" style="min-height:200px"></leaflet>
+				<button class="btn btn-default btn-block" ng-click="$ctrl.getMapGeoJson()">togeojson(getMap(bbox))</button>
 			</div>
 			<ng-include src="'../display.html'"></ng-include>
 		</div>

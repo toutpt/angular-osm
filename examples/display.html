@@ -3,7 +3,6 @@
     <span ng-show="$ctrl.loading" class="ng-hide">loading...</span>
     <div class="alert alert-danger ng-hide" ng-show="$ctrl.error">
         {{$ctrl.error}}
-        <button ng-click="$ctrl.closeError()" type="button" class="close"><span>&times;</span></button>
     </div>
     <pre ng-show="$ctrl.data">{{$ctrl.data | json}}</pre>
     <script>

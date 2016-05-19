@@ -1,0 +1,2224 @@
+{
+  "osm": {
+    "bounds": {
+      "_minlat": "47.2110982",
+      "_minlon": "-1.5554130",
+      "_maxlat": "47.2114626",
+      "_maxlon": "-1.5539244"
+    },
+    "node": [
+      {
+        "_id": "610266876",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:55Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2095499",
+        "_lon": "-1.5554394"
+      },
+      {
+        "_id": "610266905",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2095284",
+        "_lon": "-1.5552249"
+      },
+      {
+        "_id": "610266907",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2096183",
+        "_lon": "-1.5551282"
+      },
+      {
+        "_id": "610266908",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2095814",
+        "_lon": "-1.5547742"
+      },
+      {
+        "_id": "610266910",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2095773",
+        "_lon": "-1.5547691"
+      },
+      {
+        "_id": "610266912",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2099459",
+        "_lon": "-1.5551824"
+      },
+      {
+        "_id": "610266913",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2099424",
+        "_lon": "-1.5551595"
+      },
+      {
+        "_id": "610266915",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2098869",
+        "_lon": "-1.5551711"
+      },
+      {
+        "_id": "610266916",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2099139",
+        "_lon": "-1.5553950"
+      },
+      {
+        "_id": "610266918",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2097837",
+        "_lon": "-1.5554226"
+      },
+      {
+        "_id": "610266920",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2097818",
+        "_lon": "-1.5554069"
+      },
+      {
+        "_id": "610266922",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2096531",
+        "_lon": "-1.5554415"
+      },
+      {
+        "_id": "610266923",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2096501",
+        "_lon": "-1.5554171"
+      },
+      {
+        "_id": "610266925",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2097111",
+        "_lon": "-1.5551820"
+      },
+      {
+        "_id": "610266927",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:56Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2097034",
+        "_lon": "-1.5551092"
+      },
+      {
+        "_id": "610266939",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2106503",
+        "_lon": "-1.5550087"
+      },
+      {
+        "_id": "610266941",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105848",
+        "_lon": "-1.5550200"
+      },
+      {
+        "_id": "610266943",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105880",
+        "_lon": "-1.5550540"
+      },
+      {
+        "_id": "610266945",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105515",
+        "_lon": "-1.5550613"
+      },
+      {
+        "_id": "610266947",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105549",
+        "_lon": "-1.5550816"
+      },
+      {
+        "_id": "610266948",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104921",
+        "_lon": "-1.5550971"
+      },
+      {
+        "_id": "610266950",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104898",
+        "_lon": "-1.5550771"
+      },
+      {
+        "_id": "610266952",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104539",
+        "_lon": "-1.5550828"
+      },
+      {
+        "_id": "610266953",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104486",
+        "_lon": "-1.5550542"
+      },
+      {
+        "_id": "610266954",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2103838",
+        "_lon": "-1.5550727"
+      },
+      {
+        "_id": "610266956",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2107899",
+        "_lon": "-1.5551394"
+      },
+      {
+        "_id": "610266957",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2107312",
+        "_lon": "-1.5551539"
+      },
+      {
+        "_id": "610266958",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2108173",
+        "_lon": "-1.5551313"
+      },
+      {
+        "_id": "610266959",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:57Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2106668",
+        "_lon": "-1.5551678"
+      },
+      {
+        "_id": "610267030",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:59Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2095566",
+        "_lon": "-1.5545600"
+      },
+      {
+        "_id": "610267057",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:59Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104530",
+        "_lon": "-1.5543479"
+      },
+      {
+        "_id": "610267061",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:52:59Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104649",
+        "_lon": "-1.5541797"
+      },
+      {
+        "_id": "610267065",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104327",
+        "_lon": "-1.5538929"
+      },
+      {
+        "_id": "610267071",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2108850",
+        "_lon": "-1.5537238"
+      },
+      {
+        "_id": "610267075",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109615",
+        "_lon": "-1.5537064"
+      },
+      {
+        "_id": "610267076",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109674",
+        "_lon": "-1.5537590"
+      },
+      {
+        "_id": "610267078",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109730",
+        "_lon": "-1.5537595"
+      },
+      {
+        "_id": "610267081",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109682",
+        "_lon": "-1.5537866"
+      },
+      {
+        "_id": "610267083",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109621",
+        "_lon": "-1.5538068"
+      },
+      {
+        "_id": "610267085",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109534",
+        "_lon": "-1.5538287"
+      },
+      {
+        "_id": "610267088",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109441",
+        "_lon": "-1.5538455"
+      },
+      {
+        "_id": "610267090",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109343",
+        "_lon": "-1.5538588"
+      },
+      {
+        "_id": "610267092",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109236",
+        "_lon": "-1.5538703"
+      },
+      {
+        "_id": "610267094",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109189",
+        "_lon": "-1.5538661"
+      },
+      {
+        "_id": "610267095",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2109011",
+        "_lon": "-1.5538717"
+      },
+      {
+        "_id": "610267114",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2102969",
+        "_lon": "-1.5530258"
+      },
+      {
+        "_id": "610267116",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:00Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2102906",
+        "_lon": "-1.5529790"
+      },
+      {
+        "_id": "610267120",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2102267",
+        "_lon": "-1.5519380"
+      },
+      {
+        "_id": "610267122",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2103404",
+        "_lon": "-1.5530641"
+      },
+      {
+        "_id": "610267125",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2103640",
+        "_lon": "-1.5530070"
+      },
+      {
+        "_id": "610267128",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2103313",
+        "_lon": "-1.5529688"
+      },
+      {
+        "_id": "610267130",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105696",
+        "_lon": "-1.5527259"
+      },
+      {
+        "_id": "610267131",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2107233",
+        "_lon": "-1.5525080"
+      },
+      {
+        "_id": "610267134",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2107944",
+        "_lon": "-1.5528959"
+      },
+      {
+        "_id": "610267144",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105652",
+        "_lon": "-1.5521640"
+      },
+      {
+        "_id": "610267145",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105649",
+        "_lon": "-1.5521763"
+      },
+      {
+        "_id": "610267149",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2106265",
+        "_lon": "-1.5522555"
+      },
+      {
+        "_id": "610267150",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2106500",
+        "_lon": "-1.5522123"
+      },
+      {
+        "_id": "610267152",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105691",
+        "_lon": "-1.5523332"
+      },
+      {
+        "_id": "610267154",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105770",
+        "_lon": "-1.5524130"
+      },
+      {
+        "_id": "610267155",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105588",
+        "_lon": "-1.5524166"
+      },
+      {
+        "_id": "610267157",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105634",
+        "_lon": "-1.5524472"
+      },
+      {
+        "_id": "610267158",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105396",
+        "_lon": "-1.5524535"
+      },
+      {
+        "_id": "610267160",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104725",
+        "_lon": "-1.5520837"
+      },
+      {
+        "_id": "610267162",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104828",
+        "_lon": "-1.5520785"
+      },
+      {
+        "_id": "610267165",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104905",
+        "_lon": "-1.5520763"
+      },
+      {
+        "_id": "610267167",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2104995",
+        "_lon": "-1.5520751"
+      },
+      {
+        "_id": "610267168",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105097",
+        "_lon": "-1.5520759"
+      },
+      {
+        "_id": "610267169",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105184",
+        "_lon": "-1.5520777"
+      },
+      {
+        "_id": "610267173",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105463",
+        "_lon": "-1.5521026"
+      },
+      {
+        "_id": "610267174",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105519",
+        "_lon": "-1.5521116"
+      },
+      {
+        "_id": "610267175",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105573",
+        "_lon": "-1.5521241"
+      },
+      {
+        "_id": "610267176",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2105613",
+        "_lon": "-1.5521372"
+      },
+      {
+        "_id": "610267178",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2107922",
+        "_lon": "-1.5523739"
+      },
+      {
+        "_id": "610267179",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2102945",
+        "_lon": "-1.5518065"
+      },
+      {
+        "_id": "610267184",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2114819",
+        "_lon": "-1.5539554"
+      },
+      {
+        "_id": "610267185",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:02Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2115079",
+        "_lon": "-1.5541689"
+      },
+      {
+        "_id": "610267236",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:03Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2110408",
+        "_lon": "-1.5526166"
+      },
+      {
+        "_id": "610267238",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3576916",
+        "_timestamp": "2010-01-09T11:53:03Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2111986",
+        "_lon": "-1.5527984"
+      },
+      {
+        "tag": {
+          "_k": "entrance",
+          "_v": "yes"
+        },
+        "_id": "610267124",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "14136601",
+        "_timestamp": "2012-12-03T10:11:47Z",
+        "_user": "mfnantes",
+        "_uid": "1101408",
+        "_lat": "47.2103691",
+        "_lon": "-1.5530551"
+      },
+      {
+        "_id": "610281104",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3577144",
+        "_timestamp": "2010-01-09T12:20:53Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2112480",
+        "_lon": "-1.5548692"
+      },
+      {
+        "_id": "610281105",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3577144",
+        "_timestamp": "2010-01-09T12:20:54Z",
+        "_user": "DrazziB",
+        "_uid": "53081",
+        "_lat": "47.2112403",
+        "_lon": "-1.5547942"
+      },
+      {
+        "_id": "990394110",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:24:44Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2102299",
+        "_lon": "-1.5519647"
+      },
+      {
+        "_id": "990394696",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:25:07Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2112324",
+        "_lon": "-1.5538806"
+      },
+      {
+        "_id": "990396524",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:26:42Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2106420",
+        "_lon": "-1.5527085"
+      },
+      {
+        "_id": "990397512",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:27:27Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2105647",
+        "_lon": "-1.5521538"
+      },
+      {
+        "_id": "990397636",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:27:33Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2105453",
+        "_lon": "-1.5521001"
+      },
+      {
+        "_id": "990401263",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:29:47Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2113063",
+        "_lon": "-1.5539966"
+      },
+      {
+        "_id": "990401549",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:30:02Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2112457",
+        "_lon": "-1.5540102"
+      },
+      {
+        "_id": "990401885",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:30:20Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2108374",
+        "_lon": "-1.5532888"
+      },
+      {
+        "_id": "990402832",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:31:51Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2104963",
+        "_lon": "-1.5520749"
+      },
+      {
+        "_id": "990403711",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:32:23Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2112898",
+        "_lon": "-1.5538678"
+      },
+      {
+        "_id": "990410642",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:37:39Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2105657",
+        "_lon": "-1.5521694"
+      },
+      {
+        "_id": "990411462",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:38:17Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2108476",
+        "_lon": "-1.5533805"
+      },
+      {
+        "_id": "990420542",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:43:50Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2105071",
+        "_lon": "-1.5520747"
+      },
+      {
+        "_id": "990421399",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:44:14Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2109864",
+        "_lon": "-1.5540722"
+      },
+      {
+        "_id": "990423550",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:45:31Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2103115",
+        "_lon": "-1.5529737"
+      },
+      {
+        "_id": "990426343",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:47:00Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2104864",
+        "_lon": "-1.5520771"
+      },
+      {
+        "_id": "990431535",
+        "_visible": "true",
+        "_version": "3",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:34Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2109137",
+        "_lon": "-1.5539830"
+      },
+      {
+        "_id": "610267163",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:11:37Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2104978",
+        "_lon": "-1.5520374"
+      },
+      {
+        "_id": "610267069",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:11:40Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2109251",
+        "_lon": "-1.5540858"
+      },
+      {
+        "_id": "610267170",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:11:44Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2105275",
+        "_lon": "-1.5520831"
+      },
+      {
+        "_id": "610267147",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:12:05Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2105650",
+        "_lon": "-1.5521849"
+      },
+      {
+        "_id": "610267062",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:12:10Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2104414",
+        "_lon": "-1.5539659"
+      },
+      {
+        "_id": "610281107",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:12:21Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2110615",
+        "_lon": "-1.5549124"
+      },
+      {
+        "_id": "610281106",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:12:31Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2110536",
+        "_lon": "-1.5548398"
+      },
+      {
+        "_id": "610267117",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T22:12:32Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2102267",
+        "_lon": "-1.5520087"
+      },
+      {
+        "_id": "610267119",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "7398278",
+        "_timestamp": "2011-02-26T10:29:14Z",
+        "_user": "BrunoC",
+        "_uid": "125252",
+        "_lat": "47.2102344",
+        "_lon": "-1.5520072"
+      },
+      {
+        "tag": [
+          {
+            "_k": "access",
+            "_v": "yes"
+          },
+          {
+            "_k": "entrance",
+            "_v": "main"
+          },
+          {
+            "_k": "name",
+            "_v": "entrée principale de l'hôtel-Dieu"
+          },
+          {
+            "_k": "source",
+            "_v": "user: mfnantes; Changeset: 14140813"
+          },
+          {
+            "_k": "wheelchair",
+            "_v": "yes"
+          }
+        ],
+        "_id": "3364535239",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:00Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2108996",
+        "_lon": "-1.5543128"
+      },
+      {
+        "_id": "3364535284",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:01Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2108628",
+        "_lon": "-1.5535199"
+      },
+      {
+        "_id": "3364535285",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:01Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2108758",
+        "_lon": "-1.5536395"
+      },
+      {
+        "_id": "3364535286",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:01Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2108959",
+        "_lon": "-1.5536347"
+      },
+      {
+        "_id": "3364535287",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:01Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2108996",
+        "_lon": "-1.5536680"
+      },
+      {
+        "tag": {
+          "_k": "entrance",
+          "_v": "yes"
+        },
+        "_id": "3364535288",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:01Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2109103",
+        "_lon": "-1.5539529"
+      },
+      {
+        "_id": "3364535291",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:01Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2109378",
+        "_lon": "-1.5535022"
+      },
+      {
+        "_id": "3364536393",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:01Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2109545",
+        "_lon": "-1.5536550"
+      },
+      {
+        "_id": "3364536408",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:02Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2111833",
+        "_lon": "-1.5549669"
+      },
+      {
+        "tag": {
+          "_k": "power",
+          "_v": "station"
+        },
+        "_id": "1820537358",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "12994560",
+        "_timestamp": "2012-09-05T11:21:00Z",
+        "_user": "isnogoud",
+        "_uid": "78608",
+        "_lat": "47.2112394",
+        "_lon": "-1.5553448"
+      },
+      {
+        "_id": "2044570381",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "14115174",
+        "_timestamp": "2012-12-01T18:23:07Z",
+        "_user": "mfnantes",
+        "_uid": "1101408",
+        "_lat": "47.2106423",
+        "_lon": "-1.5524162"
+      },
+      {
+        "tag": {
+          "_k": "entrance",
+          "_v": "yes"
+        },
+        "_id": "610267059",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "14136601",
+        "_timestamp": "2012-12-03T10:11:46Z",
+        "_user": "mfnantes",
+        "_uid": "1101408",
+        "_lat": "47.2104344",
+        "_lon": "-1.5541870"
+      },
+      {
+        "tag": {
+          "_k": "entrance",
+          "_v": "yes"
+        },
+        "_id": "610267172",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "14136601",
+        "_timestamp": "2012-12-03T10:11:47Z",
+        "_user": "mfnantes",
+        "_uid": "1101408",
+        "_lat": "47.2105403",
+        "_lon": "-1.5520942"
+      },
+      {
+        "_id": "610266955",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "14139923",
+        "_timestamp": "2012-12-03T15:36:14Z",
+        "_user": "mfnantes",
+        "_uid": "1101408",
+        "_lat": "47.2103002",
+        "_lon": "-1.5550913"
+      },
+      {
+        "_id": "610267067",
+        "_visible": "true",
+        "_version": "5",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:33Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2107329",
+        "_lon": "-1.5543522"
+      },
+      {
+        "_id": "2077690710",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "14356804",
+        "_timestamp": "2012-12-21T17:04:14Z",
+        "_user": "mfnantes",
+        "_uid": "1101408",
+        "_lat": "47.2110306",
+        "_lon": "-1.5550055"
+      },
+      {
+        "_id": "2077690707",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:33Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2118773",
+        "_lon": "-1.5547913"
+      },
+      {
+        "tag": [
+          {
+            "_k": "access",
+            "_v": "yes"
+          },
+          {
+            "_k": "entrance",
+            "_v": "main"
+          },
+          {
+            "_k": "name",
+            "_v": "hôtel-Dieu, entrée principale"
+          },
+          {
+            "_k": "source",
+            "_v": "extrapolation"
+          },
+          {
+            "_k": "wheelchair",
+            "_v": "yes"
+          }
+        ],
+        "_id": "3226486833",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:31Z",
+        "_user": "Super-Map",
+        "_uid": "709289",
+        "_lat": "47.2107995",
+        "_lon": "-1.5529432"
+      }
+    ],
+    "way": [
+      {
+        "nd": [
+          {
+            "_ref": "610281104"
+          },
+          {
+            "_ref": "610281105"
+          },
+          {
+            "_ref": "610281106"
+          },
+          {
+            "_ref": "610281107"
+          },
+          {
+            "_ref": "610281104"
+          }
+        ],
+        "tag": [
+          {
+            "_k": "building",
+            "_v": "yes"
+          },
+          {
+            "_k": "source",
+            "_v": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre ; mise à jour : 2010"
+          }
+        ],
+        "_id": "47982442",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "3577144",
+        "_timestamp": "2010-01-09T12:21:01Z",
+        "_user": "DrazziB",
+        "_uid": "53081"
+      },
+      {
+        "nd": [
+          {
+            "_ref": "990394696"
+          },
+          {
+            "_ref": "990403711"
+          },
+          {
+            "_ref": "990401263"
+          },
+          {
+            "_ref": "990401549"
+          },
+          {
+            "_ref": "990394696"
+          }
+        ],
+        "tag": [
+          {
+            "_k": "building",
+            "_v": "yes"
+          },
+          {
+            "_k": "source",
+            "_v": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
+          },
+          {
+            "_k": "wall",
+            "_v": "no"
+          }
+        ],
+        "_id": "85438731",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "6380892",
+        "_timestamp": "2010-11-15T21:58:51Z",
+        "_user": "BrunoC",
+        "_uid": "125252"
+      },
+      {
+        "nd": [
+          {
+            "_ref": "3364536408"
+          },
+          {
+            "_ref": "2077690707"
+          }
+        ],
+        "tag": [
+          {
+            "_k": "highway",
+            "_v": "service"
+          },
+          {
+            "_k": "lanes",
+            "_v": "2"
+          },
+          {
+            "_k": "lit",
+            "_v": "yes"
+          },
+          {
+            "_k": "maxspeed",
+            "_v": "20"
+          },
+          {
+            "_k": "oneway",
+            "_v": "no"
+          },
+          {
+            "_k": "parking:condition:both",
+            "_v": "private"
+          },
+          {
+            "_k": "parking:lane:both",
+            "_v": "perpendicular"
+          },
+          {
+            "_k": "service",
+            "_v": "parking_aisle"
+          },
+          {
+            "_k": "sidewalk",
+            "_v": "right"
+          },
+          {
+            "_k": "source",
+            "_v": "Bing"
+          },
+          {
+            "_k": "source:maxspeed",
+            "_v": "Bing"
+          },
+          {
+            "_k": "surface",
+            "_v": "asphalt"
+          }
+        ],
+        "_id": "329565121",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "29164569",
+        "_timestamp": "2015-02-28T20:19:40Z",
+        "_user": "Super-Map",
+        "_uid": "709289"
+      },
+      {
+        "nd": [
+          {
+            "_ref": "3364535284"
+          },
+          {
+            "_ref": "3364535291"
+          },
+          {
+            "_ref": "3364536393"
+          },
+          {
+            "_ref": "3364535287"
+          },
+          {
+            "_ref": "3364535286"
+          },
+          {
+            "_ref": "3364535285"
+          },
+          {
+            "_ref": "610267071"
+          },
+          {
+            "_ref": "610267075"
+          },
+          {
+            "_ref": "610267076"
+          },
+          {
+            "_ref": "610267078"
+          },
+          {
+            "_ref": "610267081"
+          },
+          {
+            "_ref": "610267083"
+          },
+          {
+            "_ref": "610267085"
+          },
+          {
+            "_ref": "610267088"
+          },
+          {
+            "_ref": "610267090"
+          },
+          {
+            "_ref": "610267092"
+          },
+          {
+            "_ref": "610267094"
+          },
+          {
+            "_ref": "610267095"
+          },
+          {
+            "_ref": "3364535288"
+          },
+          {
+            "_ref": "990431535"
+          },
+          {
+            "_ref": "610267069"
+          },
+          {
+            "_ref": "990421399"
+          },
+          {
+            "_ref": "990401549"
+          },
+          {
+            "_ref": "990401263"
+          },
+          {
+            "_ref": "610267184"
+          },
+          {
+            "_ref": "610267185"
+          },
+          {
+            "_ref": "3364535239"
+          },
+          {
+            "_ref": "610267067"
+          },
+          {
+            "_ref": "610266958"
+          },
+          {
+            "_ref": "610266956"
+          },
+          {
+            "_ref": "610266957"
+          },
+          {
+            "_ref": "610266959"
+          },
+          {
+            "_ref": "610266939"
+          },
+          {
+            "_ref": "610266941"
+          },
+          {
+            "_ref": "610266943"
+          },
+          {
+            "_ref": "610266945"
+          },
+          {
+            "_ref": "610266947"
+          },
+          {
+            "_ref": "610266948"
+          },
+          {
+            "_ref": "610266950"
+          },
+          {
+            "_ref": "610266952"
+          },
+          {
+            "_ref": "610266953"
+          },
+          {
+            "_ref": "610266954"
+          },
+          {
+            "_ref": "610266955"
+          },
+          {
+            "_ref": "610266912"
+          },
+          {
+            "_ref": "610266913"
+          },
+          {
+            "_ref": "610266915"
+          },
+          {
+            "_ref": "610266916"
+          },
+          {
+            "_ref": "610266918"
+          },
+          {
+            "_ref": "610266920"
+          },
+          {
+            "_ref": "610266922"
+          },
+          {
+            "_ref": "610266923"
+          },
+          {
+            "_ref": "610266876"
+          },
+          {
+            "_ref": "610266905"
+          },
+          {
+            "_ref": "610266925"
+          },
+          {
+            "_ref": "610266927"
+          },
+          {
+            "_ref": "610266907"
+          },
+          {
+            "_ref": "610266908"
+          },
+          {
+            "_ref": "610266910"
+          },
+          {
+            "_ref": "610267030"
+          },
+          {
+            "_ref": "610267057"
+          },
+          {
+            "_ref": "610267059"
+          },
+          {
+            "_ref": "610267061"
+          },
+          {
+            "_ref": "610267062"
+          },
+          {
+            "_ref": "610267065"
+          },
+          {
+            "_ref": "610267122"
+          },
+          {
+            "_ref": "610267124"
+          },
+          {
+            "_ref": "610267125"
+          },
+          {
+            "_ref": "610267114"
+          },
+          {
+            "_ref": "610267116"
+          },
+          {
+            "_ref": "990423550"
+          },
+          {
+            "_ref": "610267128"
+          },
+          {
+            "_ref": "610267117"
+          },
+          {
+            "_ref": "610267119"
+          },
+          {
+            "_ref": "990394110"
+          },
+          {
+            "_ref": "610267120"
+          },
+          {
+            "_ref": "610267179"
+          },
+          {
+            "_ref": "610267163"
+          },
+          {
+            "_ref": "610267160"
+          },
+          {
+            "_ref": "610267162"
+          },
+          {
+            "_ref": "990426343"
+          },
+          {
+            "_ref": "610267165"
+          },
+          {
+            "_ref": "990402832"
+          },
+          {
+            "_ref": "610267167"
+          },
+          {
+            "_ref": "990420542"
+          },
+          {
+            "_ref": "610267168"
+          },
+          {
+            "_ref": "610267169"
+          },
+          {
+            "_ref": "610267170"
+          },
+          {
+            "_ref": "610267172"
+          },
+          {
+            "_ref": "990397636"
+          },
+          {
+            "_ref": "610267173"
+          },
+          {
+            "_ref": "610267174"
+          },
+          {
+            "_ref": "610267175"
+          },
+          {
+            "_ref": "610267176"
+          },
+          {
+            "_ref": "990397512"
+          },
+          {
+            "_ref": "610267144"
+          },
+          {
+            "_ref": "990410642"
+          },
+          {
+            "_ref": "610267145"
+          },
+          {
+            "_ref": "610267147"
+          },
+          {
+            "_ref": "610267149"
+          },
+          {
+            "_ref": "610267150"
+          },
+          {
+            "_ref": "610267178"
+          },
+          {
+            "_ref": "610267131"
+          },
+          {
+            "_ref": "2044570381"
+          },
+          {
+            "_ref": "610267152"
+          },
+          {
+            "_ref": "610267154"
+          },
+          {
+            "_ref": "610267155"
+          },
+          {
+            "_ref": "610267157"
+          },
+          {
+            "_ref": "610267158"
+          },
+          {
+            "_ref": "610267130"
+          },
+          {
+            "_ref": "990396524"
+          },
+          {
+            "_ref": "610267236"
+          },
+          {
+            "_ref": "610267238"
+          },
+          {
+            "_ref": "610267134"
+          },
+          {
+            "_ref": "3226486833"
+          },
+          {
+            "_ref": "990401885"
+          },
+          {
+            "_ref": "990411462"
+          },
+          {
+            "_ref": "3364535284"
+          }
+        ],
+        "_id": "47978346",
+        "_visible": "true",
+        "_version": "7",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:09Z",
+        "_user": "Super-Map",
+        "_uid": "709289"
+      },
+      {
+        "nd": [
+          {
+            "_ref": "2077690710"
+          },
+          {
+            "_ref": "3364536408"
+          }
+        ],
+        "tag": [
+          {
+            "_k": "highway",
+            "_v": "service"
+          },
+          {
+            "_k": "lanes",
+            "_v": "2"
+          },
+          {
+            "_k": "lit",
+            "_v": "yes"
+          },
+          {
+            "_k": "maxspeed",
+            "_v": "20"
+          },
+          {
+            "_k": "oneway",
+            "_v": "no"
+          },
+          {
+            "_k": "sidewalk",
+            "_v": "right"
+          },
+          {
+            "_k": "source",
+            "_v": "Bing"
+          },
+          {
+            "_k": "source:maxspeed",
+            "_v": "Bing"
+          },
+          {
+            "_k": "surface",
+            "_v": "asphalt"
+          }
+        ],
+        "_id": "197546017",
+        "_visible": "true",
+        "_version": "2",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:28Z",
+        "_user": "Super-Map",
+        "_uid": "709289"
+      }
+    ],
+    "relation": [
+      {
+        "member": [
+          {
+            "_type": "way",
+            "_ref": "47978347",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "171527526",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "247462066",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978346",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47982442",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978354",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978351",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978353",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978352",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978345",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978350",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47978344",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47982446",
+            "_role": ""
+          },
+          {
+            "_type": "way",
+            "_ref": "47982447",
+            "_role": ""
+          }
+        ],
+        "tag": [
+          {
+            "_k": "name",
+            "_v": "Centre Hospitalier Universitaire de Nantes"
+          },
+          {
+            "_k": "site",
+            "_v": "hospital"
+          },
+          {
+            "_k": "source",
+            "_v": "extrapolation"
+          },
+          {
+            "_k": "type",
+            "_v": "site"
+          }
+        ],
+        "_id": "380267",
+        "_visible": "true",
+        "_version": "4",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:08Z",
+        "_user": "Super-Map",
+        "_uid": "709289"
+      },
+      {
+        "member": [
+          {
+            "_type": "way",
+            "_ref": "47978346",
+            "_role": "outer"
+          },
+          {
+            "_type": "way",
+            "_ref": "329565111",
+            "_role": "inner"
+          },
+          {
+            "_type": "way",
+            "_ref": "247462689",
+            "_role": "inner"
+          },
+          {
+            "_type": "way",
+            "_ref": "329565109",
+            "_role": "inner"
+          },
+          {
+            "_type": "way",
+            "_ref": "329565110",
+            "_role": "inner"
+          }
+        ],
+        "tag": [
+          {
+            "_k": "addr:city",
+            "_v": "Nantes"
+          },
+          {
+            "_k": "addr:country",
+            "_v": "FR"
+          },
+          {
+            "_k": "addr:full",
+            "_v": "Boulevard Jean Monnet Nantes Cedex 1 44093 Nantes"
+          },
+          {
+            "_k": "addr:postcode",
+            "_v": "44093"
+          },
+          {
+            "_k": "addr:street",
+            "_v": "Boulevard Jean Monnet"
+          },
+          {
+            "_k": "amenity",
+            "_v": "hospital"
+          },
+          {
+            "_k": "building",
+            "_v": "hospital"
+          },
+          {
+            "_k": "emergency",
+            "_v": "no"
+          },
+          {
+            "_k": "image",
+            "_v": "https://upload.wikimedia.org/wikipedia/commons/e/ea/H%C3%B4tel-Dieu_Nantes.JPG"
+          },
+          {
+            "_k": "name",
+            "_v": "Hôtel Dieu"
+          },
+          {
+            "_k": "source",
+            "_v": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2015"
+          },
+          {
+            "_k": "source:name",
+            "_v": "user: \"DrazziB; Changeset: 848972\""
+          },
+          {
+            "_k": "type",
+            "_v": "multipolygon"
+          },
+          {
+            "_k": "website",
+            "_v": "https://www.chu-nantes.fr"
+          }
+        ],
+        "_id": "4614374",
+        "_visible": "true",
+        "_version": "1",
+        "_changeset": "29007410",
+        "_timestamp": "2015-02-21T21:13:05Z",
+        "_user": "Super-Map",
+        "_uid": "709289"
+      }
+    ],
+    "_version": "0.6",
+    "_generator": "CGImap 0.4.0 (6498 thorn-04.openstreetmap.org)",
+    "_copyright": "OpenStreetMap and contributors",
+    "_attribution": "http://www.openstreetmap.org/copyright",
+    "_license": "http://opendatacommons.org/licenses/odbl/1-0/"
+  }
+}

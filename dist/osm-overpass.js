@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(14);
+	module.exports = __webpack_require__(12);
 
 
 /***/ },
@@ -82,7 +82,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ngStorageModuleName = _ngstorage2.default ? _ngstorage2.default.name : 'ngStorage';
 
-	var osmSettingsModule = angular.module('osm.settings', [ngStorageModuleName]).factory('osmSettingsService', _settings2.default);
+	var osmSettingsModule = angular.module('osm.settings', [ngStorageModuleName]).service('osmSettingsService', _settings2.default);
 
 	exports.default = osmSettingsModule;
 
@@ -96,7 +96,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-
 	/**
 	 * @ngdoc service
 	 * @name osmSettingsService
@@ -105,50 +104,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	osmSettingsService.$inject = ['$localStorage'];
 	function osmSettingsService($localStorage) {
-	    return {
-	        localStorage: $localStorage.$default({
-	            userName: '',
-	            userID: '',
-	            credentials: '',
-	            nodes: [],
-	            changeset: ''
-	        }),
-	        getUserName: function getUserName() {
-	            return this.localStorage.userName;
-	        },
-	        setUserName: function setUserName(username) {
-	            this.localStorage.userName = username;
-	        },
-	        getUserID: function getUserID() {
-	            return this.localStorage.userID;
-	        },
-	        setUserID: function setUserID(userid) {
-	            this.localStorage.userID = userid;
-	        },
-	        getCredentials: function getCredentials() {
-	            return this.localStorage.credentials;
-	        },
-	        setCredentials: function setCredentials(credentials) {
-	            this.localStorage.credentials = credentials;
-	        },
-	        getNodes: function getNodes() {
-	            return this.localStorage.nodes;
-	        },
-	        setNodes: function setNodes(nodes) {
-	            this.localStorage.nodes = nodes;
-	        },
-	        getChangeset: function getChangeset() {
-	            return this.localStorage.changeset;
-	        },
-	        setChangeset: function setChangeset(changeset) {
-	            this.localStorage.changeset = changeset;
-	        },
-	        getOsmAuth: function getOsmAuth() {
-	            return this.localStorage.osmAuth;
-	        },
-	        setOsmAuth: function setOsmAuth(options) {
-	            this.localStorage.osmAuth = options;
-	        }
+
+	    this.localStorage = $localStorage.$default({
+	        userName: '',
+	        userID: '',
+	        credentials: '',
+	        changeset: ''
+	    });
+	    this.getUserName = function () {
+	        return this.localStorage.userName;
+	    };
+	    this.setUserName = function (username) {
+	        this.localStorage.userName = username;
+	    };
+	    this.getUserID = function () {
+	        return this.localStorage.userID;
+	    };
+	    this.setUserID = function (userid) {
+	        this.localStorage.userID = userid;
+	    };
+	    this.getCredentials = function () {
+	        return this.localStorage.credentials;
+	    };
+	    this.setCredentials = function (credentials) {
+	        this.localStorage.credentials = credentials;
+	    };
+	    this.getChangeset = function () {
+	        return this.localStorage.changeset;
+	    };
+	    this.setChangeset = function (changeset) {
+	        this.localStorage.changeset = changeset;
+	    };
+	    this.getOsmAuth = function () {
+	        return this.localStorage.osmAuth;
+	    };
+	    this.setOsmAuth = function (options) {
+	        this.localStorage.osmAuth = options;
 	    };
 	}
 
@@ -166,9 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */,
 /* 10 */,
 /* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -177,7 +166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _overpass = __webpack_require__(15);
+	var _overpass = __webpack_require__(13);
 
 	var _overpass2 = _interopRequireDefault(_overpass);
 
@@ -200,7 +189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmOverpassModule;
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -218,10 +207,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param  {any} osmSettingsService
 	 */
 	function osmOverpassAPI($http, $q, osmSettingsService, options) {
+	    this.url = options.url;
+	    /**
+	     * @ngdoc method
+	     * @name overpass
+	     * @param {Object/String} query
+	     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API
+	     * @methodOf osm.overpass.osmOverpassAPI
+	     * @return {Promise} $http.get
+	    */
 	    this.overpass = function (query) {
-	        var url = this.url;
-	        var deferred = $q.defer();
 	        var self = this;
+	        var url = self.url;
+	        var deferred = $q.defer();
 	        var headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
 	        $http.post(url, 'data=' + encodeURIComponent(query), { headers: headers }).then(function (data) {
 	            deferred.resolve(data.data);
@@ -229,6 +227,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	            deferred.reject(data);
 	        });
 	        return deferred.promise;
+	    };
+	    /**
+	     * @ngdoc method
+	     * @name overpass
+	     * @description
+	     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
+	        By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
+	     * @param {String} type 'r'/'relation' or 'w'/'way'
+	     * @param {String/Number} osmId the id of the element
+	     * @methodOf osm.overpass.osmOverpassAPI
+	     * @return {Number} the area id
+	    */
+	    this.getAreaId = function (type, osmId) {
+	        var id;
+	        if (typeof osmId === 'string') {
+	            id = parseInt(osmId, 10);
+	        } else {
+	            id = osmId;
+	        }
+	        if (type === 'r' || type === 'relation') {
+	            return 3600000000 + id;
+	        } else if (type === 'w' || type === 'way') {
+	            return 2400000000 + id;
+	        }
 	    };
 	    this.overpassToGeoJSON = function (query, filter) {
 	        var deferred = $q.defer();
@@ -255,7 +277,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 	                return cache[id];
-	            };
+	            }
 	            for (var i = 0; i < data.elements.length; i++) {
 	                node = data.elements[i];
 	                if (node.type === 'node') {

@@ -55,12 +55,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(16);
+	module.exports = __webpack_require__(14);
 
 
 /***/ },
 
-/***/ 16:
+/***/ 14:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69,7 +69,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _taginfo = __webpack_require__(17);
+	var _taginfo = __webpack_require__(15);
 
 	var _taginfo2 = _interopRequireDefault(_taginfo);
 
@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 17:
+/***/ 15:
 /***/ function(module, exports) {
 
 	'use strict';

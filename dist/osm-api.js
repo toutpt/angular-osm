@@ -79,22 +79,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _settings2 = _interopRequireDefault(_settings);
 
-	var _utils = __webpack_require__(7);
+	var _x2js = __webpack_require__(7);
 
-	var _utils2 = _interopRequireDefault(_utils);
+	var _x2js2 = _interopRequireDefault(_x2js);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	//The base64 module is only available as IIFE
 
-	var osmAPIModule = angular.module('osm.api', [_settings2.default.name, _utils2.default.name, 'base64']).service('osmAPI', _api2.default).provider('osmAPI', function osmAPIProvider() {
+	var osmAPIModule = angular.module('osm.api', [_settings2.default.name, _x2js2.default.name, 'base64']).service('osmAPI', _api2.default).provider('osmAPI', function osmAPIProvider() {
 	    this.options = {
 	        url: 'http://api.openstreetmap.org/api'
 	    };
-	    this.$get = function osmAPIFactory($base64, $http, $q, osmSettingsService, osmUtilsService) {
-	        return new _api2.default($base64, $http, $q, osmSettingsService, osmUtilsService, this.options);
+	    this.$get = function osmAPIFactory($base64, $http, $q, osmSettingsService, osmx2js) {
+	        return new _api2.default($base64, $http, $q, osmSettingsService, osmx2js, this.options);
 	    };
-	    this.$get.$inject = ['$base64', '$http', '$q', 'osmSettingsService', 'osmUtilsService'];
+	    this.$get.$inject = ['$base64', '$http', '$q', 'osmSettingsService', 'osmx2js'];
 	});
 
 	exports.default = osmAPIModule;
@@ -114,17 +114,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	/**
 	 * @ngdoc service
 	 * @name osm.oauth.osmAuthService
 	 * @description The main idea is use geojson object where it is possible
 	 * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
-	 * @param  {any} $base64
-	 * @param  {any} $http
-	 * @param  {any} $q
-	 * @param  {any} osmSettingsService
+	 * @param  {Object} $base64 angular-base64
+	 * @param  {Object} $http angular http
+	 * @param  {Object} $q angular promise
+	 * @param  {Object} osmSettingsService settings service
 	 */
-	function osmAPI($base64, $http, $q, osmSettingsService, osmUtilsService, options) {
+	function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
 
 	    this.url = options.url;
 	    // ------------------ CREDENTIALS -----------------
@@ -218,16 +221,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // ------------------ INTERNAL CALL SERVER (API) -----------------
 
+	    function isElement(obj) {
+	        try {
+	            //Using W3 DOM2 (works for FF, Opera and Chrom)
+	            return obj instanceof HTMLElement;
+	        } catch (e) {
+	            //Browsers not supporting W3 DOM2 don't have HTMLElement and
+	            //an exception is thrown and we end up here. Testing some
+	            //properties that all elements have. (works on IE7)
+	            return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === "object" && obj.nodeType === 1 && _typeof(obj.style) === "object" && _typeof(obj.ownerDocument) === "object";
+	        }
+	    }
+
 	    /**
 	     * @ngdoc method
 	     * @name xhr
 	     * @description call the API
 	     * @param {Object} options
-	     * @comment
 	     * ```
 	        var options = {
-	            method: 'GET' // POST, DELETE, PUT
-	            path: '/0.6/changesets' //without the /api,
+	            method: 'GET', // POST, DELETE, PUT
+	            path: '/0.6/changesets', //without the /api
 	            data: content //if you need a payload
 	        };
 	        osmAPI.xhr(options);
@@ -247,19 +261,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            promise = this._oauth.xhr(options);
 	        } else {
-	            var fct = options.method.toLowerCase();
-	            if (options.config === undefined) {
-	                options.config = {};
-	            }
-	            options.config.headers = { Authorization: this.getAuthorization() };
-	            promise = $http[fct](options.path, options.config);
+	            options.url = this.url + options.path;
+	            options.headers = {
+	                Authorization: this.getAuthorization()
+	            };
+	            promise = $http(options);
 	        }
 	        promise.then(function (data) {
+	            var d;
+	            var t = function t(d) {
+	                if (!d) {
+	                    return d;
+	                }
+	                if (d.substr) {
+	                    if (d.substr(0, 5) === '<?xml') {
+	                        return osmx2js.xml2js(d);
+	                    }
+	                } else if (isElement(d)) {
+	                    return osmx2js.dom2js(d);
+	                }
+	                return d;
+	            };
 	            if (hasOauth) {
-	                deferred.resolve(osmUtilsService.x2js.dom2js(data));
+	                d = data;
 	            } else {
-	                deferred.resolve(osmUtilsService.xml2js(data.data));
+	                d = data.data;
 	            }
+	            deferred.resolve(t(d));
 	        }, function (error) {
 	            deferred.reject(error);
 	        });
@@ -297,7 +325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var self = this;
 	        var url = this.url + method;
 	        $http.get(url, config).then(function (data) {
-	            deferred.resolve(osmUtilsService.xml2js(data.data));
+	            deferred.resolve(osmx2js.xml2js(data.data));
 	        }, function (error) {
 	            deferred.reject(error);
 	        });
@@ -314,10 +342,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Promise} $http response
 	    */
 	    this.put = function (method, content, config) {
+	        if (!config) {
+	            config = {};
+	        }
 	        var _config = angular.copy(config);
-	        config.method = 'PUT';
-	        config.path = method;
-	        config.data = content;
+	        _config.method = 'PUT';
+	        _config.path = method;
+	        _config.data = osmx2js.js2xml(content);
 	        return this.xhr(_config);
 	    };
 	    /**
@@ -330,9 +361,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Promise} $http response
 	    */
 	    this.delete = function (method, config) {
+	        if (!config) {
+	            config = {};
+	        }
 	        var _config = angular.copy(config);
-	        config.method = 'DELETE';
-	        config.path = method;
+	        _config.method = 'DELETE';
+	        _config.path = method;
 	        return this.xhr(_config);
 	    };
 
@@ -375,6 +409,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (changesets.length > 0) {
 	                osmSettingsService.setChangeset(changesets[0].id);
 	                deferred.resolve(changesets[0].id);
+	            } else if (changesets._id) {
+	                osmSettingsService.setChangeset(changesets._id);
+	                deferred.resolve(changesets._id);
 	            } else {
 	                osmSettingsService.setChangeset();
 	                deferred.resolve();
@@ -403,7 +440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @ngdoc method
 	     * @name getUserById
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} id of the user
+	     * @param {string} id id of the user
 	     * @returns {Promise} $http.get response
 	     * /0.6/user/#id
 	    */
@@ -466,25 +503,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * @ngdoc method
-	     * @name getMapGeoJSON
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} bbox the bounding box
-	     * @returns {Promise} $http.get response
-	    */
-	    this.getMapGeoJSON = function (bbox) {
-	        var self = this;
-	        var deferred = $q.defer();
-	        self.getMap(bbox).then(function (nodes) {
-	            var geojsonNodes = osmUtilsService.js2geojson(nodes);
-	            deferred.resolve(geojsonNodes);
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-
-	    /**
-	     * @ngdoc method
 	     * @name getNotes
 	     * @methodOf osm.api.osmAPI
 	     * @param {string} bbox left,bottom,right,top
@@ -524,7 +542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @ngdoc method
 	     * @name getNode
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} id
+	     * @param {string} id id
 	     * @returns {Promise} $http.get response
 	     * GET /0.6/node/#id
 	    */
@@ -534,9 +552,45 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * @ngdoc method
+	     * @name getNodeRelations
+	     * @methodOf osm.api.osmAPI
+	     * @param {string} id id
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/node/#id/relations
+	    */
+	    this.getNodeRelations = function (id) {
+	        return this.get('/0.6/node/' + id + '/relations');
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name getNodeWays
+	     * @methodOf osm.api.osmAPI
+	     * @param {string} id id
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/node/#id/ways
+	    */
+	    this.getNodeWays = function (id) {
+	        return this.get('/0.6/node/' + id + '/ways');
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name getNodes
+	     * @methodOf osm.api.osmAPI
+	     * @param {array} ids ids
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/node/#id
+	    */
+	    this.getNodes = function (ids) {
+	        return this.get('/0.6/nodes?nodes=' + ids.join(','));
+	    };
+
+	    /**
+	     * @ngdoc method
 	     * @name deleteNode
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} id
+	     * @param {string} id id
 	     * @returns {Promise} $http.delete response
 	     * DELETE /0.6/node/#id
 	    */
@@ -572,7 +626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @ngdoc method
 	     * @name getWay
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} id
+	     * @param {string} id id
 	     * @returns {Promise} $http.get response
 	     * GET /0.6/way/#id
 	    */
@@ -582,9 +636,45 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * @ngdoc method
+	     * @name getWayRelations
+	     * @methodOf osm.api.osmAPI
+	     * @param {string} id id
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/way/#id/relations
+	    */
+	    this.getWayRelations = function (id) {
+	        return this.get('/0.6/way/' + id + '/relations');
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name getWayFull
+	     * @methodOf osm.api.osmAPI
+	     * @param {string} id id
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/way/#id/full
+	    */
+	    this.getWayFull = function (id) {
+	        return this.get('/0.6/way/' + id + '/full');
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name getWays
+	     * @methodOf osm.api.osmAPI
+	     * @param {array} ids ids
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/ways?ways=ids
+	    */
+	    this.getWays = function (ids) {
+	        return this.get('/0.6/ways?ways=' + ids.join(','));
+	    };
+
+	    /**
+	     * @ngdoc method
 	     * @name deleteWay
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} id
+	     * @param {string} id id
 	     * @returns {Promise} $http.delete response
 	     * DELETE /0.6/way/#id
 	    */
@@ -620,19 +710,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @ngdoc method
 	     * @name getRelation
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} id
+	     * @param {string} id id
 	     * @returns {Promise} $http.get response
 	     * GET /0.6/relation/#id
 	    */
 	    this.getRelation = function (id) {
 	        return this.get('/0.6/relation/' + id);
 	    };
+	    /**
+	     * @ngdoc method
+	     * @name getRelationRelations
+	     * @methodOf osm.api.osmAPI
+	     * @param {string} id id
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/relation/#id/relations
+	    */
+	    this.getRelationRelations = function (id) {
+	        return this.get('/0.6/relation/' + id + '/relations');
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name getRelationFull
+	     * @methodOf osm.api.osmAPI
+	     * @param {string} id id
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/relation/#id/full
+	    */
+	    this.getRelationFull = function (id) {
+	        return this.get('/0.6/relation/' + id + '/full');
+	    };
+
+	    /**
+	     * @ngdoc method
+	     * @name getRelations
+	     * @methodOf osm.api.osmAPI
+	     * @param {array} ids ids
+	     * @returns {Promise} $http.get response
+	     * GET /0.6/relations?relations=ids
+	    */
+	    this.getRelations = function (ids) {
+	        return this.get('/0.6/relations?relations=' + ids.join(','));
+	    };
 
 	    /**
 	     * @ngdoc method
 	     * @name deleteRelation
 	     * @methodOf osm.api.osmAPI
-	     * @param {string} id
+	     * @param {string} id id
 	     * @returns {Promise} $http.delete response
 	     * DELETE /0.6/relation/#id
 	    */
@@ -665,7 +790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ngStorageModuleName = _ngstorage2.default ? _ngstorage2.default.name : 'ngStorage';
 
-	var osmSettingsModule = angular.module('osm.settings', [ngStorageModuleName]).factory('osmSettingsService', _settings2.default);
+	var osmSettingsModule = angular.module('osm.settings', [ngStorageModuleName]).service('osmSettingsService', _settings2.default);
 
 	exports.default = osmSettingsModule;
 
@@ -679,7 +804,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-
 	/**
 	 * @ngdoc service
 	 * @name osmSettingsService
@@ -688,50 +812,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	osmSettingsService.$inject = ['$localStorage'];
 	function osmSettingsService($localStorage) {
-	    return {
-	        localStorage: $localStorage.$default({
-	            userName: '',
-	            userID: '',
-	            credentials: '',
-	            nodes: [],
-	            changeset: ''
-	        }),
-	        getUserName: function getUserName() {
-	            return this.localStorage.userName;
-	        },
-	        setUserName: function setUserName(username) {
-	            this.localStorage.userName = username;
-	        },
-	        getUserID: function getUserID() {
-	            return this.localStorage.userID;
-	        },
-	        setUserID: function setUserID(userid) {
-	            this.localStorage.userID = userid;
-	        },
-	        getCredentials: function getCredentials() {
-	            return this.localStorage.credentials;
-	        },
-	        setCredentials: function setCredentials(credentials) {
-	            this.localStorage.credentials = credentials;
-	        },
-	        getNodes: function getNodes() {
-	            return this.localStorage.nodes;
-	        },
-	        setNodes: function setNodes(nodes) {
-	            this.localStorage.nodes = nodes;
-	        },
-	        getChangeset: function getChangeset() {
-	            return this.localStorage.changeset;
-	        },
-	        setChangeset: function setChangeset(changeset) {
-	            this.localStorage.changeset = changeset;
-	        },
-	        getOsmAuth: function getOsmAuth() {
-	            return this.localStorage.osmAuth;
-	        },
-	        setOsmAuth: function setOsmAuth(options) {
-	            this.localStorage.osmAuth = options;
-	        }
+
+	    this.localStorage = $localStorage.$default({
+	        userName: '',
+	        userID: '',
+	        credentials: '',
+	        changeset: ''
+	    });
+	    this.getUserName = function () {
+	        return this.localStorage.userName;
+	    };
+	    this.setUserName = function (username) {
+	        this.localStorage.userName = username;
+	    };
+	    this.getUserID = function () {
+	        return this.localStorage.userID;
+	    };
+	    this.setUserID = function (userid) {
+	        this.localStorage.userID = userid;
+	    };
+	    this.getCredentials = function () {
+	        return this.localStorage.credentials;
+	    };
+	    this.setCredentials = function (credentials) {
+	        this.localStorage.credentials = credentials;
+	    };
+	    this.getChangeset = function () {
+	        return this.localStorage.changeset;
+	    };
+	    this.setChangeset = function (changeset) {
+	        this.localStorage.changeset = changeset;
+	    };
+	    this.getOsmAuth = function () {
+	        return this.localStorage.osmAuth;
+	    };
+	    this.setOsmAuth = function (options) {
+	        this.localStorage.osmAuth = options;
 	    };
 	}
 
@@ -745,371 +861,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _utils = __webpack_require__(8);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _settings = __webpack_require__(4);
-
-	var _settings2 = _interopRequireDefault(_settings);
-
-	var _x2js = __webpack_require__(9);
-
-	var _x2js2 = _interopRequireDefault(_x2js);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var osmUtilsModule = angular.module('osm.utils', [_settings2.default.name, _x2js2.default.name]).service('osmUtilsService', _utils2.default);
-
-	exports.default = osmUtilsModule;
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	/**
-	 * @ngdoc service
-	 * @name osm.utils.osmUtilsService
-	 */
-	function osmUtilsService($http, osmSettingsService, osmx2js) {
-
-	    /**
-	     * @ngdoc method
-	     * @name relationToGeoJSON
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Number} relationId id of the relation
-	     * @param {Object} relation json object
-	     * @return {Object} geojson
-	     */
-	    this.relationToGeoJSON = function (relationID, relation) {
-	        var self = this;
-	        var features = [];
-	        var relations = [];
-	        var result = {
-	            type: 'FeatureCollection',
-	            properties: {
-	                id: relationID
-	            },
-	            options: {},
-	            members: [],
-	            features: features,
-	            relations: relations
-	        };
-	        var relation = relationXML.getElementById(relationID);
-	        //bug: relation is null because firefox return an error
-	        result.properties.visible = relation.getAttribute('visible');
-	        result.properties.version = relation.getAttribute('version');
-	        result.properties.changeset = relation.getAttribute('changeset');
-	        result.properties.timestamp = relation.getAttribute('timestamp');
-	        result.properties.user = relation.getAttribute('user');
-	        result.properties.uid = relation.getAttribute('uid');
-	        var m, i;
-	        var child, node, properties, coordinates, feature, member, memberElement;
-	        for (i = 0; i < relation.children.length; i++) {
-	            m = relation.children[i];
-	            if (m.tagName === 'member') {
-	                //<member type="way" ref="148934766" role=""/>
-	                member = {
-	                    type: m.getAttribute('type'),
-	                    ref: m.getAttribute('ref'),
-	                    role: m.getAttribute('role')
-	                };
-	                result.members.push(member);
-	                //get relationXML for this member
-	                memberElement = relationXML.getElementById(m.getAttribute('ref'));
-	                /*
-	                <way id="148934766" visible="true" version="5" changeset="13626362" timestamp="2012-10-25T11:48:27Z" user="Metacity" uid="160224">
-	                    <nd ref="1619955810"/>
-	                    ...
-	                    <tag k="access" v="yes"/>
-	                    ...
-	                </way>
-	                    */
-	                //get tags -> geojson properties
-	                properties = self.getTagsFromChildren(memberElement);
-	                member.name = properties.name;
-	                if (memberElement.tagName === 'way') {
-	                    coordinates = [];
-	                    feature = {
-	                        type: 'Feature',
-	                        properties: properties,
-	                        id: m.getAttribute('ref'),
-	                        geometry: {
-	                            type: 'LineString',
-	                            coordinates: coordinates
-	                        }
-	                    };
-	                    for (var j = 0; j < memberElement.children.length; j++) {
-	                        child = memberElement.children[j];
-	                        if (child.tagName === 'nd') {
-	                            node = relationXML.getElementById(child.getAttribute('ref'));
-	                            coordinates.push([parseFloat(node.getAttribute('lon')), parseFloat(node.getAttribute('lat'))]);
-	                        }
-	                    }
-	                    features.push(feature);
-	                } else if (memberElement.tagName === 'node') {
-	                    feature = {
-	                        type: 'Feature',
-	                        properties: properties,
-	                        id: m.getAttribute('ref'),
-	                        geometry: {
-	                            type: 'Point',
-	                            coordinates: [parseFloat(memberElement.getAttribute('lon')), parseFloat(memberElement.getAttribute('lat'))]
-	                        }
-	                    };
-	                    features.push(feature);
-	                } else if (memberElement.tagName === 'relation') {
-	                    member.tags = properties;
-	                }
-	            }
-	        }
-	        result.tags = self.getTagsFromChildren(relation);
-	        return result;
-	    };
-
-	    /**
-	     * @ngdoc method
-	     * @name encodeXML
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {string} str the string to encode
-	     * @return {string} the encoded string
-	     */
-	    this.encodeXML = function (str) {
-	        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name relationGeoJSONToXml
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Object} relationGeoJSON geojson
-	     * @return {string} relation as xml
-	     */
-	    this.relationGeoJSONToXml = function (relationGeoJSON) {
-	        var i;
-	        var pp = relationGeoJSON.properties;
-	        var members = relationGeoJSON.members;
-	        var settings = osmSettingsService;
-	        var output = '<?xml version="1.0" encoding="UTF-8"?>\n';
-	        output += '<osm version="0.6" generator="angular-osm 0.2" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">\n';
-	        output += '  <relation id="' + pp.id + '" visible="' + pp.visible + '" ';
-	        output += 'version="' + pp.version + '" ';
-	        output += 'changeset="' + settings.getChangeset() + '" timestamp="' + new Date().toISOString() + '" ';
-	        output += 'user="' + settings.getUserName() + '" uid="' + pp.uid + '">\n';
-
-	        for (i = 0; i < members.length; i++) {
-	            output += '    <member type="' + members[i].type + '" ';
-	            output += 'ref="' + members[i].ref;
-	            //role depends on the type of member
-	            if (members[i].type === 'relation') {
-	                output += '" role="' + members[i].role + '"/>\n';
-	            } else {
-	                output += '" role="' + members[i].role + '"/>\n';
-	            }
-	        }
-
-	        var tags = relationGeoJSON.tags;
-	        for (var k in tags) {
-	            output += '    <tag k="' + k + '" v="' + this.encodeXML(tags[k]) + '"/>\n';
-	        }
-	        output += '  </relation>\n';
-	        output += '</osm>';
-	        return output;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name sortRelationMembers
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {Object} relationGeoJSON geojson
-	     * @return {Object} relation as geojson sorted
-	     */
-	    this.sortRelationMembers = function (relationGeoJSON) {
-	        //sort members
-	        var members = relationGeoJSON.members;
-	        var features = relationGeoJSON.features;
-	        var sorted = [];
-	        var f, i, m, j, k;
-	        var first, last;
-	        var insertBefore = function insertBefore(item) {
-	            sorted.splice(0, 0, item);
-	        };
-	        var insertAfter = function insertAfter(item) {
-	            sorted.push(item);
-	        };
-	        var getCoordinates = function getCoordinates(i) {
-	            return features[i].geometry.coordinates;
-	        };
-	        var c, cfirst, clast, alreadySorted;
-	        var foundFirst,
-	            foundLast = false;
-	        for (i = 0; i < members.length; i++) {
-	            m = members[i];
-	            if (m.type !== 'way') {
-	                sorted.push(m);
-	                continue;
-	            }
-	            //check if the member is already in
-	            alreadySorted = false;
-	            for (k = 0; k < sorted.length; k++) {
-	                if (sorted[k].ref === m.ref) {
-	                    alreadySorted = true;
-	                }
-	            }
-	            if (alreadySorted) {
-	                continue;
-	            }
-	            if (sorted.length === 0) {
-	                sorted.push(m);
-	                c = getCoordinates(i);
-	                cfirst = c[0];
-	                clast = c[c.length - 1];
-	            }
-	            //                    console.log('cfirst ' +cfirst);
-	            //                    console.log('clast '+ clast);
-	            foundFirst = foundLast = false;
-	            for (j = 0; j < features.length; j++) {
-	                f = features[j];
-	                if (f.geometry.type !== 'LineString') {
-	                    continue;
-	                }
-	                alreadySorted = false;
-	                for (k = 0; k < sorted.length; k++) {
-	                    if (sorted[k].ref === f.id) {
-	                        alreadySorted = true;
-	                    }
-	                }
-	                if (alreadySorted) {
-	                    continue;
-	                }
-
-	                c = getCoordinates(j);
-	                first = c[0];
-	                last = c[c.length - 1];
-	                if (cfirst[0] === last[0] && cfirst[1] === last[1]) {
-	                    insertBefore(members[j]);
-	                    cfirst = first;
-	                    foundFirst = true;
-	                    continue;
-	                }
-	                if (clast[0] === first[0] && clast[1] === first[1]) {
-	                    insertAfter(members[j]);
-	                    clast = last;
-	                    foundLast = true;
-	                    continue;
-	                }
-	                //weird; order of linestring coordinates is not stable
-	                if (cfirst[0] === first[0] && cfirst[1] === first[1]) {
-	                    insertBefore(members[j]);
-	                    cfirst = last;
-	                    foundFirst = true;
-	                    continue;
-	                }
-	                if (clast[0] === last[0] && clast[1] === last[1]) {
-	                    insertAfter(members[j]);
-	                    clast = first;
-	                    foundLast = true;
-	                    continue;
-	                }
-	            }
-	            if (!foundFirst && !foundLast) {
-	                //cas du rond point ... ?
-	                console.log('not found connected ways for ' + m.ref);
-	                console.log(cfirst);
-	                console.log(clast);
-	            }
-	        }
-	        if (members.length === sorted.length) {
-	            relationGeoJSON.members = sorted;
-	            //Fix orders of features
-	            //var features = relationGeoJSON.features;
-	            var cache = { loaded: false };
-	            var getFeatureById = function getFeatureById(id) {
-	                if (!cache.loaded) {
-	                    for (var i = 0; i < features.length; i++) {
-	                        cache[features[i].id] = features[i];
-	                    }
-	                }
-	                return cache[id];
-	            };
-	            relationGeoJSON.features = [];
-	            for (var l = 0; l < sorted.length; l++) {
-	                relationGeoJSON.features.push(getFeatureById(sorted[l].ref));
-	            }
-	            //feature order fixed
-	        } else {
-	                console.error('can t sort this relation');
-	            }
-	        return relationGeoJSON;
-	    };
-	    this.x2js = osmx2js;
-	    this.xml2js = function (xml_str) {
-	        return osmx2js.xml2js(xml_str);
-	    };
-	    this.js2xml = function (json) {
-	        return osmx2js.js2xml(json);
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name yqlJSON
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {string} featuresURL url of the geojson you want to get
-	     * @return {Promise} $http response
-	     */
-	    this.yqlJSON = function (featuresURL) {
-	        var deferred = $q.defer();
-	        var url, config;
-	        config = {
-	            params: {
-	                q: 'select * from json where url=\'' + featuresURL + '\';',
-	                format: 'json'
-	            }
-	        };
-	        url = 'http://query.yahooapis.com/v1/public/yql';
-	        $http.get(url, config).then(function (data) {
-	            if (data.data.query.results === null) {
-	                deferred.resolve([]);
-	            } else {
-	                deferred.resolve(data.data.query.results.json);
-	            }
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getElementTypeFromFeature
-	     * @methodOf osm.utils.osmUtilsService
-	     * @param {string} feature geojson feature
-	     * @return {string} type 'node' or 'way'
-	     */
-	    this.getElementTypeFromFeature = function (feature) {
-	        var gtype = feature.geometry.type;
-	        if (gtype === 'LineString') {
-	            return 'way';
-	        } else if (gtype === 'Point') {
-	            return 'node';
-	        } else {
-	            console.error('not supported type ' + gtype);
-	        }
-	    };
-	}
-	exports.default = osmUtilsService;
-
-/***/ },
-/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';

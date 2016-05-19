@@ -55,12 +55,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(18);
+	module.exports = __webpack_require__(16);
 
 
 /***/ },
 
-/***/ 18:
+/***/ 16:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69,7 +69,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _nominatim = __webpack_require__(19);
+	var _nominatim = __webpack_require__(17);
 
 	var _nominatim2 = _interopRequireDefault(_nominatim);
 
@@ -89,7 +89,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 19:
+/***/ 17:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -119,7 +119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
 	        //params['accept-language'] = 'fr';
 	        var params;
-	        if (typeof query === 'string') {
+	        if (typeof query === 'string' || !query) {
 	            params = {
 	                format: 'json',
 	                q: query

@@ -1,5 +1,5 @@
 (function() {
-    angular.module('example', ['osm'])
+    angular.module('example', ['osm', 'angular-leaflet'])
     .config(config)
     .controller('ExampleCtrl', ExampleCtrl);
     function config(osmAuthServiceProvider, osmAPIProvider) {
@@ -28,7 +28,7 @@
         };
         osmAuthServiceProvider.options = OSM_AUTH['master.apis.dev'];
     }
-    function ExampleCtrl (osmAPI, osmAuthService) {
+    function ExampleCtrl ($scope, osmAPI, osmAuthService, leafletService) {
         var $ctrl = this;
         $ctrl.bbox = '-1.5590554475784302,47.21250296746172,-1.5530633926391602,47.21564395777462';
         $ctrl.osmAPI = osmAPI;
@@ -37,6 +37,20 @@
         $ctrl.doLogin = function () {
             osmAuthService.authenticate().then(onUserChange);
         };
+
+        $ctrl.onMapInitialized = function(map) {
+            $ctrl.leaflet = map;
+            $ctrl.leaflet.setZoom(18);
+            setBBox();
+            leafletService.on('move', setBBox, map, $scope);
+            leafletService.on('zoomend', setBBox, map, $scope);
+        };
+
+        function setBBox() {
+            var bounds = $ctrl.leaflet.getBounds();
+            $ctrl.bbox = bounds.toBBoxString();
+        }
+
         function onUserChange(data) {
             if (osmAuthService.authenticated()) {
                 $ctrl.authenticated = true;
