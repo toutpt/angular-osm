@@ -78,9 +78,10 @@ Here is the dependencies table of angular-osm builds:
 
 | dist          | dependencies to install                          |
 |---------------|--------------------------------------------------|
-| osm-api       | npm install --save angular-base64 x2js ngstorage |
+| osm-api       | npm install --save x2js                          |
+| osm-base64    | npm install --save angular-base64 x2js           |
+| osm-oauth     | npm install --save osm-auth x2js                 |
 | osm-nominatim |                                                  |
-| osm-oauth     | npm install --save osm-auth                      |
 | osm-overpass  | npm install --save ngstorage                     |
 | osm-taginfo   |                                                  |
 | osm-togeojson |                                                  |

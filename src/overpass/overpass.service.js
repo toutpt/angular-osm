@@ -5,10 +5,13 @@
  * @name overpassAPI
  * @param  {any} $http
  * @param  {any} $q
- * @param  {any} osmSettingsService
  */
-function osmOverpassAPI($http, $q, osmSettingsService, options) {
-    this.url = options.url;
+class osmOverpassAPI{
+    constructor($http, $q, options) {
+        this.url = options.url;
+        this.$http = $http;
+        this.$q = $q;
+    }
     /**
      * @ngdoc method
      * @name overpass
@@ -17,12 +20,13 @@ function osmOverpassAPI($http, $q, osmSettingsService, options) {
      * @methodOf osm.overpass.osmOverpassAPI
      * @return {Promise} $http.get
     */
-    this.overpass = function (query) {
-        var self = this;
-        var url = self.url;
-        var deferred = $q.defer();
-        var headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
-        $http.post(
+    overpass(query) {
+        var url = this.url;
+        var deferred = this.$q.defer();
+        var headers = {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        };
+        this.$http.post(
             url,
             'data=' + encodeURIComponent(query),
             {headers: headers}
@@ -32,7 +36,7 @@ function osmOverpassAPI($http, $q, osmSettingsService, options) {
             deferred.reject(data);
         });
         return deferred.promise;
-    };
+    }
     /**
      * @ngdoc method
      * @name overpass
@@ -44,7 +48,7 @@ function osmOverpassAPI($http, $q, osmSettingsService, options) {
      * @methodOf osm.overpass.osmOverpassAPI
      * @return {Number} the area id
     */
-    this.getAreaId = function (type, osmId) {
+    getAreaId(type, osmId) {
         var id;
         if (typeof osmId === 'string') {
             id = parseInt(osmId, 10);
@@ -56,9 +60,9 @@ function osmOverpassAPI($http, $q, osmSettingsService, options) {
         } else if (type === 'w' || type === 'way') {
             return 2400000000 + id;
         }
-    };
-    this.overpassToGeoJSON = function (query, filter) {
-        var deferred = $q.defer();
+    }
+    overpassToGeoJSON(query, filter) {
+        var deferred = this.$q.defer();
         var features = [];
         var relations = [];
         var result = {
@@ -132,7 +136,7 @@ function osmOverpassAPI($http, $q, osmSettingsService, options) {
             deferred.reject(error);
         });
         return deferred.promise;
-    };
+    }
 }
 
 export default osmOverpassAPI;

@@ -1,5 +1,4 @@
 
-osmTagInfoAPI.$inject = ['$http', '$q'];
 /**
  * @ngdoc service
  * @name osmTagInfoAPI
@@ -8,10 +7,15 @@ osmTagInfoAPI.$inject = ['$http', '$q'];
  * @param  {any} $http
  * @param  {any} $q
  */
-function osmTagInfoAPI($http, $q) {
-    this.get = function (method, config) {
-        var deferred = $q.defer();
-        $http.get('https://taginfo.openstreetmap.org/api/4' + method, config).then(
+class osmTagInfoAPI{
+    constructor($http, $q) {
+        this.$http = $http;
+        this.$q = $q;
+        this.url = 'https://taginfo.openstreetmap.org/api/4';
+    }
+    get(method, config) {
+        var deferred = this.$q.defer();
+        this.$http.get(this.url + method, config).then(
             function (data) {
                 deferred.resolve(data.data);
             }, function (error) {
@@ -19,7 +23,7 @@ function osmTagInfoAPI($http, $q) {
             }
         );
         return deferred.promise;
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeyCombinations
@@ -28,9 +32,9 @@ function osmTagInfoAPI($http, $q) {
         key — Tag key (required).
         query — Only show results where the other_key matches this query (substring match, optional).
      */
-    this.getKeyCombinations = function (params) {
+    getKeyCombinations(params) {
         return this.get('/key/combinations', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeyDistributionNodes
@@ -38,9 +42,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         key — Tag key (required).
      */
-    this.getKeyDistributionNodes = function (params) {
+    getKeyDistributionNodes(params) {
         return this.get('/key/distribution/nodes', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeyDistributionWays
@@ -48,9 +52,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
      * key — Tag key (required).
      */
-    this.getKeyDistributionWays = function (params) {
+    getKeyDistributionWays(params) {
         return this.get('/key/distribution/ways', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeyStats
@@ -58,9 +62,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
      * key — Tag key (required).
      */
-    this.getKeyStats = function (params) {
+    getKeyStats(params) {
         return this.get('/key/stats', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeyValues
@@ -70,9 +74,9 @@ function osmTagInfoAPI($http, $q) {
         lang — Language for description (optional, default: 'en').
         query — Only show results where the value matches this query (substring match, optional).
      */
-    this.getKeyValues = function (params) {
+    getKeyValues(params) {
         return this.get('/key/values', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeyWikiPages
@@ -80,9 +84,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         key — Tag key (required).
      */
-    this.getKeyWikiPages = function (params) {
+    getKeyWikiPages(params) {
         return this.get('/key/wiki_pages', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeysAll
@@ -90,9 +94,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Only show keys matching this query (substring match, optional).
      */
-    this.getKeysAll = function (params) {
+    getKeysAll(params) {
         return this.get('/keys/all', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeysWikiPages
@@ -100,9 +104,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Only show keys matching this query (substring match, optional).
      */
-    this.getKeysWikiPages = function (params) {
+    getKeysWikiPages(params) {
         return this.get('/keys/wiki_pages', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getKeysWithoutWikiPage
@@ -112,9 +116,9 @@ function osmTagInfoAPI($http, $q) {
         min_count — How many tags with this key must there be at least to show up here? (default 10000).
         query — Only show results where the key matches this query (substring match, optional).
      */
-    this.getKeysWithoutWikiPage = function (params) {
+    getKeysWithoutWikiPage(params) {
         return this.get('/keys/without_wiki_page', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getRelationRoles
@@ -123,9 +127,9 @@ function osmTagInfoAPI($http, $q) {
         query — Only show results where the role matches this query (substring match, optional).
         rtype — Relation type (required).
      */
-    this.getRelationRoles = function (params) {
+    getRelationRoles(params) {
         return this.get('/relation/roles', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getRelationStats
@@ -133,9 +137,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         rtype — Relation type (required).
      */
-    this.getRelationStats = function (params) {
+    getRelationStats(params) {
         return this.get('/relation/stats', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getRelationWikiPages
@@ -143,9 +147,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         rtype — Relation type (required).
      */
-    this.getRelationWikiPages = function (params) {
+    getRelationWikiPages(params) {
         return this.get('/relation/wiki_pages', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getRelationsAll
@@ -153,9 +157,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Only show results where the relation type matches this query (substring match, optional).
      */
-    this.getRelationsAll = function (params) {
+    getRelationsAll(params) {
         return this.get('/relations/all', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getSearchByKeyAndValue
@@ -163,9 +167,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Value to search for (substring search, required).
      */
-    this.getSearchByKeyAndValue = function (params) {
+    getSearchByKeyAndValue(params) {
         return this.get('/search/by_key_and_value', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getSearchByKeyword
@@ -173,9 +177,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Value to search for (substring search, required).
      */
-    this.getSearchByKeyword = function (params) {
+    getSearchByKeyword(params) {
         return this.get('/search/by_keyword', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getSearchByRole
@@ -183,9 +187,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Role to search for (substring search, required).
      */
-    this.getSearchByRole = function (params) {
+    getSearchByRole(params) {
         return this.get('/search/by_role', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getSearchByValue
@@ -193,9 +197,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Value to search for (substring search, required).
      */
-    this.getSearchByValue = function (params) {
+    getSearchByValue(params) {
         return this.get('/search/by_value', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getSiteInfo
@@ -203,9 +207,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
          param: No params
      */
-    this.getSiteInfo = function (params) {
+    getSiteInfo(params) {
         return this.get('/site/info', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getSiteSources
@@ -213,9 +217,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
          param: No params
      */
-    this.getSiteSources = function (params) {
+    getSiteSources(params) {
         return this.get('/site/sources', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getTagCombinations
@@ -225,9 +229,9 @@ function osmTagInfoAPI($http, $q) {
         query — Only show results where the other_key or other_value matches this query (substring match, optional).
         value — Tag value (required).
      */
-    this.getTagCombinations = function (params) {
+    getTagCombinations(params) {
         return this.get('/tag/combinations', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getTagDistributionNodes
@@ -236,9 +240,9 @@ function osmTagInfoAPI($http, $q) {
         key — Tag key (required).
         value — Tag value (required).
      */
-    this.getTagDistributionNodes = function (params) {
+    getTagDistributionNodes(params) {
         return this.get('/tag/distribution/nodes', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getTagDistributionWays
@@ -247,9 +251,9 @@ function osmTagInfoAPI($http, $q) {
         key — Tag key (required).
         value — Tag value (required).
      */
-    this.getTagDistributionWays = function (params) {
+    getTagDistributionWays(params) {
         return this.get('/tag/distribution/ways', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getTagStats
@@ -258,9 +262,9 @@ function osmTagInfoAPI($http, $q) {
         key — Tag key (required).
         value — Tag value (required).
      */
-    this.getTagStats = function (params) {
+    getTagStats(params) {
         return this.get('/tag/stats', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getTagWikiPages
@@ -269,9 +273,9 @@ function osmTagInfoAPI($http, $q) {
         key — Tag key (required).
         value — Tag value (required).
      */
-    this.getTagWikiPages = function (params) {
+    getTagWikiPages(params) {
         return this.get('/tag/wiki_pages', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getTagsPopular
@@ -279,9 +283,9 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
         query — Only show tags matching this query (substring match in key and value, optional).
      */
-    this.getTagsPopular = function (params) {
+    getTagsPopular(params) {
         return this.get('/tags/popular', {params: params});
-    };
+    }
     /**
      * @ngdoc method
      * @name getWikiLanguages
@@ -289,8 +293,11 @@ function osmTagInfoAPI($http, $q) {
      * @param {any} params
          param: No params
      */
-    this.getWikiLanguages = function (params) {
+    getWikiLanguages(params) {
         return this.get('/wiki/languages', {params: params});
-    };
+    }
 }
+
+osmTagInfoAPI.$inject = ['$http', '$q'];
+
 export default osmTagInfoAPI;

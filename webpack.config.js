@@ -6,6 +6,7 @@ var config = {
         full: './src/osm.js',
         api: ['./src/api/api.js'],
         oauth: ['./src/oauth/oauth.js'],
+        base64: ['./src/base64/base64.js'],
         osmr: ['./src/osmr/osmr.js'],
         overpass: ['./src/overpass/overpass.js'],
         taginfo: ['./src/taginfo/taginfo.js'],

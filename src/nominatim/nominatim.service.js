@@ -4,8 +4,11 @@
 * @name osm.nominatim.osmNominatim
 * @description handle nominatim query
 */
-function osmNominatim($http, options) {
-    this.url = options.url;
+class osmNominatim{
+    constructor($http, options) {
+        this.url = options.url;
+        this.$http = $http;
+    }
 
     /**
      * @ngdoc method
@@ -15,7 +18,7 @@ function osmNominatim($http, options) {
      * @methodOf osm.nominatim.osmNominatim
      * @return {Promise} $http.get
     */
-    this.search = function search(query) {
+    search(query) {
         //https://nominatim.openstreetmap.org/search
         //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
         //params['accept-language'] = 'fr';
@@ -33,8 +36,8 @@ function osmNominatim($http, options) {
             params: params
         };
         let url = this.url + '/search';
-        return $http.get(url, config);
-    };
+        return this.$http.get(url, config);
+    }
 
     /**
      * @ngdoc method
@@ -44,7 +47,7 @@ function osmNominatim($http, options) {
      * @methodOf osm.nominatim.osmNominatim
      * @return {Promise} $http.get
     */
-    this.reverse = function reverse(query) {
+    reverse(query) {
         //https://nominatim.openstreetmap.org/reverse
         //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
         //params['accept-language'] = 'fr';
@@ -62,8 +65,8 @@ function osmNominatim($http, options) {
             params: params
         };
         let url = this.url + '/reverse';
-        return $http.get(url, config);
-    };
+        return this.$http.get(url, config);
+    }
 
 
     /**
@@ -76,7 +79,7 @@ function osmNominatim($http, options) {
      * @methodOf osm.nominatim.osmNominatim
      * @return {Promise} $http.get
     */
-    this.lookup = function lookup(query) {
+    lookup(query) {
         var params;
         if (typeof query === 'string') {
             params = {
@@ -91,8 +94,8 @@ function osmNominatim($http, options) {
             params: params
         };
         let url = this.url + '/lookup';
-        return $http.get(url, config);
-    };
+        return this.$http.get(url, config);
+    }
 
 }
 

@@ -3,91 +3,27 @@
  * @name osm.oauth.osmAuthService
  * @description The main idea is use geojson object where it is possible
  * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
- * @param  {Object} $base64 angular-base64
  * @param  {Object} $http angular http
  * @param  {Object} $q angular promise
- * @param  {Object} osmSettingsService settings service
  */
-function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
-
-    this.url = options.url;
-    // ------------------ CREDENTIALS -----------------
-
-    /**
-     * @ngdoc method
-     * @name validateCredentials
-     * @description if you don't use oauth, you can manage
-     * credentials here using base64 headers
-     * @methodOf osm.api.osmAPI
-     * @returns {Promise} true/false
-    */
-    this.validateCredentials = function () {
-        var deferred = $q.defer();
-        this.getUserDetails().then(function (data) {
-            if (data.osm.user) {
-                osmSettingsService.setUserID(data.osm.user._id);
-            }
-            deferred.resolve(data.osm.user !== undefined);
-        }, function (error) {
-            deferred.reject(error);
-        });
-        return deferred.promise;
-    };
-    /**
-     * @ngdoc method
-     * @name setCredentials
-     * @description if you don't use oauth, you can save
-     * credentials here using base64 localstorage (completly unsecure)
-     * @methodOf osm.api.osmAPI
-     * @returns {string} crendentials
-    */
-    this.setCredentials = function (username, password) {
-        osmSettingsService.setUserName(username);
-        var credentials = $base64.encode(username + ':' + password);
-        osmSettingsService.setCredentials(credentials);
-        return credentials;
-    };
-    /**
-     * @ngdoc method
-     * @name getCredentials
-     * @description if you don't use oauth, you can manage
-     * credentials here using base64 headers
-     * @methodOf osm.api.osmAPI
-     * @returns {string} crendentials from the last set
-    */
-    this.getCredentials = function () {
-        return osmSettingsService.getCredentials();
-    };
-    /**
-     * @ngdoc method
-     * @name getAuthorization
-     * @description compute authorization header from credentials
-     * @methodOf osm.api.osmAPI
-     * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
-    */
-    this.getAuthorization = function () {
-        return 'Basic ' + osmSettingsService.getCredentials();
-    };
-    /**
-     * @ngdoc method
-     * @name clearCredentials
-     * @description remove credentials from the localstorage
-     * @methodOf osm.api.osmAPI
-     * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
-    */
-    this.clearCredentials = function () {
-        osmSettingsService.setCredentials('');
-    };
+class osmAPI {
+    constructor($http, $q, osmx2js, options) {
+        this.url = options.url;
+        this.$http = $http;
+        this.$q = $q;
+        this.osmx2js = osmx2js;
+        this._oauth = null;
+    }
 
     /**
      * @ngdoc method
-     * @name setOauth
-     * @description use oauth object to call API
+     * @name setAuthAdapter
+     * @description provide an adapter to make authenticated request
      * @methodOf osm.api.osmAPI
     */
-    this.setOauth = function setOauth(oauth) {
+    setAuthAdapter(oauth) {
         this._oauth = oauth;
-    };
+    }
 
     /**
      * @ngdoc method
@@ -96,27 +32,12 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @methodOf osm.api.osmAPI
      * @return {Object} oauth
     */
-    this.getOauth = function getOauth() {
+    getAuthAdapter() {
         return this._oauth;
-    };
+    }
 
 
     // ------------------ INTERNAL CALL SERVER (API) -----------------
-
-    function isElement(obj) {
-        try {
-            //Using W3 DOM2 (works for FF, Opera and Chrom)
-            return obj instanceof HTMLElement;
-        }
-        catch(e){
-            //Browsers not supporting W3 DOM2 don't have HTMLElement and
-            //an exception is thrown and we end up here. Testing some
-            //properties that all elements have. (works on IE7)
-            return (typeof obj==="object") &&
-            (obj.nodeType===1) && (typeof obj.style === "object") &&
-            (typeof obj.ownerDocument ==="object");
-        }
-    }
 
     /**
      * @ngdoc method
@@ -134,60 +55,19 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @methodOf osm.api.osmAPI
      * @return {Object} oauth
     */
-    this.xhr = function (options) {
-        let deferred = $q.defer();
-        let promise;
-        let hasOauth = this._oauth; 
-        if (hasOauth) {
-            options.path = '/api' + options.path;
-            if (options.data) {
-                options.body = options.data;
-                options.data = undefined;
-            }
-            promise = this._oauth.xhr(options);
-        } else {
-            options.url = this.url + options.path;
-            options.headers = {
-                Authorization: this.getAuthorization()
-            };
-            promise = $http(options);
-        }
-        promise.then(function (data) {
-            var d;
-            var t = function (d) {
-                if (!d) {
-                    return d;
-                }
-                if (d.substr) {
-                    if (d.substr(0, 5) === '<?xml') {
-                        return osmx2js.xml2js(d);
-                    }
-                } else if (isElement(d)) {
-                    return osmx2js.dom2js(d);
-                }
-                return d;
-            };
-            if (hasOauth) {
-                d = data;
-            } else {
-                d = data.data;
-            }
-            deferred.resolve(t(d));
-        }, function (error) {
-            deferred.reject(error);
-        });
-        return deferred.promise;
-    };
+    xhr(options) {
+        let deferred = this.$q.defer();
+        return this._oauth.xhr(options);
+    }
 
     /**
      * @ngdoc method
      * @name getAuthenticated
      * @description send a get request to OSM with
-     * base64 crendentials in header
      * @methodOf osm.api.osmAPI
      * @returns {Promise} $http response
     */
-    this.getAuthenticated = function (method, config) {
+    getAuthenticated(method, config) {
         var _config = angular.copy(config);
         if (!_config) {
             _config = {};
@@ -195,7 +75,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
         _config.method = 'GET';
         _config.path = method;
         return this.xhr(_config);
-    };
+    }
     /**
      * @ngdoc method
      * @name get
@@ -205,17 +85,17 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @param {Object} config the $http.get config
      * @returns {Promise} $http response with XML as string
     */
-    this.get = function (method, config) {
-        var deferred = $q.defer();
+    get(method, config) {
+        var deferred = this.$q.defer();
         var self = this;
         var url = this.url + method;
-        $http.get(url, config).then(function (data) {
-            deferred.resolve(osmx2js.xml2js(data.data));
+        this.$http.get(url, config).then(function (data) {
+            deferred.resolve(self.osmx2js.xml2js(data.data));
         }, function (error) {
             deferred.reject(error);
         });
         return deferred.promise;
-    };
+    }
     /**
      * @ngdoc method
      * @name put
@@ -226,16 +106,16 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @param {Object} config the $http.put config
      * @returns {Promise} $http response
     */
-    this.put = function (method, content, config) {
+    put(method, content, config) {
         if (!config) {
             config = {};
         }
         var _config = angular.copy(config);
         _config.method = 'PUT';
         _config.path = method;
-        _config.data = osmx2js.js2xml(content);
+        _config.data = this.osmx2js.js2xml(content);
         return this.xhr(_config);
-    };
+    }
     /**
      * @ngdoc method
      * @name delete
@@ -245,7 +125,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @param {Object} config the $http.delete config
      * @returns {Promise} $http response
     */
-    this.delete = function (method, config) {
+    delete(method, config) {
         if (!config) {
             config = {};
         }
@@ -253,7 +133,7 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
         _config.method = 'DELETE';
         _config.path = method;
         return this.xhr(_config);
-    };
+    }
 
 
     // ------------------ CHANGESET -----------------
@@ -266,8 +146,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @param {string} comment the comment assiociated to the changeset
      * @returns {Promise} $http response
     */
-    this.createChangeset = function (comment) {
-        var deferred = $q.defer();
+    createChangeset(comment) {
+        var self = this;
+        var deferred = this.$q.defer();
         var changeset = {osm: {
             changeset: {
                 tag: [
@@ -277,11 +158,10 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
             }
         }};
         this.put('/0.6/changeset/create', changeset).then(function (data) {
-            osmSettingsService.setChangeset(data);
             deferred.resolve(data);
         });
         return deferred.promise;
-    };
+    }
     /**
      * @ngdoc method
      * @name getLastOpenedChangesetId
@@ -289,26 +169,24 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http response with the last changeset id
      * or undefined if no changeset was opened
     */
-    this.getLastOpenedChangesetId = function () {
-        var deferred = $q.defer();
+    getLastOpenedChangesetId() {
+        var self = this;
+        var deferred = this.$q.defer();
         var config = {
-            params:{user: osmSettingsService.getUserID(), open: true}
+            params:{user: this._oauth.getUserID(), open: true}
         };
         this.get('/0.6/changesets', config).then(function (data) {
             var changesets = data.osm.changeset;
             if (changesets.length > 0) {
-                osmSettingsService.setChangeset(changesets[0].id);
                 deferred.resolve(changesets[0].id);
             } else if (changesets._id) {
-                osmSettingsService.setChangeset(changesets._id);
                 deferred.resolve(changesets._id);
             } else {
-                osmSettingsService.setChangeset();
                 deferred.resolve();
             }
         });
         return deferred.promise;
-    };
+    }
     /**
      * @ngdoc method
      * @name closeChangeset
@@ -316,14 +194,13 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.put response of
      * /0.6/changeset/CHANGESET_ID/close
     */
-    this.closeChangeset = function () {
-        var changeset = osmSettingsService.getChangeset();
-        return this.put('/0.6/changeset/'+ changeset +'/close')
+    closeChangeset(id) {
+        var self = this;
+        return this.put(`/0.6/changeset/${id}/close`)
         .then(function (data) {
-            osmSettingsService.setChangeset();
             return data;
         });
-    };
+    }
 
 
     // ------------------ USER API -----------------
@@ -336,9 +213,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * /0.6/user/#id
     */
-    this.getUserById = function (id) {
+    getUserById(id) {
         return this.getAuthenticated('/0.6/user/' + id);
-    };
+    }
 
 
     /**
@@ -348,9 +225,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * /0.6/user/details
     */
-    this.getUserDetails = function () {
+    getUserDetails() {
         return this.getAuthenticated('/0.6/user/details');
-    };
+    }
     /**
      * @ngdoc method
      * @name getUserPreferences
@@ -358,9 +235,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * /0.6/user/preferences
     */
-    this.getUserPreferences = function () {
+    getUserPreferences() {
         return this.getAuthenticated('/0.6/user/preferences');
-    };
+    }
 
     /**
      * @ngdoc method
@@ -371,9 +248,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * /0.6/user/preferences
     */
-    this.putUserPreferences = function (key, value) {
+    putUserPreferences(key, value) {
         return this.put('/0.6/user/preferences/' + key , value);
-    };
+    }
 
 
     //------------------ MAP DATA -------------------------
@@ -391,9 +268,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * /0.6/map?bbox=bbox
     */
-    this.getMap = function (bbox) {
+    getMap(bbox) {
         return this.get('/0.6/map?bbox=' + bbox);
-    };
+    }
 
 
     /**
@@ -408,10 +285,10 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
         top is the latitude of the top (northernmost) side of the bounding box.
      * @returns {Promise} $http.get response
     */
-    this.getNotes = function (bbox) {
+    getNotes(bbox) {
         var url = '/0.6/notes?bbox=' + bbox;
         return this.get(url);
-    };
+    }
 
 
 
@@ -431,9 +308,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.put response
      * PUT /0.6/node/create
     */
-    this.createNode = function (node) {
+    createNode(node) {
         return this.put('/0.6/node/create', node);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -443,9 +320,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id
     */
-    this.getNode = function (id) {
+    getNode(id) {
         return this.get('/0.6/node/' + id);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -455,9 +332,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id/relations
     */
-    this.getNodeRelations = function (id) {
+    getNodeRelations(id) {
         return this.get(`/0.6/node/${id}/relations`);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -467,9 +344,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id/ways
     */
-    this.getNodeWays = function (id) {
+    getNodeWays(id) {
         return this.get(`/0.6/node/${id}/ways`);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -479,9 +356,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id
     */
-    this.getNodes = function (ids) {
+    getNodes(ids) {
         return this.get('/0.6/nodes?nodes=' + ids.join(','));
-    };
+    }
 
     /**
      * @ngdoc method
@@ -491,9 +368,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.delete response
      * DELETE /0.6/node/#id
     */
-    this.deleteNode = function (id) {
+    deleteNode(id) {
         return this.delete('/0.6/node/' + id);
-    };
+    }
 
 
 
@@ -518,9 +395,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.put response
      * PUT /0.6/way/create
     */
-    this.createWay = function (way) {
+    createWay(way) {
         return this.put('/0.6/way/create', way);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -530,9 +407,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id
     */
-    this.getWay = function (id) {
+    getWay(id) {
         return this.get('/0.6/way/' + id);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -542,9 +419,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id/relations
     */
-    this.getWayRelations = function (id) {
+    getWayRelations(id) {
         return this.get(`/0.6/way/${id}/relations`);
-    };
+    }
 
 
     /**
@@ -555,9 +432,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id/full
     */
-    this.getWayFull = function (id) {
+    getWayFull(id) {
         return this.get(`/0.6/way/${id}/full`);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -567,9 +444,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/ways?ways=ids
     */
-    this.getWays = function (ids) {
+    getWays(ids) {
         return this.get('/0.6/ways?ways=' + ids.join(','));
-    };
+    }
 
 
     /**
@@ -580,9 +457,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.delete response
      * DELETE /0.6/way/#id
     */
-    this.deleteWay = function (id) {
+    deleteWay(id) {
         return this.delete('/0.6/way/' + id);
-    };
+    }
 
     //------------------ ELEMENTS: RELATION ----------------
 
@@ -605,9 +482,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.put response
      * PUT /0.6/relation/create
     */
-    this.createRelation = function (relation) {
+    createRelation(relation) {
         return this.put('/0.6/relation/create', relation);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -617,9 +494,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id
     */
-    this.getRelation = function (id) {
+    getRelation(id) {
         return this.get('/0.6/relation/' + id);
-    };
+    }
     /**
      * @ngdoc method
      * @name getRelationRelations
@@ -628,9 +505,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id/relations
     */
-    this.getRelationRelations = function (id) {
+    getRelationRelations(id) {
         return this.get(`/0.6/relation/${id}/relations`);
-    };
+    }
 
 
     /**
@@ -641,9 +518,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id/full
     */
-    this.getRelationFull = function (id) {
+    getRelationFull(id) {
         return this.get(`/0.6/relation/${id}/full`);
-    };
+    }
 
     /**
      * @ngdoc method
@@ -653,9 +530,9 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.get response
      * GET /0.6/relations?relations=ids
     */
-    this.getRelations = function (ids) {
+    getRelations(ids) {
         return this.get('/0.6/relations?relations=' + ids.join(','));
-    };
+    }
 
     /**
      * @ngdoc method
@@ -665,10 +542,11 @@ function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
      * @returns {Promise} $http.delete response
      * DELETE /0.6/relation/#id
     */
-    this.deleteRelation = function (id) {
+    deleteRelation(id) {
         return this.delete('/0.6/relation/' + id);
-    };
+    }
 
 }
 
+osmAPI.$inject = ['$http', '$q', 'osmx2js'];
 export default osmAPI;

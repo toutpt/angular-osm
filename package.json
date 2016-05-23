@@ -39,7 +39,6 @@
   "dependencies": {
     "angular": "1.5.5",
     "angular-base64": "^2.0.5",
-    "ngstorage": "0.3.10",
     "osm-auth": "0.2.8",
     "x2js": "^2.0.1"
   }

@@ -1,76 +1,89 @@
-import osmAuthLib from 'osm-auth';
 
 /**
 * @ngdoc service
 * @name osm.oauth.osmAuthService
-* @requires angular-osm.osmSettingsService
 * @description handle osm oauth
 */
-function osmAuthService($q, options) {
-    if (options) {
-        if (options.oauth_secret && options.oauth_consumer_key) {
-            this.auth = osmAuth(options);
+class osmAuthService{
+    constructor($q, osmx2js, options) {
+        if (options) {
+            if (options.oauth_secret && options.oauth_consumer_key) {
+                this.auth = osmAuth(options);
+            }
         }
+        this.osmx2js = osmx2js;
+        this.$q = $q;
+        this._options = options;
     }
     /**
      * @ngdoc method
      * @name logout
      * @methodOf osm.auth.osmAuthService
      */
-    this.logout = function () {
+    logout() {
         this.auth.logout();
-    };
+    }
     /**
      * @ngdoc method
      * @name authenticated
      * @methodOf osm.auth.osmAuthService
      * @return {boolean} authenticated
      */
-    this.authenticated = function () {
+    authenticated() {
         return this.auth.authenticated();
-    };
+    }
     /**
      * @ngdoc method
      * @name authenticate
      * @methodOf osm.auth.osmAuthService
      * @return {Promise} true/false
      */
-    this.authenticate = function () {
-        var deferred = $q.defer();
+    authenticate() {
+        var deferred = this.$q.defer();
         this.auth.authenticate(function () {
             deferred.resolve(true);
         });
         return deferred.promise;
-    };
+    }
     /**
      * @ngdoc method
      * @name xhr
      * @methodOf osm.auth.osmAuthService
      * @return {Promise} http response
      */
-    this.xhr = function (options) {
-        var deferred = $q.defer();
+    xhr(options) {
+        var self = this;
+        var deferred = this.$q.defer();
+        options.path = '/api' + options.path;
+        if (options.data) {
+            options.body = options.data;
+            options.data = undefined;
+        }
         this.auth.xhr(options, function (err, data) {
             if (err) {
                 deferred.reject(err);
             } else {
-                deferred.resolve(data);
+                if (data instanceof XMLDocument) {
+                    deferred.resolve(self.osmx2js.dom2js(data));
+                } else {
+                    deferred.resolve(data);
+                }
             }
         });
         return deferred.promise;
-    };
+    }
     /**
      * @ngdoc method
      * @name options
      * @methodOf osm.auth.osmAuthService
      */
-    this.options = function (options) {
+    options(options) {
         if (this.auth) {
             this.auth.options(options);
         } else {
             this.auth = osmAuth(options);
         }
-    };
+    }
 }
 
 export default osmAuthService;
