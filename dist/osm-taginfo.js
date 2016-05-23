@@ -55,12 +55,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(14);
+	module.exports = __webpack_require__(11);
 
 
 /***/ },
 
-/***/ 14:
+/***/ 11:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69,7 +69,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _taginfo = __webpack_require__(15);
+	var _taginfo = __webpack_require__(12);
 
 	var _taginfo2 = _interopRequireDefault(_taginfo);
 
@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 15:
+/***/ 12:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -90,7 +90,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	osmTagInfoAPI.$inject = ['$http', '$q'];
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 	/**
 	 * @ngdoc service
 	 * @name osmTagInfoAPI
@@ -99,289 +102,384 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param  {any} $http
 	 * @param  {any} $q
 	 */
-	function osmTagInfoAPI($http, $q) {
-	    this.get = function (method, config) {
-	        var deferred = $q.defer();
-	        $http.get('https://taginfo.openstreetmap.org/api/4' + method, config).then(function (data) {
-	            deferred.resolve(data.data);
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyCombinations
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        query — Only show results where the other_key matches this query (substring match, optional).
-	     */
-	    this.getKeyCombinations = function (params) {
-	        return this.get('/key/combinations', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyDistributionNodes
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	     */
-	    this.getKeyDistributionNodes = function (params) {
-	        return this.get('/key/distribution/nodes', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyDistributionWays
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	     * key — Tag key (required).
-	     */
-	    this.getKeyDistributionWays = function (params) {
-	        return this.get('/key/distribution/ways', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyStats
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	     * key — Tag key (required).
-	     */
-	    this.getKeyStats = function (params) {
-	        return this.get('/key/stats', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyValues
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        lang — Language for description (optional, default: 'en').
-	        query — Only show results where the value matches this query (substring match, optional).
-	     */
-	    this.getKeyValues = function (params) {
-	        return this.get('/key/values', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	     */
-	    this.getKeyWikiPages = function (params) {
-	        return this.get('/key/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeysAll
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show keys matching this query (substring match, optional).
-	     */
-	    this.getKeysAll = function (params) {
-	        return this.get('/keys/all', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeysWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show keys matching this query (substring match, optional).
-	     */
-	    this.getKeysWikiPages = function (params) {
-	        return this.get('/keys/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeysWithoutWikiPage
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        english — Check for key wiki pages in any language (0, default) or in the English language (1).
-	        min_count — How many tags with this key must there be at least to show up here? (default 10000).
-	        query — Only show results where the key matches this query (substring match, optional).
-	     */
-	    this.getKeysWithoutWikiPage = function (params) {
-	        return this.get('/keys/without_wiki_page', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationRoles
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show results where the role matches this query (substring match, optional).
-	        rtype — Relation type (required).
-	     */
-	    this.getRelationRoles = function (params) {
-	        return this.get('/relation/roles', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationStats
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        rtype — Relation type (required).
-	     */
-	    this.getRelationStats = function (params) {
-	        return this.get('/relation/stats', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        rtype — Relation type (required).
-	     */
-	    this.getRelationWikiPages = function (params) {
-	        return this.get('/relation/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationsAll
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show results where the relation type matches this query (substring match, optional).
-	     */
-	    this.getRelationsAll = function (params) {
-	        return this.get('/relations/all', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByKeyAndValue
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Value to search for (substring search, required).
-	     */
-	    this.getSearchByKeyAndValue = function (params) {
-	        return this.get('/search/by_key_and_value', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByKeyword
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Value to search for (substring search, required).
-	     */
-	    this.getSearchByKeyword = function (params) {
-	        return this.get('/search/by_keyword', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByRole
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Role to search for (substring search, required).
-	     */
-	    this.getSearchByRole = function (params) {
-	        return this.get('/search/by_role', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByValue
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Value to search for (substring search, required).
-	     */
-	    this.getSearchByValue = function (params) {
-	        return this.get('/search/by_value', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSiteInfo
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	         param: No params
-	     */
-	    this.getSiteInfo = function (params) {
-	        return this.get('/site/info', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSiteSources
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	         param: No params
-	     */
-	    this.getSiteSources = function (params) {
-	        return this.get('/site/sources', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagCombinations
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        query — Only show results where the other_key or other_value matches this query (substring match, optional).
-	        value — Tag value (required).
-	     */
-	    this.getTagCombinations = function (params) {
-	        return this.get('/tag/combinations', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagDistributionNodes
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagDistributionNodes = function (params) {
-	        return this.get('/tag/distribution/nodes', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagDistributionWays
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagDistributionWays = function (params) {
-	        return this.get('/tag/distribution/ways', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagStats
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagStats = function (params) {
-	        return this.get('/tag/stats', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagWikiPages = function (params) {
-	        return this.get('/tag/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagsPopular
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show tags matching this query (substring match in key and value, optional).
-	     */
-	    this.getTagsPopular = function (params) {
-	        return this.get('/tags/popular', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getWikiLanguages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	         param: No params
-	     */
-	    this.getWikiLanguages = function (params) {
-	        return this.get('/wiki/languages', { params: params });
-	    };
-	}
+
+	var osmTagInfoAPI = function () {
+	    function osmTagInfoAPI($http, $q) {
+	        _classCallCheck(this, osmTagInfoAPI);
+
+	        this.$http = $http;
+	        this.$q = $q;
+	        this.url = 'https://taginfo.openstreetmap.org/api/4';
+	    }
+
+	    _createClass(osmTagInfoAPI, [{
+	        key: 'get',
+	        value: function get(method, config) {
+	            var deferred = this.$q.defer();
+	            this.$http.get(this.url + method, config).then(function (data) {
+	                deferred.resolve(data.data);
+	            }, function (error) {
+	                deferred.reject(error);
+	            });
+	            return deferred.promise;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyCombinations
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            query — Only show results where the other_key matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeyCombinations',
+	        value: function getKeyCombinations(params) {
+	            return this.get('/key/combinations', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyDistributionNodes
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyDistributionNodes',
+	        value: function getKeyDistributionNodes(params) {
+	            return this.get('/key/distribution/nodes', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyDistributionWays
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	         * key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyDistributionWays',
+	        value: function getKeyDistributionWays(params) {
+	            return this.get('/key/distribution/ways', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyStats
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	         * key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyStats',
+	        value: function getKeyStats(params) {
+	            return this.get('/key/stats', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyValues
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            lang — Language for description (optional, default: 'en').
+	            query — Only show results where the value matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeyValues',
+	        value: function getKeyValues(params) {
+	            return this.get('/key/values', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyWikiPages',
+	        value: function getKeyWikiPages(params) {
+	            return this.get('/key/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeysAll
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show keys matching this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeysAll',
+	        value: function getKeysAll(params) {
+	            return this.get('/keys/all', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeysWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show keys matching this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeysWikiPages',
+	        value: function getKeysWikiPages(params) {
+	            return this.get('/keys/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeysWithoutWikiPage
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            english — Check for key wiki pages in any language (0, default) or in the English language (1).
+	            min_count — How many tags with this key must there be at least to show up here? (default 10000).
+	            query — Only show results where the key matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeysWithoutWikiPage',
+	        value: function getKeysWithoutWikiPage(params) {
+	            return this.get('/keys/without_wiki_page', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationRoles
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show results where the role matches this query (substring match, optional).
+	            rtype — Relation type (required).
+	         */
+
+	    }, {
+	        key: 'getRelationRoles',
+	        value: function getRelationRoles(params) {
+	            return this.get('/relation/roles', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationStats
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            rtype — Relation type (required).
+	         */
+
+	    }, {
+	        key: 'getRelationStats',
+	        value: function getRelationStats(params) {
+	            return this.get('/relation/stats', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            rtype — Relation type (required).
+	         */
+
+	    }, {
+	        key: 'getRelationWikiPages',
+	        value: function getRelationWikiPages(params) {
+	            return this.get('/relation/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationsAll
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show results where the relation type matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getRelationsAll',
+	        value: function getRelationsAll(params) {
+	            return this.get('/relations/all', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByKeyAndValue
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Value to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByKeyAndValue',
+	        value: function getSearchByKeyAndValue(params) {
+	            return this.get('/search/by_key_and_value', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByKeyword
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Value to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByKeyword',
+	        value: function getSearchByKeyword(params) {
+	            return this.get('/search/by_keyword', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByRole
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Role to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByRole',
+	        value: function getSearchByRole(params) {
+	            return this.get('/search/by_role', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByValue
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Value to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByValue',
+	        value: function getSearchByValue(params) {
+	            return this.get('/search/by_value', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSiteInfo
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	             param: No params
+	         */
+
+	    }, {
+	        key: 'getSiteInfo',
+	        value: function getSiteInfo(params) {
+	            return this.get('/site/info', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSiteSources
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	             param: No params
+	         */
+
+	    }, {
+	        key: 'getSiteSources',
+	        value: function getSiteSources(params) {
+	            return this.get('/site/sources', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagCombinations
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            query — Only show results where the other_key or other_value matches this query (substring match, optional).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagCombinations',
+	        value: function getTagCombinations(params) {
+	            return this.get('/tag/combinations', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagDistributionNodes
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagDistributionNodes',
+	        value: function getTagDistributionNodes(params) {
+	            return this.get('/tag/distribution/nodes', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagDistributionWays
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagDistributionWays',
+	        value: function getTagDistributionWays(params) {
+	            return this.get('/tag/distribution/ways', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagStats
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagStats',
+	        value: function getTagStats(params) {
+	            return this.get('/tag/stats', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagWikiPages',
+	        value: function getTagWikiPages(params) {
+	            return this.get('/tag/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagsPopular
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show tags matching this query (substring match in key and value, optional).
+	         */
+
+	    }, {
+	        key: 'getTagsPopular',
+	        value: function getTagsPopular(params) {
+	            return this.get('/tags/popular', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getWikiLanguages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	             param: No params
+	         */
+
+	    }, {
+	        key: 'getWikiLanguages',
+	        value: function getWikiLanguages(params) {
+	            return this.get('/wiki/languages', { params: params });
+	        }
+	    }]);
+
+	    return osmTagInfoAPI;
+	}();
+
+	osmTagInfoAPI.$inject = ['$http', '$q'];
+
 	exports.default = osmTagInfoAPI;
 
 /***/ }

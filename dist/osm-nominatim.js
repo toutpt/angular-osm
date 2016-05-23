@@ -55,12 +55,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(16);
+	module.exports = __webpack_require__(13);
 
 
 /***/ },
 
-/***/ 16:
+/***/ 13:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69,7 +69,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _nominatim = __webpack_require__(17);
+	var _nominatim = __webpack_require__(14);
 
 	var _nominatim2 = _interopRequireDefault(_nominatim);
 
@@ -89,7 +89,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 17:
+/***/ 14:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -98,13 +98,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 	/**
 	* @ngdoc service
 	* @name osm.nominatim.osmNominatim
 	* @description handle nominatim query
 	*/
-	function osmNominatim($http, options) {
-	    this.url = options.url;
+
+	var osmNominatim = function () {
+	    function osmNominatim($http, options) {
+	        _classCallCheck(this, osmNominatim);
+
+	        this.url = options.url;
+	        this.$http = $http;
+	    }
 
 	    /**
 	     * @ngdoc method
@@ -114,84 +124,97 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @methodOf osm.nominatim.osmNominatim
 	     * @return {Promise} $http.get
 	    */
-	    this.search = function search(query) {
-	        //https://nominatim.openstreetmap.org/search
-	        //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
-	        //params['accept-language'] = 'fr';
-	        var params;
-	        if (typeof query === 'string' || !query) {
-	            params = {
-	                format: 'json',
-	                q: query
-	            };
-	        } else {
-	            params = angular.copy(query);
-	            params.format = 'json';
-	        }
-	        var config = {
-	            params: params
-	        };
-	        var url = this.url + '/search';
-	        return $http.get(url, config);
-	    };
 
-	    /**
-	     * @ngdoc method
-	     * @name reverse
-	     * @param {Object/String} query
-	     * http://wiki.openstreetmap.org/wiki/Nominatim
-	     * @methodOf osm.nominatim.osmNominatim
-	     * @return {Promise} $http.get
-	    */
-	    this.reverse = function reverse(query) {
-	        //https://nominatim.openstreetmap.org/reverse
-	        //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
-	        //params['accept-language'] = 'fr';
-	        var params;
-	        if (typeof query === 'string') {
-	            params = {
-	                format: 'json',
-	                q: query
-	            };
-	        } else {
-	            params = angular.copy(query);
-	            params.format = 'json';
-	        }
-	        var config = {
-	            params: params
-	        };
-	        var url = this.url + '/reverse';
-	        return $http.get(url, config);
-	    };
 
-	    /**
-	     * @ngdoc method
-	     * @name lookup
-	     * @description
-	     *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
-	     * @param {Object/String} query
-	     * http://wiki.openstreetmap.org/wiki/Nominatim
-	     * @methodOf osm.nominatim.osmNominatim
-	     * @return {Promise} $http.get
-	    */
-	    this.lookup = function lookup(query) {
-	        var params;
-	        if (typeof query === 'string') {
-	            params = {
-	                format: 'json',
-	                q: query
+	    _createClass(osmNominatim, [{
+	        key: 'search',
+	        value: function search(query) {
+	            //https://nominatim.openstreetmap.org/search
+	            //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	            //params['accept-language'] = 'fr';
+	            var params;
+	            if (typeof query === 'string' || !query) {
+	                params = {
+	                    format: 'json',
+	                    q: query
+	                };
+	            } else {
+	                params = angular.copy(query);
+	                params.format = 'json';
+	            }
+	            var config = {
+	                params: params
 	            };
-	        } else {
-	            params = angular.copy(query);
-	            params.format = 'json';
+	            var url = this.url + '/search';
+	            return this.$http.get(url, config);
 	        }
-	        var config = {
-	            params: params
-	        };
-	        var url = this.url + '/lookup';
-	        return $http.get(url, config);
-	    };
-	}
+
+	        /**
+	         * @ngdoc method
+	         * @name reverse
+	         * @param {Object/String} query
+	         * http://wiki.openstreetmap.org/wiki/Nominatim
+	         * @methodOf osm.nominatim.osmNominatim
+	         * @return {Promise} $http.get
+	        */
+
+	    }, {
+	        key: 'reverse',
+	        value: function reverse(query) {
+	            //https://nominatim.openstreetmap.org/reverse
+	            //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	            //params['accept-language'] = 'fr';
+	            var params;
+	            if (typeof query === 'string') {
+	                params = {
+	                    format: 'json',
+	                    q: query
+	                };
+	            } else {
+	                params = angular.copy(query);
+	                params.format = 'json';
+	            }
+	            var config = {
+	                params: params
+	            };
+	            var url = this.url + '/reverse';
+	            return this.$http.get(url, config);
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name lookup
+	         * @description
+	         *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
+	         * @param {Object/String} query
+	         * http://wiki.openstreetmap.org/wiki/Nominatim
+	         * @methodOf osm.nominatim.osmNominatim
+	         * @return {Promise} $http.get
+	        */
+
+	    }, {
+	        key: 'lookup',
+	        value: function lookup(query) {
+	            var params;
+	            if (typeof query === 'string') {
+	                params = {
+	                    format: 'json',
+	                    q: query
+	                };
+	            } else {
+	                params = angular.copy(query);
+	                params.format = 'json';
+	            }
+	            var config = {
+	                params: params
+	            };
+	            var url = this.url + '/lookup';
+	            return this.$http.get(url, config);
+	        }
+	    }]);
+
+	    return osmNominatim;
+	}();
 
 	exports.default = osmNominatim;
 

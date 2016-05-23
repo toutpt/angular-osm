@@ -4,7 +4,9 @@
 	<title>angular-osm oauth</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<script type="text/javascript" src="https://npmcdn.com/angular@1.5.5/angular.min.js"></script>
+
+	<script type="text/javascript" src="https://npmcdn.com/x2js@2.0.1/x2js.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/angular@1.5.5/angular.js"></script>
 	<script type="text/javascript" src="https://npmcdn.com/osm-auth@0.2.8/osmauth.min.js"></script>
 	<script type="text/javascript" src="../../dist/osm-oauth.js"></script>
 	<script type="text/javascript" src="example.js"></script>
@@ -14,7 +16,13 @@
 		<div class="row">
 			<div class="col-md-6">
 				<p>This example show you how to use osmOAuthService</p>
-				<button ng-click="$ctrl.login()">login</button>
+				<button class="btn btn-primary ng-hide" ng-show="!$ctrl.userDetails"
+					ng-click="$ctrl.login()">login</button>
+				<div class="ng-hide" ng-show="$ctrl.userDetails">
+					Hello {{$ctrl.userDetails.osm.user._display_name}}
+					<button class="btn btn-default"
+					ng-click="$ctrl.logout()">logout</button>
+				</div>
 			</div>
 			<ng-include src="'../display.html'"></ng-include>
 		</div>

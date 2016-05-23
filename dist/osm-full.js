@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("angular-base64"), require("ngstorage"), require("angular"), require("osm-auth"));
+		module.exports = factory(require("angular"));
 	else if(typeof define === 'function' && define.amd)
-		define(["angular-base64", "ngstorage", "angular", "osm-auth"], factory);
+		define(["angular"], factory);
 	else if(typeof exports === 'object')
-		exports["name"] = factory(require("angular-base64"), require("ngstorage"), require("angular"), require("osm-auth"));
+		exports["name"] = factory(require("angular"));
 	else
-		root["angular-osm"] = root["angular-osm"] || {}, root["angular-osm"]["name"] = factory(root["angular-base64"], root["ngstorage"], root["angular"], root["osm-auth"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_11__) {
+		root["angular-osm"] = root["angular-osm"] || {}, root["angular-osm"]["name"] = factory(root["angular"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,41 +56,41 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var _angular = __webpack_require__(8);
+	var _angular = __webpack_require__(6);
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _oauth = __webpack_require__(9);
+	var _oauth = __webpack_require__(7);
 
 	var _oauth2 = _interopRequireDefault(_oauth);
+
+	var _base = __webpack_require__(4);
+
+	var _base2 = _interopRequireDefault(_base);
 
 	var _api = __webpack_require__(1);
 
 	var _api2 = _interopRequireDefault(_api);
 
-	var _overpass = __webpack_require__(12);
+	var _overpass = __webpack_require__(9);
 
 	var _overpass2 = _interopRequireDefault(_overpass);
 
-	var _taginfo = __webpack_require__(14);
+	var _taginfo = __webpack_require__(11);
 
 	var _taginfo2 = _interopRequireDefault(_taginfo);
 
-	var _settings = __webpack_require__(4);
-
-	var _settings2 = _interopRequireDefault(_settings);
-
-	var _nominatim = __webpack_require__(16);
+	var _nominatim = __webpack_require__(13);
 
 	var _nominatim2 = _interopRequireDefault(_nominatim);
 
-	var _togeojson = __webpack_require__(18);
+	var _togeojson = __webpack_require__(15);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_angular2.default.module('osm', [_settings2.default.name, _api2.default.name, _overpass2.default.name, _taginfo2.default.name, _oauth2.default.name, _nominatim2.default.name, _togeojson2.default.name]);
+	_angular2.default.module('osm', [_api2.default.name, _base2.default.name, _oauth2.default.name, _overpass2.default.name, _taginfo2.default.name, _nominatim2.default.name, _togeojson2.default.name]);
 
 /***/ },
 /* 1 */
@@ -102,34 +102,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _angularBase = __webpack_require__(2);
-
-	var _angularBase2 = _interopRequireDefault(_angularBase);
-
-	var _api = __webpack_require__(3);
+	var _api = __webpack_require__(2);
 
 	var _api2 = _interopRequireDefault(_api);
 
-	var _settings = __webpack_require__(4);
-
-	var _settings2 = _interopRequireDefault(_settings);
-
-	var _x2js = __webpack_require__(7);
+	var _x2js = __webpack_require__(3);
 
 	var _x2js2 = _interopRequireDefault(_x2js);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	//The base64 module is only available as IIFE
-
-	var osmAPIModule = angular.module('osm.api', [_settings2.default.name, _x2js2.default.name, 'base64']).service('osmAPI', _api2.default).provider('osmAPI', function osmAPIProvider() {
+	var osmAPIModule = angular.module('osm.api', [_x2js2.default.name]).provider('osmAPI', function osmAPIProvider() {
 	    this.options = {
 	        url: 'http://api.openstreetmap.org/api'
 	    };
-	    this.$get = function osmAPIFactory($base64, $http, $q, osmSettingsService, osmx2js) {
-	        return new _api2.default($base64, $http, $q, osmSettingsService, osmx2js, this.options);
+	    this.$get = function osmAPIFactory($http, $q, osmx2js) {
+	        return new _api2.default($http, $q, osmx2js, this.options);
 	    };
-	    this.$get.$inject = ['$base64', '$http', '$q', 'osmSettingsService', 'osmx2js'];
+	    this.$get.$inject = ['$http', '$q', 'osmx2js'];
 	});
 
 	exports.default = osmAPIModule;
@@ -138,764 +128,659 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
 	 * @ngdoc service
 	 * @name osm.oauth.osmAuthService
 	 * @description The main idea is use geojson object where it is possible
 	 * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
-	 * @param  {Object} $base64 angular-base64
 	 * @param  {Object} $http angular http
 	 * @param  {Object} $q angular promise
-	 * @param  {Object} osmSettingsService settings service
 	 */
-	function osmAPI($base64, $http, $q, osmSettingsService, osmx2js, options) {
 
-	    this.url = options.url;
-	    // ------------------ CREDENTIALS -----------------
+	var osmAPI = function () {
+	    function osmAPI($http, $q, osmx2js, options) {
+	        _classCallCheck(this, osmAPI);
 
-	    /**
-	     * @ngdoc method
-	     * @name validateCredentials
-	     * @description if you don't use oauth, you can manage
-	     * credentials here using base64 headers
-	     * @methodOf osm.api.osmAPI
-	     * @returns {Promise} true/false
-	    */
-	    this.validateCredentials = function () {
-	        var deferred = $q.defer();
-	        this.getUserDetails().then(function (data) {
-	            if (data.osm.user) {
-	                osmSettingsService.setUserID(data.osm.user._id);
-	            }
-	            deferred.resolve(data.osm.user !== undefined);
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name setCredentials
-	     * @description if you don't use oauth, you can save
-	     * credentials here using base64 localstorage (completly unsecure)
-	     * @methodOf osm.api.osmAPI
-	     * @returns {string} crendentials
-	    */
-	    this.setCredentials = function (username, password) {
-	        osmSettingsService.setUserName(username);
-	        var credentials = $base64.encode(username + ':' + password);
-	        osmSettingsService.setCredentials(credentials);
-	        return credentials;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getCredentials
-	     * @description if you don't use oauth, you can manage
-	     * credentials here using base64 headers
-	     * @methodOf osm.api.osmAPI
-	     * @returns {string} crendentials from the last set
-	    */
-	    this.getCredentials = function () {
-	        return osmSettingsService.getCredentials();
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getAuthorization
-	     * @description compute authorization header from credentials
-	     * @methodOf osm.api.osmAPI
-	     * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
-	    */
-	    this.getAuthorization = function () {
-	        return 'Basic ' + osmSettingsService.getCredentials();
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name clearCredentials
-	     * @description remove credentials from the localstorage
-	     * @methodOf osm.api.osmAPI
-	     * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
-	    */
-	    this.clearCredentials = function () {
-	        osmSettingsService.setCredentials('');
-	    };
-
-	    /**
-	     * @ngdoc method
-	     * @name setOauth
-	     * @description use oauth object to call API
-	     * @methodOf osm.api.osmAPI
-	    */
-	    this.setOauth = function setOauth(oauth) {
-	        this._oauth = oauth;
-	    };
-
-	    /**
-	     * @ngdoc method
-	     * @name setOauth
-	     * @description use oauth object to call API
-	     * @methodOf osm.api.osmAPI
-	     * @return {Object} oauth
-	    */
-	    this.getOauth = function getOauth() {
-	        return this._oauth;
-	    };
-
-	    // ------------------ INTERNAL CALL SERVER (API) -----------------
-
-	    function isElement(obj) {
-	        try {
-	            //Using W3 DOM2 (works for FF, Opera and Chrom)
-	            return obj instanceof HTMLElement;
-	        } catch (e) {
-	            //Browsers not supporting W3 DOM2 don't have HTMLElement and
-	            //an exception is thrown and we end up here. Testing some
-	            //properties that all elements have. (works on IE7)
-	            return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === "object" && obj.nodeType === 1 && _typeof(obj.style) === "object" && _typeof(obj.ownerDocument) === "object";
-	        }
+	        this.url = options.url;
+	        this.$http = $http;
+	        this.$q = $q;
+	        this.osmx2js = osmx2js;
+	        this._oauth = null;
 	    }
 
 	    /**
 	     * @ngdoc method
-	     * @name xhr
-	     * @description call the API
-	     * @param {Object} options
-	     * ```
-	        var options = {
-	            method: 'GET', // POST, DELETE, PUT
-	            path: '/0.6/changesets', //without the /api
-	            data: content //if you need a payload
-	        };
-	        osmAPI.xhr(options);
-	        ```
+	     * @name setAuthAdapter
+	     * @description provide an adapter to make authenticated request
 	     * @methodOf osm.api.osmAPI
-	     * @return {Object} oauth
 	    */
-	    this.xhr = function (options) {
-	        var deferred = $q.defer();
-	        var promise = void 0;
-	        var hasOauth = this._oauth;
-	        if (hasOauth) {
-	            options.path = '/api' + options.path;
-	            if (options.data) {
-	                options.body = options.data;
-	                options.data = undefined;
-	            }
-	            promise = this._oauth.xhr(options);
-	        } else {
-	            options.url = this.url + options.path;
-	            options.headers = {
-	                Authorization: this.getAuthorization()
-	            };
-	            promise = $http(options);
+
+
+	    _createClass(osmAPI, [{
+	        key: 'setAuthAdapter',
+	        value: function setAuthAdapter(oauth) {
+	            this._oauth = oauth;
 	        }
-	        promise.then(function (data) {
-	            var d;
-	            var t = function t(d) {
-	                if (!d) {
-	                    return d;
-	                }
-	                if (d.substr) {
-	                    if (d.substr(0, 5) === '<?xml') {
-	                        return osmx2js.xml2js(d);
+
+	        /**
+	         * @ngdoc method
+	         * @name setOauth
+	         * @description use oauth object to call API
+	         * @methodOf osm.api.osmAPI
+	         * @return {Object} oauth
+	        */
+
+	    }, {
+	        key: 'getAuthAdapter',
+	        value: function getAuthAdapter() {
+	            return this._oauth;
+	        }
+
+	        // ------------------ INTERNAL CALL SERVER (API) -----------------
+
+	        /**
+	         * @ngdoc method
+	         * @name xhr
+	         * @description call the API
+	         * @param {Object} options
+	         * ```
+	            var options = {
+	                method: 'GET', // POST, DELETE, PUT
+	                path: '/0.6/changesets', //without the /api
+	                data: content //if you need a payload
+	            };
+	            osmAPI.xhr(options);
+	            ```
+	         * @methodOf osm.api.osmAPI
+	         * @return {Object} oauth
+	        */
+
+	    }, {
+	        key: 'xhr',
+	        value: function xhr(options) {
+	            var deferred = this.$q.defer();
+	            return this._oauth.xhr(options);
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getAuthenticated
+	         * @description send a get request to OSM with
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} $http response
+	        */
+
+	    }, {
+	        key: 'getAuthenticated',
+	        value: function getAuthenticated(method, config) {
+	            var _config = angular.copy(config);
+	            if (!_config) {
+	                _config = {};
+	            }
+	            _config.method = 'GET';
+	            _config.path = method;
+	            return this.xhr(_config);
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name get
+	         * @description send a get request
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} method the api method
+	         * @param {Object} config the $http.get config
+	         * @returns {Promise} $http response with XML as string
+	        */
+
+	    }, {
+	        key: 'get',
+	        value: function get(method, config) {
+	            var deferred = this.$q.defer();
+	            var self = this;
+	            var url = this.url + method;
+	            this.$http.get(url, config).then(function (data) {
+	                deferred.resolve(self.osmx2js.xml2js(data.data));
+	            }, function (error) {
+	                deferred.reject(error);
+	            });
+	            return deferred.promise;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name put
+	         * @description send a put request
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} method the api method
+	         * @param {Object} content payload
+	         * @param {Object} config the $http.put config
+	         * @returns {Promise} $http response
+	        */
+
+	    }, {
+	        key: 'put',
+	        value: function put(method, content, config) {
+	            if (!config) {
+	                config = {};
+	            }
+	            var _config = angular.copy(config);
+	            _config.method = 'PUT';
+	            _config.path = method;
+	            _config.data = this.osmx2js.js2xml(content);
+	            return this.xhr(_config);
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name delete
+	         * @description send a delete request
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} method the api method
+	         * @param {Object} config the $http.delete config
+	         * @returns {Promise} $http response
+	        */
+
+	    }, {
+	        key: 'delete',
+	        value: function _delete(method, config) {
+	            if (!config) {
+	                config = {};
+	            }
+	            var _config = angular.copy(config);
+	            _config.method = 'DELETE';
+	            _config.path = method;
+	            return this.xhr(_config);
+	        }
+
+	        // ------------------ CHANGESET -----------------
+
+	        /**
+	         * @ngdoc method
+	         * @name createChangeset
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} comment the comment assiociated to the changeset
+	         * @returns {Promise} $http response
+	        */
+
+	    }, {
+	        key: 'createChangeset',
+	        value: function createChangeset(comment) {
+	            var self = this;
+	            var deferred = this.$q.defer();
+	            var changeset = { osm: {
+	                    changeset: {
+	                        tag: [{ _k: 'created_by', _v: 'Angular-OSM' }, { _k: 'comment', _v: comment }]
 	                    }
-	                } else if (isElement(d)) {
-	                    return osmx2js.dom2js(d);
-	                }
-	                return d;
+	                } };
+	            this.put('/0.6/changeset/create', changeset).then(function (data) {
+	                deferred.resolve(data);
+	            });
+	            return deferred.promise;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getLastOpenedChangesetId
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} $http response with the last changeset id
+	         * or undefined if no changeset was opened
+	        */
+
+	    }, {
+	        key: 'getLastOpenedChangesetId',
+	        value: function getLastOpenedChangesetId() {
+	            var self = this;
+	            var deferred = this.$q.defer();
+	            var config = {
+	                params: { user: this._oauth.getUserID(), open: true }
 	            };
-	            if (hasOauth) {
-	                d = data;
-	            } else {
-	                d = data.data;
-	            }
-	            deferred.resolve(t(d));
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-
-	    /**
-	     * @ngdoc method
-	     * @name getAuthenticated
-	     * @description send a get request to OSM with
-	     * base64 crendentials in header
-	     * @methodOf osm.api.osmAPI
-	     * @returns {Promise} $http response
-	    */
-	    this.getAuthenticated = function (method, config) {
-	        var _config = angular.copy(config);
-	        if (!_config) {
-	            _config = {};
-	        }
-	        _config.method = 'GET';
-	        _config.path = method;
-	        return this.xhr(_config);
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name get
-	     * @description send a get request
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} method the api method
-	     * @param {Object} config the $http.get config
-	     * @returns {Promise} $http response with XML as string
-	    */
-	    this.get = function (method, config) {
-	        var deferred = $q.defer();
-	        var self = this;
-	        var url = this.url + method;
-	        $http.get(url, config).then(function (data) {
-	            deferred.resolve(osmx2js.xml2js(data.data));
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name put
-	     * @description send a put request
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} method the api method
-	     * @param {Object} content payload
-	     * @param {Object} config the $http.put config
-	     * @returns {Promise} $http response
-	    */
-	    this.put = function (method, content, config) {
-	        if (!config) {
-	            config = {};
-	        }
-	        var _config = angular.copy(config);
-	        _config.method = 'PUT';
-	        _config.path = method;
-	        _config.data = osmx2js.js2xml(content);
-	        return this.xhr(_config);
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name delete
-	     * @description send a delete request
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} method the api method
-	     * @param {Object} config the $http.delete config
-	     * @returns {Promise} $http response
-	    */
-	    this.delete = function (method, config) {
-	        if (!config) {
-	            config = {};
-	        }
-	        var _config = angular.copy(config);
-	        _config.method = 'DELETE';
-	        _config.path = method;
-	        return this.xhr(_config);
-	    };
-
-	    // ------------------ CHANGESET -----------------
-
-	    /**
-	     * @ngdoc method
-	     * @name createChangeset
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} comment the comment assiociated to the changeset
-	     * @returns {Promise} $http response
-	    */
-	    this.createChangeset = function (comment) {
-	        var deferred = $q.defer();
-	        var changeset = { osm: {
-	                changeset: {
-	                    tag: [{ _k: 'created_by', _v: 'Angular-OSM' }, { _k: 'comment', _v: comment }]
+	            this.get('/0.6/changesets', config).then(function (data) {
+	                var changesets = data.osm.changeset;
+	                if (changesets.length > 0) {
+	                    deferred.resolve(changesets[0].id);
+	                } else if (changesets._id) {
+	                    deferred.resolve(changesets._id);
+	                } else {
+	                    deferred.resolve();
 	                }
-	            } };
-	        this.put('/0.6/changeset/create', changeset).then(function (data) {
-	            osmSettingsService.setChangeset(data);
-	            deferred.resolve(data);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getLastOpenedChangesetId
-	     * @methodOf osm.api.osmAPI
-	     * @returns {Promise} $http response with the last changeset id
-	     * or undefined if no changeset was opened
-	    */
-	    this.getLastOpenedChangesetId = function () {
-	        var deferred = $q.defer();
-	        var config = {
-	            params: { user: osmSettingsService.getUserID(), open: true }
-	        };
-	        this.get('/0.6/changesets', config).then(function (data) {
-	            var changesets = data.osm.changeset;
-	            if (changesets.length > 0) {
-	                osmSettingsService.setChangeset(changesets[0].id);
-	                deferred.resolve(changesets[0].id);
-	            } else if (changesets._id) {
-	                osmSettingsService.setChangeset(changesets._id);
-	                deferred.resolve(changesets._id);
-	            } else {
-	                osmSettingsService.setChangeset();
-	                deferred.resolve();
-	            }
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name closeChangeset
-	     * @methodOf osm.api.osmAPI
-	     * @returns {Promise} $http.put response of
-	     * /0.6/changeset/CHANGESET_ID/close
-	    */
-	    this.closeChangeset = function () {
-	        var changeset = osmSettingsService.getChangeset();
-	        return this.put('/0.6/changeset/' + changeset + '/close').then(function (data) {
-	            osmSettingsService.setChangeset();
-	            return data;
-	        });
-	    };
+	            });
+	            return deferred.promise;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name closeChangeset
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} $http.put response of
+	         * /0.6/changeset/CHANGESET_ID/close
+	        */
 
-	    // ------------------ USER API -----------------
+	    }, {
+	        key: 'closeChangeset',
+	        value: function closeChangeset(id) {
+	            var self = this;
+	            return this.put('/0.6/changeset/' + id + '/close').then(function (data) {
+	                return data;
+	            });
+	        }
 
-	    /**
-	     * @ngdoc method
-	     * @name getUserById
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id of the user
-	     * @returns {Promise} $http.get response
-	     * /0.6/user/#id
-	    */
-	    this.getUserById = function (id) {
-	        return this.getAuthenticated('/0.6/user/' + id);
-	    };
+	        // ------------------ USER API -----------------
 
-	    /**
-	     * @ngdoc method
-	     * @name getUserDetails
-	     * @methodOf osm.api.osmAPI
-	     * @returns {Promise} $http.get response
-	     * /0.6/user/details
-	    */
-	    this.getUserDetails = function () {
-	        return this.getAuthenticated('/0.6/user/details');
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getUserPreferences
-	     * @methodOf osm.api.osmAPI
-	     * @returns {Promise} $http.get response
-	     * /0.6/user/preferences
-	    */
-	    this.getUserPreferences = function () {
-	        return this.getAuthenticated('/0.6/user/preferences');
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name getUserById
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id of the user
+	         * @returns {Promise} $http.get response
+	         * /0.6/user/#id
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name putUserPreferences
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} key the preference key
-	     * @param {string} value the preference value
-	     * @returns {Promise} $http.get response
-	     * /0.6/user/preferences
-	    */
-	    this.putUserPreferences = function (key, value) {
-	        return this.put('/0.6/user/preferences/' + key, value);
-	    };
+	    }, {
+	        key: 'getUserById',
+	        value: function getUserById(id) {
+	            return this.getAuthenticated('/0.6/user/' + id);
+	        }
 
-	    //------------------ MAP DATA -------------------------
+	        /**
+	         * @ngdoc method
+	         * @name getUserDetails
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} $http.get response
+	         * /0.6/user/details
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name getMap
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} bbox left,bottom,right,top
-	     * where:
-	        left is the longitude of the left (westernmost) side of the bounding box.
-	        bottom is the latitude of the bottom (southernmost) side of the bounding box.
-	        right is the longitude of the right (easternmost) side of the bounding box.
-	        top is the latitude of the top (northernmost) side of the bounding box.
-	     * @returns {Promise} $http.get response
-	     * /0.6/map?bbox=bbox
-	    */
-	    this.getMap = function (bbox) {
-	        return this.get('/0.6/map?bbox=' + bbox);
-	    };
+	    }, {
+	        key: 'getUserDetails',
+	        value: function getUserDetails() {
+	            return this.getAuthenticated('/0.6/user/details');
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getUserPreferences
+	         * @methodOf osm.api.osmAPI
+	         * @returns {Promise} $http.get response
+	         * /0.6/user/preferences
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name getNotes
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} bbox left,bottom,right,top
-	     * where:
-	        left is the longitude of the left (westernmost) side of the bounding box.
-	        bottom is the latitude of the bottom (southernmost) side of the bounding box.
-	        right is the longitude of the right (easternmost) side of the bounding box.
-	        top is the latitude of the top (northernmost) side of the bounding box.
-	     * @returns {Promise} $http.get response
-	    */
-	    this.getNotes = function (bbox) {
-	        var url = '/0.6/notes?bbox=' + bbox;
-	        return this.get(url);
-	    };
+	    }, {
+	        key: 'getUserPreferences',
+	        value: function getUserPreferences() {
+	            return this.getAuthenticated('/0.6/user/preferences');
+	        }
 
-	    //------------------ ELEMENTS: Node ----------------
+	        /**
+	         * @ngdoc method
+	         * @name putUserPreferences
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} key the preference key
+	         * @param {string} value the preference value
+	         * @returns {Promise} $http.get response
+	         * /0.6/user/preferences
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name createNode
-	     * @methodOf osm.api.osmAPI
-	     * @param {Object/string} node
-	         var node = {osm: {node: {
-	            _changeset: '12', _lat: '...', _lon: '...',
-	            tags: [
-	                {_k: '...', _v: '...'}
-	            ]
-	        }}};
-	     * @returns {Promise} $http.put response
-	     * PUT /0.6/node/create
-	    */
-	    this.createNode = function (node) {
-	        return this.put('/0.6/node/create', node);
-	    };
+	    }, {
+	        key: 'putUserPreferences',
+	        value: function putUserPreferences(key, value) {
+	            return this.put('/0.6/user/preferences/' + key, value);
+	        }
 
-	    /**
-	     * @ngdoc method
-	     * @name getNode
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/node/#id
-	    */
-	    this.getNode = function (id) {
-	        return this.get('/0.6/node/' + id);
-	    };
+	        //------------------ MAP DATA -------------------------
 
-	    /**
-	     * @ngdoc method
-	     * @name getNodeRelations
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/node/#id/relations
-	    */
-	    this.getNodeRelations = function (id) {
-	        return this.get('/0.6/node/' + id + '/relations');
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name getMap
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} bbox left,bottom,right,top
+	         * where:
+	            left is the longitude of the left (westernmost) side of the bounding box.
+	            bottom is the latitude of the bottom (southernmost) side of the bounding box.
+	            right is the longitude of the right (easternmost) side of the bounding box.
+	            top is the latitude of the top (northernmost) side of the bounding box.
+	         * @returns {Promise} $http.get response
+	         * /0.6/map?bbox=bbox
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name getNodeWays
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/node/#id/ways
-	    */
-	    this.getNodeWays = function (id) {
-	        return this.get('/0.6/node/' + id + '/ways');
-	    };
+	    }, {
+	        key: 'getMap',
+	        value: function getMap(bbox) {
+	            return this.get('/0.6/map?bbox=' + bbox);
+	        }
 
-	    /**
-	     * @ngdoc method
-	     * @name getNodes
-	     * @methodOf osm.api.osmAPI
-	     * @param {array} ids ids
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/node/#id
-	    */
-	    this.getNodes = function (ids) {
-	        return this.get('/0.6/nodes?nodes=' + ids.join(','));
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name getNotes
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} bbox left,bottom,right,top
+	         * where:
+	            left is the longitude of the left (westernmost) side of the bounding box.
+	            bottom is the latitude of the bottom (southernmost) side of the bounding box.
+	            right is the longitude of the right (easternmost) side of the bounding box.
+	            top is the latitude of the top (northernmost) side of the bounding box.
+	         * @returns {Promise} $http.get response
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name deleteNode
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.delete response
-	     * DELETE /0.6/node/#id
-	    */
-	    this.deleteNode = function (id) {
-	        return this.delete('/0.6/node/' + id);
-	    };
+	    }, {
+	        key: 'getNotes',
+	        value: function getNotes(bbox) {
+	            var url = '/0.6/notes?bbox=' + bbox;
+	            return this.get(url);
+	        }
 
-	    //------------------ ELEMENTS: WAY ----------------
+	        //------------------ ELEMENTS: Node ----------------
 
-	    /**
-	     * @ngdoc method
-	     * @name createWay
-	     * @methodOf osm.api.osmAPI
-	     * @param {Object/string} way
-	        var way = {osm: {way: {
-	            _changeset: '12', _lat: '...', _lon: '...',
-	            tags: [
-	                {_k: '...', _v: '...'}
-	            ],
-	            nd: [
-	                {_ref: '123'},
-	                {_ref: '456'},
-	            ]
-	        }}};
-	     * @returns {Promise} $http.put response
-	     * PUT /0.6/way/create
-	    */
-	    this.createWay = function (way) {
-	        return this.put('/0.6/way/create', way);
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name createNode
+	         * @methodOf osm.api.osmAPI
+	         * @param {Object/string} node
+	             var node = {osm: {node: {
+	                _changeset: '12', _lat: '...', _lon: '...',
+	                tags: [
+	                    {_k: '...', _v: '...'}
+	                ]
+	            }}};
+	         * @returns {Promise} $http.put response
+	         * PUT /0.6/node/create
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name getWay
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/way/#id
-	    */
-	    this.getWay = function (id) {
-	        return this.get('/0.6/way/' + id);
-	    };
+	    }, {
+	        key: 'createNode',
+	        value: function createNode(node) {
+	            return this.put('/0.6/node/create', node);
+	        }
 
-	    /**
-	     * @ngdoc method
-	     * @name getWayRelations
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/way/#id/relations
-	    */
-	    this.getWayRelations = function (id) {
-	        return this.get('/0.6/way/' + id + '/relations');
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name getNode
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/node/#id
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name getWayFull
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/way/#id/full
-	    */
-	    this.getWayFull = function (id) {
-	        return this.get('/0.6/way/' + id + '/full');
-	    };
+	    }, {
+	        key: 'getNode',
+	        value: function getNode(id) {
+	            return this.get('/0.6/node/' + id);
+	        }
 
-	    /**
-	     * @ngdoc method
-	     * @name getWays
-	     * @methodOf osm.api.osmAPI
-	     * @param {array} ids ids
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/ways?ways=ids
-	    */
-	    this.getWays = function (ids) {
-	        return this.get('/0.6/ways?ways=' + ids.join(','));
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name getNodeRelations
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/node/#id/relations
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name deleteWay
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.delete response
-	     * DELETE /0.6/way/#id
-	    */
-	    this.deleteWay = function (id) {
-	        return this.delete('/0.6/way/' + id);
-	    };
+	    }, {
+	        key: 'getNodeRelations',
+	        value: function getNodeRelations(id) {
+	            return this.get('/0.6/node/' + id + '/relations');
+	        }
 
-	    //------------------ ELEMENTS: RELATION ----------------
+	        /**
+	         * @ngdoc method
+	         * @name getNodeWays
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/node/#id/ways
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name createRelation
-	     * @methodOf osm.api.osmAPI
-	     * @param {Object/string} relation
-	        var relation = {osm: {relation: {
-	            _changeset: '12', _lat: '...', _lon: '...',
-	            tags: [
-	                {_k: '...', _v: '...'}
-	            ],
-	            member: [
-	                {_type: 'node', _role: 'stop', 'ref': '123'},
-	                {_type: 'way', 'ref': '234'}
-	            ]
-	        }}};
-	     * @returns {Promise} $http.put response
-	     * PUT /0.6/relation/create
-	    */
-	    this.createRelation = function (relation) {
-	        return this.put('/0.6/relation/create', relation);
-	    };
+	    }, {
+	        key: 'getNodeWays',
+	        value: function getNodeWays(id) {
+	            return this.get('/0.6/node/' + id + '/ways');
+	        }
 
-	    /**
-	     * @ngdoc method
-	     * @name getRelation
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/relation/#id
-	    */
-	    this.getRelation = function (id) {
-	        return this.get('/0.6/relation/' + id);
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationRelations
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/relation/#id/relations
-	    */
-	    this.getRelationRelations = function (id) {
-	        return this.get('/0.6/relation/' + id + '/relations');
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name getNodes
+	         * @methodOf osm.api.osmAPI
+	         * @param {array} ids ids
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/node/#id
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name getRelationFull
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/relation/#id/full
-	    */
-	    this.getRelationFull = function (id) {
-	        return this.get('/0.6/relation/' + id + '/full');
-	    };
+	    }, {
+	        key: 'getNodes',
+	        value: function getNodes(ids) {
+	            return this.get('/0.6/nodes?nodes=' + ids.join(','));
+	        }
 
-	    /**
-	     * @ngdoc method
-	     * @name getRelations
-	     * @methodOf osm.api.osmAPI
-	     * @param {array} ids ids
-	     * @returns {Promise} $http.get response
-	     * GET /0.6/relations?relations=ids
-	    */
-	    this.getRelations = function (ids) {
-	        return this.get('/0.6/relations?relations=' + ids.join(','));
-	    };
+	        /**
+	         * @ngdoc method
+	         * @name deleteNode
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.delete response
+	         * DELETE /0.6/node/#id
+	        */
 
-	    /**
-	     * @ngdoc method
-	     * @name deleteRelation
-	     * @methodOf osm.api.osmAPI
-	     * @param {string} id id
-	     * @returns {Promise} $http.delete response
-	     * DELETE /0.6/relation/#id
-	    */
-	    this.deleteRelation = function (id) {
-	        return this.delete('/0.6/relation/' + id);
-	    };
-	}
+	    }, {
+	        key: 'deleteNode',
+	        value: function deleteNode(id) {
+	            return this.delete('/0.6/node/' + id);
+	        }
 
+	        //------------------ ELEMENTS: WAY ----------------
+
+	        /**
+	         * @ngdoc method
+	         * @name createWay
+	         * @methodOf osm.api.osmAPI
+	         * @param {Object/string} way
+	            var way = {osm: {way: {
+	                _changeset: '12', _lat: '...', _lon: '...',
+	                tags: [
+	                    {_k: '...', _v: '...'}
+	                ],
+	                nd: [
+	                    {_ref: '123'},
+	                    {_ref: '456'},
+	                ]
+	            }}};
+	         * @returns {Promise} $http.put response
+	         * PUT /0.6/way/create
+	        */
+
+	    }, {
+	        key: 'createWay',
+	        value: function createWay(way) {
+	            return this.put('/0.6/way/create', way);
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getWay
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/way/#id
+	        */
+
+	    }, {
+	        key: 'getWay',
+	        value: function getWay(id) {
+	            return this.get('/0.6/way/' + id);
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getWayRelations
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/way/#id/relations
+	        */
+
+	    }, {
+	        key: 'getWayRelations',
+	        value: function getWayRelations(id) {
+	            return this.get('/0.6/way/' + id + '/relations');
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getWayFull
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/way/#id/full
+	        */
+
+	    }, {
+	        key: 'getWayFull',
+	        value: function getWayFull(id) {
+	            return this.get('/0.6/way/' + id + '/full');
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getWays
+	         * @methodOf osm.api.osmAPI
+	         * @param {array} ids ids
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/ways?ways=ids
+	        */
+
+	    }, {
+	        key: 'getWays',
+	        value: function getWays(ids) {
+	            return this.get('/0.6/ways?ways=' + ids.join(','));
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name deleteWay
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.delete response
+	         * DELETE /0.6/way/#id
+	        */
+
+	    }, {
+	        key: 'deleteWay',
+	        value: function deleteWay(id) {
+	            return this.delete('/0.6/way/' + id);
+	        }
+
+	        //------------------ ELEMENTS: RELATION ----------------
+
+	        /**
+	         * @ngdoc method
+	         * @name createRelation
+	         * @methodOf osm.api.osmAPI
+	         * @param {Object/string} relation
+	            var relation = {osm: {relation: {
+	                _changeset: '12', _lat: '...', _lon: '...',
+	                tags: [
+	                    {_k: '...', _v: '...'}
+	                ],
+	                member: [
+	                    {_type: 'node', _role: 'stop', 'ref': '123'},
+	                    {_type: 'way', 'ref': '234'}
+	                ]
+	            }}};
+	         * @returns {Promise} $http.put response
+	         * PUT /0.6/relation/create
+	        */
+
+	    }, {
+	        key: 'createRelation',
+	        value: function createRelation(relation) {
+	            return this.put('/0.6/relation/create', relation);
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getRelation
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/relation/#id
+	        */
+
+	    }, {
+	        key: 'getRelation',
+	        value: function getRelation(id) {
+	            return this.get('/0.6/relation/' + id);
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationRelations
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/relation/#id/relations
+	        */
+
+	    }, {
+	        key: 'getRelationRelations',
+	        value: function getRelationRelations(id) {
+	            return this.get('/0.6/relation/' + id + '/relations');
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getRelationFull
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/relation/#id/full
+	        */
+
+	    }, {
+	        key: 'getRelationFull',
+	        value: function getRelationFull(id) {
+	            return this.get('/0.6/relation/' + id + '/full');
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name getRelations
+	         * @methodOf osm.api.osmAPI
+	         * @param {array} ids ids
+	         * @returns {Promise} $http.get response
+	         * GET /0.6/relations?relations=ids
+	        */
+
+	    }, {
+	        key: 'getRelations',
+	        value: function getRelations(ids) {
+	            return this.get('/0.6/relations?relations=' + ids.join(','));
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name deleteRelation
+	         * @methodOf osm.api.osmAPI
+	         * @param {string} id id
+	         * @returns {Promise} $http.delete response
+	         * DELETE /0.6/relation/#id
+	        */
+
+	    }, {
+	        key: 'deleteRelation',
+	        value: function deleteRelation(id) {
+	            return this.delete('/0.6/relation/' + id);
+	        }
+	    }]);
+
+	    return osmAPI;
+	}();
+
+	osmAPI.$inject = ['$http', '$q', 'osmx2js'];
 	exports.default = osmAPI;
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _settings = __webpack_require__(5);
-
-	var _settings2 = _interopRequireDefault(_settings);
-
-	var _ngstorage = __webpack_require__(6);
-
-	var _ngstorage2 = _interopRequireDefault(_ngstorage);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ngStorageModuleName = _ngstorage2.default ? _ngstorage2.default.name : 'ngStorage';
-
-	var osmSettingsModule = angular.module('osm.settings', [ngStorageModuleName]).service('osmSettingsService', _settings2.default);
-
-	exports.default = osmSettingsModule;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	/**
-	 * @ngdoc service
-	 * @name osmSettingsService
-	 * @description provide service to access to settings
-	 * @param  {any} $localStorage
-	 */
-	osmSettingsService.$inject = ['$localStorage'];
-	function osmSettingsService($localStorage) {
-
-	    this.localStorage = $localStorage.$default({
-	        userName: '',
-	        userID: '',
-	        credentials: '',
-	        changeset: ''
-	    });
-	    this.getUserName = function () {
-	        return this.localStorage.userName;
-	    };
-	    this.setUserName = function (username) {
-	        this.localStorage.userName = username;
-	    };
-	    this.getUserID = function () {
-	        return this.localStorage.userID;
-	    };
-	    this.setUserID = function (userid) {
-	        this.localStorage.userID = userid;
-	    };
-	    this.getCredentials = function () {
-	        return this.localStorage.credentials;
-	    };
-	    this.setCredentials = function (credentials) {
-	        this.localStorage.credentials = credentials;
-	    };
-	    this.getChangeset = function () {
-	        return this.localStorage.changeset;
-	    };
-	    this.setChangeset = function (changeset) {
-	        this.localStorage.changeset = changeset;
-	    };
-	    this.getOsmAuth = function () {
-	        return this.localStorage.osmAuth;
-	    };
-	    this.setOsmAuth = function (options) {
-	        this.localStorage.osmAuth = options;
-	    };
-	}
-
-	exports.default = osmSettingsService;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
-
-/***/ },
-/* 7 */
+/* 3 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -914,10 +799,322 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmx2jsModule;
 
 /***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _base = __webpack_require__(5);
+
+	var _base2 = _interopRequireDefault(_base);
+
+	var _api = __webpack_require__(1);
+
+	var _api2 = _interopRequireDefault(_api);
+
+	var _x2js = __webpack_require__(3);
+
+	var _x2js2 = _interopRequireDefault(_x2js);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var osmBase64Module = angular.module('osm.base64', [_x2js2.default.name, _api2.default.name, 'base64']).provider('osmBase64', function osmBase64Provider() {
+	    this.options = {
+	        url: 'http://api.openstreetmap.org/api'
+	    };
+	    this.$get = function osmBase64Factory($base64, $http, $q, osmx2js) {
+	        return new _base2.default($base64, $http, $q, osmx2js, this.options);
+	    };
+	    this.$get.$inject = ['$base64', '$http', 'osmx2js'];
+	});
+
+	exports.default = osmBase64Module;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Base64backend = function () {
+	    function Base64backend($base64, $http, osmx2js) {
+	        _classCallCheck(this, Base64backend);
+
+	        this.$base64 = $base64;
+	        this.storage = {};
+	        this.$http = $http;
+	        this.url = 'http://api.openstreetmap.org/api';
+	        this.osmx2js = osmx2js;
+	    }
+
+	    _createClass(Base64backend, [{
+	        key: 'xhr',
+	        value: function xhr(options) {
+	            var self = this;
+	            options.url = this.url + options.path;
+	            options.headers = {
+	                Authorization: this.getAuthorization()
+	            };
+	            return this.$http(options).then(function (data) {
+	                var d = data.data;
+	                if (!d) {
+	                    return;
+	                }
+	                if (d.substr) {
+	                    if (d.substr(0, 5) === '<?xml') {
+	                        return self.osmx2js.xml2js(d);
+	                    }
+	                }
+	                return d;
+	            });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name setCredentials
+	         * @description if you don't use oauth, you can save
+	         * credentials here using base64 localstorage (completly unsecure)
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} crendentials
+	        */
+
+	    }, {
+	        key: 'setCredentials',
+	        value: function setCredentials(username, password) {
+	            this.storage.username = username;
+	            var credentials = this.$base64.encode(username + ':' + password);
+	            this.storage.credentials = credentials;
+	            return credentials;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getCredentials
+	         * @description if you don't use oauth, you can manage
+	         * credentials here using base64 headers
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} crendentials from the last set
+	        */
+
+	    }, {
+	        key: 'getCredentials',
+	        value: function getCredentials() {
+	            return this.storage.credentials;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getAuthorization
+	         * @description compute authorization header from credentials
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
+	        */
+
+	    }, {
+	        key: 'getAuthorization',
+	        value: function getAuthorization() {
+	            return 'Basic ' + this.storage.credentials;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name clearCredentials
+	         * @description remove credentials from the localstorage
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
+	        */
+
+	    }, {
+	        key: 'clearCredentials',
+	        value: function clearCredentials() {
+	            if (this.storage.removeItem) {
+	                this.storage.removeItem('credentials');
+	            } else {
+	                delete this.storage.credentials;
+	            }
+	        }
+	    }]);
+
+	    return Base64backend;
+	}();
+
+	Base64backend.$inject = ['$base64', '$http', 'osmx2js'];
+
+	exports.default = Base64backend;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _oauth = __webpack_require__(8);
+
+	var _oauth2 = _interopRequireDefault(_oauth);
+
+	var _api = __webpack_require__(1);
+
+	var _api2 = _interopRequireDefault(_api);
+
+	var _x2js = __webpack_require__(3);
+
+	var _x2js2 = _interopRequireDefault(_x2js);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var osmOAuthModule = angular.module('osm.oauth', [_api2.default.name, _x2js2.default.name]).provider('osmAuthService', function osmAuthServiceProvider() {
+	    this.options = {};
+
+	    this.$get = function osmAuthServiceFactory($q, osmx2js) {
+	        return new _oauth2.default($q, osmx2js, this.options);
+	    };
+	    this.$get.$inject = ['$q', 'osmx2js'];
+	});
+
+	exports.default = osmOAuthModule;
+
+/***/ },
 /* 8 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	* @ngdoc service
+	* @name osm.oauth.osmAuthService
+	* @description handle osm oauth
+	*/
+
+	var osmAuthService = function () {
+	    function osmAuthService($q, osmx2js, options) {
+	        _classCallCheck(this, osmAuthService);
+
+	        if (options) {
+	            if (options.oauth_secret && options.oauth_consumer_key) {
+	                this.auth = osmAuth(options);
+	            }
+	        }
+	        this.osmx2js = osmx2js;
+	        this.$q = $q;
+	        this._options = options;
+	    }
+	    /**
+	     * @ngdoc method
+	     * @name logout
+	     * @methodOf osm.auth.osmAuthService
+	     */
+
+
+	    _createClass(osmAuthService, [{
+	        key: 'logout',
+	        value: function logout() {
+	            this.auth.logout();
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name authenticated
+	         * @methodOf osm.auth.osmAuthService
+	         * @return {boolean} authenticated
+	         */
+
+	    }, {
+	        key: 'authenticated',
+	        value: function authenticated() {
+	            return this.auth.authenticated();
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name authenticate
+	         * @methodOf osm.auth.osmAuthService
+	         * @return {Promise} true/false
+	         */
+
+	    }, {
+	        key: 'authenticate',
+	        value: function authenticate() {
+	            var deferred = this.$q.defer();
+	            this.auth.authenticate(function () {
+	                deferred.resolve(true);
+	            });
+	            return deferred.promise;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name xhr
+	         * @methodOf osm.auth.osmAuthService
+	         * @return {Promise} http response
+	         */
+
+	    }, {
+	        key: 'xhr',
+	        value: function xhr(options) {
+	            var self = this;
+	            var deferred = this.$q.defer();
+	            options.path = '/api' + options.path;
+	            if (options.data) {
+	                options.body = options.data;
+	                options.data = undefined;
+	            }
+	            this.auth.xhr(options, function (err, data) {
+	                if (err) {
+	                    deferred.reject(err);
+	                } else {
+	                    if (data instanceof XMLDocument) {
+	                        deferred.resolve(self.osmx2js.dom2js(data));
+	                    } else {
+	                        deferred.resolve(data);
+	                    }
+	                }
+	            });
+	            return deferred.promise;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name options
+	         * @methodOf osm.auth.osmAuthService
+	         */
+
+	    }, {
+	        key: 'options',
+	        value: function options(_options) {
+	            if (this.auth) {
+	                this.auth.options(_options);
+	            } else {
+	                this.auth = osmAuth(_options);
+	            }
+	        }
+	    }]);
+
+	    return osmAuthService;
+	}();
+
+	exports.default = osmAuthService;
 
 /***/ },
 /* 9 */
@@ -929,154 +1126,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _oauth = __webpack_require__(10);
-
-	var _oauth2 = _interopRequireDefault(_oauth);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var osmOAuthModule = angular.module('osm.oauth', []).factory('osmAuthService', _oauth2.default).provider('osmAuthService', function osmAuthServiceProvider() {
-	    this.options = {};
-
-	    this.$get = function osmAuthServiceFactory($q) {
-	        return new _oauth2.default($q, this.options);
-	    };
-	    this.$get.$inject = ['$q'];
-	});
-
-	exports.default = osmOAuthModule;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _osmAuth = __webpack_require__(11);
-
-	var _osmAuth2 = _interopRequireDefault(_osmAuth);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	* @ngdoc service
-	* @name osm.oauth.osmAuthService
-	* @requires angular-osm.osmSettingsService
-	* @description handle osm oauth
-	*/
-	function osmAuthService($q, options) {
-	    if (options) {
-	        if (options.oauth_secret && options.oauth_consumer_key) {
-	            this.auth = osmAuth(options);
-	        }
-	    }
-	    /**
-	     * @ngdoc method
-	     * @name logout
-	     * @methodOf osm.auth.osmAuthService
-	     */
-	    this.logout = function () {
-	        this.auth.logout();
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name authenticated
-	     * @methodOf osm.auth.osmAuthService
-	     * @return {boolean} authenticated
-	     */
-	    this.authenticated = function () {
-	        return this.auth.authenticated();
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name authenticate
-	     * @methodOf osm.auth.osmAuthService
-	     * @return {Promise} true/false
-	     */
-	    this.authenticate = function () {
-	        var deferred = $q.defer();
-	        this.auth.authenticate(function () {
-	            deferred.resolve(true);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name xhr
-	     * @methodOf osm.auth.osmAuthService
-	     * @return {Promise} http response
-	     */
-	    this.xhr = function (options) {
-	        var deferred = $q.defer();
-	        this.auth.xhr(options, function (err, data) {
-	            if (err) {
-	                deferred.reject(err);
-	            } else {
-	                deferred.resolve(data);
-	            }
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name options
-	     * @methodOf osm.auth.osmAuthService
-	     */
-	    this.options = function (options) {
-	        if (this.auth) {
-	            this.auth.options(options);
-	        } else {
-	            this.auth = osmAuth(options);
-	        }
-	    };
-	}
-
-	exports.default = osmAuthService;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _overpass = __webpack_require__(13);
+	var _overpass = __webpack_require__(10);
 
 	var _overpass2 = _interopRequireDefault(_overpass);
 
-	var _settings = __webpack_require__(4);
-
-	var _settings2 = _interopRequireDefault(_settings);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmOverpassModule = angular.module('osm.overpass', [_settings2.default.name]).factory('osmOverpassAPI', _overpass2.default).provider('osmOverpassAPI', function osmOverpassAPIProvider() {
+	var osmOverpassModule = angular.module('osm.overpass', []).provider('osmOverpassAPI', function osmOverpassAPIProvider() {
 	    this.options = {
 	        url: 'http://overpass-api.de/api/interpreter'
 	    };
-	    this.$get = function osmOverpassAPIFactory($http, $q, osmSettingsService) {
-	        return new _overpass2.default($http, $q, osmSettingsService, this.options);
+	    this.$get = function osmOverpassAPIFactory($http, $q) {
+	        return new _overpass2.default($http, $q, this.options);
 	    };
-	    this.$get.$inject = ['$http', '$q', 'osmSettingsService'];
+	    this.$get.$inject = ['$http', '$q'];
 	});
 
 	exports.default = osmOverpassModule;
 
 /***/ },
-/* 13 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1085,16 +1154,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
 	 * @ngdoc service
 	 * @name overpassAPI
 	 * @param  {any} $http
 	 * @param  {any} $q
-	 * @param  {any} osmSettingsService
 	 */
-	function osmOverpassAPI($http, $q, osmSettingsService, options) {
-	    this.url = options.url;
+
+	var osmOverpassAPI = function () {
+	    function osmOverpassAPI($http, $q, options) {
+	        _classCallCheck(this, osmOverpassAPI);
+
+	        this.url = options.url;
+	        this.$http = $http;
+	        this.$q = $q;
+	    }
 	    /**
 	     * @ngdoc method
 	     * @name overpass
@@ -1103,121 +1181,134 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @methodOf osm.overpass.osmOverpassAPI
 	     * @return {Promise} $http.get
 	    */
-	    this.overpass = function (query) {
-	        var self = this;
-	        var url = self.url;
-	        var deferred = $q.defer();
-	        var headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
-	        $http.post(url, 'data=' + encodeURIComponent(query), { headers: headers }).then(function (data) {
-	            deferred.resolve(data.data);
-	        }, function (data) {
-	            deferred.reject(data);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name overpass
-	     * @description
-	     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
-	        By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
-	     * @param {String} type 'r'/'relation' or 'w'/'way'
-	     * @param {String/Number} osmId the id of the element
-	     * @methodOf osm.overpass.osmOverpassAPI
-	     * @return {Number} the area id
-	    */
-	    this.getAreaId = function (type, osmId) {
-	        var id;
-	        if (typeof osmId === 'string') {
-	            id = parseInt(osmId, 10);
-	        } else {
-	            id = osmId;
+
+
+	    _createClass(osmOverpassAPI, [{
+	        key: 'overpass',
+	        value: function overpass(query) {
+	            var url = this.url;
+	            var deferred = this.$q.defer();
+	            var headers = {
+	                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	            };
+	            this.$http.post(url, 'data=' + encodeURIComponent(query), { headers: headers }).then(function (data) {
+	                deferred.resolve(data.data);
+	            }, function (data) {
+	                deferred.reject(data);
+	            });
+	            return deferred.promise;
 	        }
-	        if (type === 'r' || type === 'relation') {
-	            return 3600000000 + id;
-	        } else if (type === 'w' || type === 'way') {
-	            return 2400000000 + id;
+	        /**
+	         * @ngdoc method
+	         * @name overpass
+	         * @description
+	         * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
+	            By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
+	         * @param {String} type 'r'/'relation' or 'w'/'way'
+	         * @param {String/Number} osmId the id of the element
+	         * @methodOf osm.overpass.osmOverpassAPI
+	         * @return {Number} the area id
+	        */
+
+	    }, {
+	        key: 'getAreaId',
+	        value: function getAreaId(type, osmId) {
+	            var id;
+	            if (typeof osmId === 'string') {
+	                id = parseInt(osmId, 10);
+	            } else {
+	                id = osmId;
+	            }
+	            if (type === 'r' || type === 'relation') {
+	                return 3600000000 + id;
+	            } else if (type === 'w' || type === 'way') {
+	                return 2400000000 + id;
+	            }
 	        }
-	    };
-	    this.overpassToGeoJSON = function (query, filter) {
-	        var deferred = $q.defer();
-	        var features = [];
-	        var relations = [];
-	        var result = {
-	            type: 'FeatureCollection',
-	            features: features,
-	            relations: relations
-	        };
-	        if (filter === undefined) {
-	            filter = function filter() {};
-	        }
-	        this.overpass(query).then(function (data) {
-	            //TODO check if data is XML or JSON, here it's JSON
-	            var node, feature, coordinates;
-	            var cache = { loaded: false };
-	            function getNodeById(id) {
-	                if (!cache.loaded) {
-	                    var tmp;
-	                    for (var i = 0; i < data.elements.length; i++) {
-	                        tmp = data.elements[i];
-	                        cache[tmp.id] = tmp;
+	    }, {
+	        key: 'overpassToGeoJSON',
+	        value: function overpassToGeoJSON(query, filter) {
+	            var deferred = this.$q.defer();
+	            var features = [];
+	            var relations = [];
+	            var result = {
+	                type: 'FeatureCollection',
+	                features: features,
+	                relations: relations
+	            };
+	            if (filter === undefined) {
+	                filter = function filter() {};
+	            }
+	            this.overpass(query).then(function (data) {
+	                //TODO check if data is XML or JSON, here it's JSON
+	                var node, feature, coordinates;
+	                var cache = { loaded: false };
+	                function getNodeById(id) {
+	                    if (!cache.loaded) {
+	                        var tmp;
+	                        for (var i = 0; i < data.elements.length; i++) {
+	                            tmp = data.elements[i];
+	                            cache[tmp.id] = tmp;
+	                        }
+	                    }
+	                    return cache[id];
+	                }
+	                for (var i = 0; i < data.elements.length; i++) {
+	                    node = data.elements[i];
+	                    if (node.type === 'node') {
+	                        feature = {
+	                            type: 'Feature',
+	                            properties: node.tags,
+	                            id: node.id,
+	                            geometry: {
+	                                type: 'Point',
+	                                coordinates: [node.lon, node.lat]
+	                            }
+	                        };
+	                        if (!filter(feature)) {
+	                            features.push(feature);
+	                        }
+	                    } else if (node.type === 'way') {
+	                        coordinates = [];
+	                        feature = {
+	                            type: 'Feature',
+	                            properties: node.tags,
+	                            id: node.id,
+	                            geometry: {
+	                                type: 'LineString',
+	                                coordinates: coordinates
+	                            }
+	                        };
+	                        for (var j = 0; j < node.nodes.length; j++) {
+	                            coordinates.push([getNodeById(node.nodes[j]).lon, getNodeById(node.nodes[j]).lat]);
+	                        }
+	                        if (!filter(feature)) {
+	                            features.push(feature);
+	                        }
+	                    } else if (node.type === 'relation') {
+	                        result.relations.push({
+	                            ref: node.id,
+	                            tags: node.tags,
+	                            type: 'relation',
+	                            members: node.members
+	                        });
 	                    }
 	                }
-	                return cache[id];
-	            }
-	            for (var i = 0; i < data.elements.length; i++) {
-	                node = data.elements[i];
-	                if (node.type === 'node') {
-	                    feature = {
-	                        type: 'Feature',
-	                        properties: node.tags,
-	                        id: node.id,
-	                        geometry: {
-	                            type: 'Point',
-	                            coordinates: [node.lon, node.lat]
-	                        }
-	                    };
-	                    if (!filter(feature)) {
-	                        features.push(feature);
-	                    }
-	                } else if (node.type === 'way') {
-	                    coordinates = [];
-	                    feature = {
-	                        type: 'Feature',
-	                        properties: node.tags,
-	                        id: node.id,
-	                        geometry: {
-	                            type: 'LineString',
-	                            coordinates: coordinates
-	                        }
-	                    };
-	                    for (var j = 0; j < node.nodes.length; j++) {
-	                        coordinates.push([getNodeById(node.nodes[j]).lon, getNodeById(node.nodes[j]).lat]);
-	                    }
-	                    if (!filter(feature)) {
-	                        features.push(feature);
-	                    }
-	                } else if (node.type === 'relation') {
-	                    result.relations.push({
-	                        ref: node.id,
-	                        tags: node.tags,
-	                        type: 'relation',
-	                        members: node.members
-	                    });
-	                }
-	            }
-	            deferred.resolve(result);
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	}
+	                deferred.resolve(result);
+	            }, function (error) {
+	                deferred.reject(error);
+	            });
+	            return deferred.promise;
+	        }
+	    }]);
+
+	    return osmOverpassAPI;
+	}();
 
 	exports.default = osmOverpassAPI;
 
 /***/ },
-/* 14 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1226,7 +1317,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _taginfo = __webpack_require__(15);
+	var _taginfo = __webpack_require__(12);
 
 	var _taginfo2 = _interopRequireDefault(_taginfo);
 
@@ -1237,7 +1328,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmTagInfoModule;
 
 /***/ },
-/* 15 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1246,7 +1337,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	osmTagInfoAPI.$inject = ['$http', '$q'];
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 	/**
 	 * @ngdoc service
 	 * @name osmTagInfoAPI
@@ -1255,293 +1349,388 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param  {any} $http
 	 * @param  {any} $q
 	 */
-	function osmTagInfoAPI($http, $q) {
-	    this.get = function (method, config) {
-	        var deferred = $q.defer();
-	        $http.get('https://taginfo.openstreetmap.org/api/4' + method, config).then(function (data) {
-	            deferred.resolve(data.data);
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyCombinations
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        query — Only show results where the other_key matches this query (substring match, optional).
-	     */
-	    this.getKeyCombinations = function (params) {
-	        return this.get('/key/combinations', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyDistributionNodes
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	     */
-	    this.getKeyDistributionNodes = function (params) {
-	        return this.get('/key/distribution/nodes', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyDistributionWays
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	     * key — Tag key (required).
-	     */
-	    this.getKeyDistributionWays = function (params) {
-	        return this.get('/key/distribution/ways', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyStats
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	     * key — Tag key (required).
-	     */
-	    this.getKeyStats = function (params) {
-	        return this.get('/key/stats', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyValues
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        lang — Language for description (optional, default: 'en').
-	        query — Only show results where the value matches this query (substring match, optional).
-	     */
-	    this.getKeyValues = function (params) {
-	        return this.get('/key/values', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeyWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	     */
-	    this.getKeyWikiPages = function (params) {
-	        return this.get('/key/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeysAll
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show keys matching this query (substring match, optional).
-	     */
-	    this.getKeysAll = function (params) {
-	        return this.get('/keys/all', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeysWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show keys matching this query (substring match, optional).
-	     */
-	    this.getKeysWikiPages = function (params) {
-	        return this.get('/keys/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getKeysWithoutWikiPage
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        english — Check for key wiki pages in any language (0, default) or in the English language (1).
-	        min_count — How many tags with this key must there be at least to show up here? (default 10000).
-	        query — Only show results where the key matches this query (substring match, optional).
-	     */
-	    this.getKeysWithoutWikiPage = function (params) {
-	        return this.get('/keys/without_wiki_page', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationRoles
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show results where the role matches this query (substring match, optional).
-	        rtype — Relation type (required).
-	     */
-	    this.getRelationRoles = function (params) {
-	        return this.get('/relation/roles', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationStats
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        rtype — Relation type (required).
-	     */
-	    this.getRelationStats = function (params) {
-	        return this.get('/relation/stats', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        rtype — Relation type (required).
-	     */
-	    this.getRelationWikiPages = function (params) {
-	        return this.get('/relation/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getRelationsAll
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show results where the relation type matches this query (substring match, optional).
-	     */
-	    this.getRelationsAll = function (params) {
-	        return this.get('/relations/all', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByKeyAndValue
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Value to search for (substring search, required).
-	     */
-	    this.getSearchByKeyAndValue = function (params) {
-	        return this.get('/search/by_key_and_value', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByKeyword
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Value to search for (substring search, required).
-	     */
-	    this.getSearchByKeyword = function (params) {
-	        return this.get('/search/by_keyword', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByRole
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Role to search for (substring search, required).
-	     */
-	    this.getSearchByRole = function (params) {
-	        return this.get('/search/by_role', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSearchByValue
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Value to search for (substring search, required).
-	     */
-	    this.getSearchByValue = function (params) {
-	        return this.get('/search/by_value', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSiteInfo
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	         param: No params
-	     */
-	    this.getSiteInfo = function (params) {
-	        return this.get('/site/info', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getSiteSources
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	         param: No params
-	     */
-	    this.getSiteSources = function (params) {
-	        return this.get('/site/sources', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagCombinations
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        query — Only show results where the other_key or other_value matches this query (substring match, optional).
-	        value — Tag value (required).
-	     */
-	    this.getTagCombinations = function (params) {
-	        return this.get('/tag/combinations', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagDistributionNodes
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagDistributionNodes = function (params) {
-	        return this.get('/tag/distribution/nodes', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagDistributionWays
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagDistributionWays = function (params) {
-	        return this.get('/tag/distribution/ways', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagStats
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagStats = function (params) {
-	        return this.get('/tag/stats', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagWikiPages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        key — Tag key (required).
-	        value — Tag value (required).
-	     */
-	    this.getTagWikiPages = function (params) {
-	        return this.get('/tag/wiki_pages', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getTagsPopular
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	        query — Only show tags matching this query (substring match in key and value, optional).
-	     */
-	    this.getTagsPopular = function (params) {
-	        return this.get('/tags/popular', { params: params });
-	    };
-	    /**
-	     * @ngdoc method
-	     * @name getWikiLanguages
-	     * @methodOf osm.taginfo.osmTagInfoAPI
-	     * @param {any} params
-	         param: No params
-	     */
-	    this.getWikiLanguages = function (params) {
-	        return this.get('/wiki/languages', { params: params });
-	    };
-	}
+
+	var osmTagInfoAPI = function () {
+	    function osmTagInfoAPI($http, $q) {
+	        _classCallCheck(this, osmTagInfoAPI);
+
+	        this.$http = $http;
+	        this.$q = $q;
+	        this.url = 'https://taginfo.openstreetmap.org/api/4';
+	    }
+
+	    _createClass(osmTagInfoAPI, [{
+	        key: 'get',
+	        value: function get(method, config) {
+	            var deferred = this.$q.defer();
+	            this.$http.get(this.url + method, config).then(function (data) {
+	                deferred.resolve(data.data);
+	            }, function (error) {
+	                deferred.reject(error);
+	            });
+	            return deferred.promise;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyCombinations
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            query — Only show results where the other_key matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeyCombinations',
+	        value: function getKeyCombinations(params) {
+	            return this.get('/key/combinations', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyDistributionNodes
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyDistributionNodes',
+	        value: function getKeyDistributionNodes(params) {
+	            return this.get('/key/distribution/nodes', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyDistributionWays
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	         * key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyDistributionWays',
+	        value: function getKeyDistributionWays(params) {
+	            return this.get('/key/distribution/ways', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyStats
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	         * key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyStats',
+	        value: function getKeyStats(params) {
+	            return this.get('/key/stats', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyValues
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            lang — Language for description (optional, default: 'en').
+	            query — Only show results where the value matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeyValues',
+	        value: function getKeyValues(params) {
+	            return this.get('/key/values', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeyWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	         */
+
+	    }, {
+	        key: 'getKeyWikiPages',
+	        value: function getKeyWikiPages(params) {
+	            return this.get('/key/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeysAll
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show keys matching this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeysAll',
+	        value: function getKeysAll(params) {
+	            return this.get('/keys/all', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeysWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show keys matching this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeysWikiPages',
+	        value: function getKeysWikiPages(params) {
+	            return this.get('/keys/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getKeysWithoutWikiPage
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            english — Check for key wiki pages in any language (0, default) or in the English language (1).
+	            min_count — How many tags with this key must there be at least to show up here? (default 10000).
+	            query — Only show results where the key matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getKeysWithoutWikiPage',
+	        value: function getKeysWithoutWikiPage(params) {
+	            return this.get('/keys/without_wiki_page', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationRoles
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show results where the role matches this query (substring match, optional).
+	            rtype — Relation type (required).
+	         */
+
+	    }, {
+	        key: 'getRelationRoles',
+	        value: function getRelationRoles(params) {
+	            return this.get('/relation/roles', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationStats
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            rtype — Relation type (required).
+	         */
+
+	    }, {
+	        key: 'getRelationStats',
+	        value: function getRelationStats(params) {
+	            return this.get('/relation/stats', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            rtype — Relation type (required).
+	         */
+
+	    }, {
+	        key: 'getRelationWikiPages',
+	        value: function getRelationWikiPages(params) {
+	            return this.get('/relation/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getRelationsAll
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show results where the relation type matches this query (substring match, optional).
+	         */
+
+	    }, {
+	        key: 'getRelationsAll',
+	        value: function getRelationsAll(params) {
+	            return this.get('/relations/all', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByKeyAndValue
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Value to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByKeyAndValue',
+	        value: function getSearchByKeyAndValue(params) {
+	            return this.get('/search/by_key_and_value', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByKeyword
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Value to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByKeyword',
+	        value: function getSearchByKeyword(params) {
+	            return this.get('/search/by_keyword', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByRole
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Role to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByRole',
+	        value: function getSearchByRole(params) {
+	            return this.get('/search/by_role', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSearchByValue
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Value to search for (substring search, required).
+	         */
+
+	    }, {
+	        key: 'getSearchByValue',
+	        value: function getSearchByValue(params) {
+	            return this.get('/search/by_value', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSiteInfo
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	             param: No params
+	         */
+
+	    }, {
+	        key: 'getSiteInfo',
+	        value: function getSiteInfo(params) {
+	            return this.get('/site/info', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getSiteSources
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	             param: No params
+	         */
+
+	    }, {
+	        key: 'getSiteSources',
+	        value: function getSiteSources(params) {
+	            return this.get('/site/sources', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagCombinations
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            query — Only show results where the other_key or other_value matches this query (substring match, optional).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagCombinations',
+	        value: function getTagCombinations(params) {
+	            return this.get('/tag/combinations', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagDistributionNodes
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagDistributionNodes',
+	        value: function getTagDistributionNodes(params) {
+	            return this.get('/tag/distribution/nodes', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagDistributionWays
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagDistributionWays',
+	        value: function getTagDistributionWays(params) {
+	            return this.get('/tag/distribution/ways', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagStats
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagStats',
+	        value: function getTagStats(params) {
+	            return this.get('/tag/stats', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagWikiPages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            key — Tag key (required).
+	            value — Tag value (required).
+	         */
+
+	    }, {
+	        key: 'getTagWikiPages',
+	        value: function getTagWikiPages(params) {
+	            return this.get('/tag/wiki_pages', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getTagsPopular
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	            query — Only show tags matching this query (substring match in key and value, optional).
+	         */
+
+	    }, {
+	        key: 'getTagsPopular',
+	        value: function getTagsPopular(params) {
+	            return this.get('/tags/popular', { params: params });
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getWikiLanguages
+	         * @methodOf osm.taginfo.osmTagInfoAPI
+	         * @param {any} params
+	             param: No params
+	         */
+
+	    }, {
+	        key: 'getWikiLanguages',
+	        value: function getWikiLanguages(params) {
+	            return this.get('/wiki/languages', { params: params });
+	        }
+	    }]);
+
+	    return osmTagInfoAPI;
+	}();
+
+	osmTagInfoAPI.$inject = ['$http', '$q'];
+
 	exports.default = osmTagInfoAPI;
 
 /***/ },
-/* 16 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1550,7 +1739,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _nominatim = __webpack_require__(17);
+	var _nominatim = __webpack_require__(14);
 
 	var _nominatim2 = _interopRequireDefault(_nominatim);
 
@@ -1569,7 +1758,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmNominatimModule;
 
 /***/ },
-/* 17 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1578,13 +1767,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 	/**
 	* @ngdoc service
 	* @name osm.nominatim.osmNominatim
 	* @description handle nominatim query
 	*/
-	function osmNominatim($http, options) {
-	    this.url = options.url;
+
+	var osmNominatim = function () {
+	    function osmNominatim($http, options) {
+	        _classCallCheck(this, osmNominatim);
+
+	        this.url = options.url;
+	        this.$http = $http;
+	    }
 
 	    /**
 	     * @ngdoc method
@@ -1594,89 +1793,102 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @methodOf osm.nominatim.osmNominatim
 	     * @return {Promise} $http.get
 	    */
-	    this.search = function search(query) {
-	        //https://nominatim.openstreetmap.org/search
-	        //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
-	        //params['accept-language'] = 'fr';
-	        var params;
-	        if (typeof query === 'string' || !query) {
-	            params = {
-	                format: 'json',
-	                q: query
-	            };
-	        } else {
-	            params = angular.copy(query);
-	            params.format = 'json';
-	        }
-	        var config = {
-	            params: params
-	        };
-	        var url = this.url + '/search';
-	        return $http.get(url, config);
-	    };
 
-	    /**
-	     * @ngdoc method
-	     * @name reverse
-	     * @param {Object/String} query
-	     * http://wiki.openstreetmap.org/wiki/Nominatim
-	     * @methodOf osm.nominatim.osmNominatim
-	     * @return {Promise} $http.get
-	    */
-	    this.reverse = function reverse(query) {
-	        //https://nominatim.openstreetmap.org/reverse
-	        //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
-	        //params['accept-language'] = 'fr';
-	        var params;
-	        if (typeof query === 'string') {
-	            params = {
-	                format: 'json',
-	                q: query
-	            };
-	        } else {
-	            params = angular.copy(query);
-	            params.format = 'json';
-	        }
-	        var config = {
-	            params: params
-	        };
-	        var url = this.url + '/reverse';
-	        return $http.get(url, config);
-	    };
 
-	    /**
-	     * @ngdoc method
-	     * @name lookup
-	     * @description
-	     *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
-	     * @param {Object/String} query
-	     * http://wiki.openstreetmap.org/wiki/Nominatim
-	     * @methodOf osm.nominatim.osmNominatim
-	     * @return {Promise} $http.get
-	    */
-	    this.lookup = function lookup(query) {
-	        var params;
-	        if (typeof query === 'string') {
-	            params = {
-	                format: 'json',
-	                q: query
+	    _createClass(osmNominatim, [{
+	        key: 'search',
+	        value: function search(query) {
+	            //https://nominatim.openstreetmap.org/search
+	            //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	            //params['accept-language'] = 'fr';
+	            var params;
+	            if (typeof query === 'string' || !query) {
+	                params = {
+	                    format: 'json',
+	                    q: query
+	                };
+	            } else {
+	                params = angular.copy(query);
+	                params.format = 'json';
+	            }
+	            var config = {
+	                params: params
 	            };
-	        } else {
-	            params = angular.copy(query);
-	            params.format = 'json';
+	            var url = this.url + '/search';
+	            return this.$http.get(url, config);
 	        }
-	        var config = {
-	            params: params
-	        };
-	        var url = this.url + '/lookup';
-	        return $http.get(url, config);
-	    };
-	}
+
+	        /**
+	         * @ngdoc method
+	         * @name reverse
+	         * @param {Object/String} query
+	         * http://wiki.openstreetmap.org/wiki/Nominatim
+	         * @methodOf osm.nominatim.osmNominatim
+	         * @return {Promise} $http.get
+	        */
+
+	    }, {
+	        key: 'reverse',
+	        value: function reverse(query) {
+	            //https://nominatim.openstreetmap.org/reverse
+	            //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	            //params['accept-language'] = 'fr';
+	            var params;
+	            if (typeof query === 'string') {
+	                params = {
+	                    format: 'json',
+	                    q: query
+	                };
+	            } else {
+	                params = angular.copy(query);
+	                params.format = 'json';
+	            }
+	            var config = {
+	                params: params
+	            };
+	            var url = this.url + '/reverse';
+	            return this.$http.get(url, config);
+	        }
+
+	        /**
+	         * @ngdoc method
+	         * @name lookup
+	         * @description
+	         *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
+	         * @param {Object/String} query
+	         * http://wiki.openstreetmap.org/wiki/Nominatim
+	         * @methodOf osm.nominatim.osmNominatim
+	         * @return {Promise} $http.get
+	        */
+
+	    }, {
+	        key: 'lookup',
+	        value: function lookup(query) {
+	            var params;
+	            if (typeof query === 'string') {
+	                params = {
+	                    format: 'json',
+	                    q: query
+	                };
+	            } else {
+	                params = angular.copy(query);
+	                params.format = 'json';
+	            }
+	            var config = {
+	                params: params
+	            };
+	            var url = this.url + '/lookup';
+	            return this.$http.get(url, config);
+	        }
+	    }]);
+
+	    return osmNominatim;
+	}();
 
 	exports.default = osmNominatim;
 
 /***/ },
-/* 18 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1685,11 +1897,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _togeojson = __webpack_require__(19);
+	var _togeojson = __webpack_require__(16);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
-	var _togeojson3 = __webpack_require__(20);
+	var _togeojson3 = __webpack_require__(17);
 
 	var _togeojson4 = _interopRequireDefault(_togeojson3);
 
@@ -1700,7 +1912,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmtogeojsonModule;
 
 /***/ },
-/* 19 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1709,7 +1921,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _togeojson = __webpack_require__(20);
+	var _togeojson = __webpack_require__(17);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
@@ -1728,7 +1940,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmtogejsonProvider;
 
 /***/ },
-/* 20 */
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1798,7 +2010,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                if (isWayArea(d)) {
-	                    //lngLats.pop(); // Remove last == first.
 	                    feature.geometry.type = 'Polygon';
 	                    feature.geometry.coordinates = [lngLats];
 	                } else {

@@ -8,15 +8,21 @@
             oauth_secret: 'EkXrocMrHbtSQ3r9VH0D7KH6oAEhfJ6elImVRBzB'
         };
     }
-    function ExampleCtrl (osmAuthService) {
+    function ExampleCtrl (osmAuthService, osmAPI) {
         var $ctrl = this;
+        osmAPI.setAuthAdapter(osmAuthService);
         this.options = {};
         this.login = function () {
             //osmAuthService.options(this.options);
             osmAuthService.authenticate().then(update);
         };
+        this.logout = function() {
+            osmAuthService.logout();
+            update();
+        };
         function onUserDetails(res) {
             $ctrl.data = res;
+            $ctrl.userDetails = res;
         }
         function onError(err) {
             $ctrl.err = err;
@@ -24,14 +30,13 @@
         function update() {
             if (osmAuthService.authenticated()) {
                 $ctrl.authenticated = true;
-                osmAuthService.xhr({
-                    method: 'GET',
-                    path: '/api/0.6/user/details'
-                }).then(onUserDetails, onError);
+                osmAPI.getUserDetails().then(onUserDetails, onError);
             } else {
                 $ctrl.authenticated = false;
+                onUserDetails();
             }
         }
+        update();
     }
 
 })();

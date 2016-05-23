@@ -55,12 +55,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(18);
+	module.exports = __webpack_require__(15);
 
 
 /***/ },
 
-/***/ 18:
+/***/ 15:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69,11 +69,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _togeojson = __webpack_require__(19);
+	var _togeojson = __webpack_require__(16);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
-	var _togeojson3 = __webpack_require__(20);
+	var _togeojson3 = __webpack_require__(17);
 
 	var _togeojson4 = _interopRequireDefault(_togeojson3);
 
@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 19:
+/***/ 16:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -94,7 +94,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _togeojson = __webpack_require__(20);
+	var _togeojson = __webpack_require__(17);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
@@ -114,7 +114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ 20:
+/***/ 17:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -184,7 +184,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                if (isWayArea(d)) {
-	                    //lngLats.pop(); // Remove last == first.
 	                    feature.geometry.type = 'Polygon';
 	                    feature.geometry.coordinates = [lngLats];
 	                } else {

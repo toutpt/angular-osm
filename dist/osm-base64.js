@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(7);
+	module.exports = __webpack_require__(4);
 
 
 /***/ },
@@ -764,10 +764,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmx2jsModule;
 
 /***/ },
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -776,9 +773,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _oauth = __webpack_require__(8);
+	var _base = __webpack_require__(5);
 
-	var _oauth2 = _interopRequireDefault(_oauth);
+	var _base2 = _interopRequireDefault(_base);
 
 	var _api = __webpack_require__(1);
 
@@ -790,19 +787,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmOAuthModule = angular.module('osm.oauth', [_api2.default.name, _x2js2.default.name]).provider('osmAuthService', function osmAuthServiceProvider() {
-	    this.options = {};
-
-	    this.$get = function osmAuthServiceFactory($q, osmx2js) {
-	        return new _oauth2.default($q, osmx2js, this.options);
+	var osmBase64Module = angular.module('osm.base64', [_x2js2.default.name, _api2.default.name, 'base64']).provider('osmBase64', function osmBase64Provider() {
+	    this.options = {
+	        url: 'http://api.openstreetmap.org/api'
 	    };
-	    this.$get.$inject = ['$q', 'osmx2js'];
+	    this.$get = function osmBase64Factory($base64, $http, $q, osmx2js) {
+	        return new _base2.default($base64, $http, $q, osmx2js, this.options);
+	    };
+	    this.$get.$inject = ['$base64', '$http', 'osmx2js'];
 	});
 
-	exports.default = osmOAuthModule;
+	exports.default = osmBase64Module;
 
 /***/ },
-/* 8 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -815,116 +813,107 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	/**
-	* @ngdoc service
-	* @name osm.oauth.osmAuthService
-	* @description handle osm oauth
-	*/
+	var Base64backend = function () {
+	    function Base64backend($base64, $http, osmx2js) {
+	        _classCallCheck(this, Base64backend);
 
-	var osmAuthService = function () {
-	    function osmAuthService($q, osmx2js, options) {
-	        _classCallCheck(this, osmAuthService);
-
-	        if (options) {
-	            if (options.oauth_secret && options.oauth_consumer_key) {
-	                this.auth = osmAuth(options);
-	            }
-	        }
+	        this.$base64 = $base64;
+	        this.storage = {};
+	        this.$http = $http;
+	        this.url = 'http://api.openstreetmap.org/api';
 	        this.osmx2js = osmx2js;
-	        this.$q = $q;
-	        this._options = options;
 	    }
-	    /**
-	     * @ngdoc method
-	     * @name logout
-	     * @methodOf osm.auth.osmAuthService
-	     */
 
-
-	    _createClass(osmAuthService, [{
-	        key: 'logout',
-	        value: function logout() {
-	            this.auth.logout();
-	        }
-	        /**
-	         * @ngdoc method
-	         * @name authenticated
-	         * @methodOf osm.auth.osmAuthService
-	         * @return {boolean} authenticated
-	         */
-
-	    }, {
-	        key: 'authenticated',
-	        value: function authenticated() {
-	            return this.auth.authenticated();
-	        }
-	        /**
-	         * @ngdoc method
-	         * @name authenticate
-	         * @methodOf osm.auth.osmAuthService
-	         * @return {Promise} true/false
-	         */
-
-	    }, {
-	        key: 'authenticate',
-	        value: function authenticate() {
-	            var deferred = this.$q.defer();
-	            this.auth.authenticate(function () {
-	                deferred.resolve(true);
-	            });
-	            return deferred.promise;
-	        }
-	        /**
-	         * @ngdoc method
-	         * @name xhr
-	         * @methodOf osm.auth.osmAuthService
-	         * @return {Promise} http response
-	         */
-
-	    }, {
+	    _createClass(Base64backend, [{
 	        key: 'xhr',
 	        value: function xhr(options) {
 	            var self = this;
-	            var deferred = this.$q.defer();
-	            options.path = '/api' + options.path;
-	            if (options.data) {
-	                options.body = options.data;
-	                options.data = undefined;
-	            }
-	            this.auth.xhr(options, function (err, data) {
-	                if (err) {
-	                    deferred.reject(err);
-	                } else {
-	                    if (data instanceof XMLDocument) {
-	                        deferred.resolve(self.osmx2js.dom2js(data));
-	                    } else {
-	                        deferred.resolve(data);
+	            options.url = this.url + options.path;
+	            options.headers = {
+	                Authorization: this.getAuthorization()
+	            };
+	            return this.$http(options).then(function (data) {
+	                var d = data.data;
+	                if (!d) {
+	                    return;
+	                }
+	                if (d.substr) {
+	                    if (d.substr(0, 5) === '<?xml') {
+	                        return self.osmx2js.xml2js(d);
 	                    }
 	                }
+	                return d;
 	            });
-	            return deferred.promise;
 	        }
 	        /**
 	         * @ngdoc method
-	         * @name options
-	         * @methodOf osm.auth.osmAuthService
-	         */
+	         * @name setCredentials
+	         * @description if you don't use oauth, you can save
+	         * credentials here using base64 localstorage (completly unsecure)
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} crendentials
+	        */
 
 	    }, {
-	        key: 'options',
-	        value: function options(_options) {
-	            if (this.auth) {
-	                this.auth.options(_options);
+	        key: 'setCredentials',
+	        value: function setCredentials(username, password) {
+	            this.storage.username = username;
+	            var credentials = this.$base64.encode(username + ':' + password);
+	            this.storage.credentials = credentials;
+	            return credentials;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getCredentials
+	         * @description if you don't use oauth, you can manage
+	         * credentials here using base64 headers
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} crendentials from the last set
+	        */
+
+	    }, {
+	        key: 'getCredentials',
+	        value: function getCredentials() {
+	            return this.storage.credentials;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name getAuthorization
+	         * @description compute authorization header from credentials
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
+	        */
+
+	    }, {
+	        key: 'getAuthorization',
+	        value: function getAuthorization() {
+	            return 'Basic ' + this.storage.credentials;
+	        }
+	        /**
+	         * @ngdoc method
+	         * @name clearCredentials
+	         * @description remove credentials from the localstorage
+	         * @methodOf osm.api.osmAPI
+	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
+	        */
+
+	    }, {
+	        key: 'clearCredentials',
+	        value: function clearCredentials() {
+	            if (this.storage.removeItem) {
+	                this.storage.removeItem('credentials');
 	            } else {
-	                this.auth = osmAuth(_options);
+	                delete this.storage.credentials;
 	            }
 	        }
 	    }]);
 
-	    return osmAuthService;
+	    return Base64backend;
 	}();
 
-	exports.default = osmAuthService;
+	Base64backend.$inject = ['$base64', '$http', 'osmx2js'];
+
+	exports.default = Base64backend;
 
 /***/ }
 /******/ ])

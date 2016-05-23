@@ -54,7 +54,7 @@
         function onUserChange(data) {
             if (osmAuthService.authenticated()) {
                 $ctrl.authenticated = true;
-                osmAPI.setOauth(osmAuthService);
+                osmAPI.setAuthAdapter(osmAuthService);
                 osmAPI.getUserDetails().then(function (user) {
                     $ctrl.data = user;
                     $ctrl.user = user.osm.user;

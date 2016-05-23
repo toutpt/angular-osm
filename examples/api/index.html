@@ -10,8 +10,6 @@
 	<script type="text/javascript" src="https://npmcdn.com/leaflet@0.7.7"></script>
 	<script type="text/javascript" src="https://npmcdn.com/angular@1.5.5/angular.js"></script>
 	<script type="text/javascript" src="https://npmcdn.com/angular-leaflet-light@0.0.4/dist/angular-leaflet.js"></script>
-	<script type="text/javascript" src="https://npmcdn.com/angular-base64@2.0.5/angular-base64.min.js"></script>
-	<script type="text/javascript" src="https://npmcdn.com/ngstorage@0.3.10/ngStorage.min.js"></script>
 	<script type="text/javascript" src="../../dist/osm-api.js"></script>
 	<script type="text/javascript" src="example.js"></script>
 </head>
@@ -20,30 +18,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<ng-include src="'urlused.html'"></ng-include>
-				<div class="ng-hide" ng-show="$ctrl.username">
-					<p>Hello {{$ctrl.username}}</p>
-					<div class="btn-group">
-						<button class="btn btn-default" ng-click="$ctrl.doLogout()">logout</button>
-						<button class="btn btn-default" ng-click="$ctrl.osmAPI.getUserDetails().then($ctrl.onData, $ctrl.onError)">getUserDetails</button>
-					</div>
-				</div>
-				<hr/>
-				<form name="login" ng-show="!$ctrl.username">
-					<div class="form-group">
-						<input class="form-control" placeholder="login"
-							type="text"
-							ng-model="$ctrl.login"/>
-					</div>
-					<div class="form-group">
-						<input class="form-control" placeholder="password"
-							type="password"
-							ng-model="$ctrl.password"/>
-					</div>
-					<button class="btn btn-default" ng-click="$ctrl.doLogin()">login</button>
-				</form>
-				<hr/>
 				<ng-include src="'testcase.html'"></ng-include>
-
 			</div>
 			<ng-include src="'../display.html'"></ng-include>
 		</div>

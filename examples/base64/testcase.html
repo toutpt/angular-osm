@@ -1,0 +1,26 @@
+<div>
+    <div class="form-group">
+        <label>BBOX</label>
+        <leaflet style="min-height: 200px" on-map-initialized="$ctrl.onMapInitialized(map)"></leaflet>
+        <input type="text" class="form-control" ng-model="$ctrl.bbox" placeholder="bbox"/>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-default" ng-click="$ctrl.osmAPI.getMap($ctrl.bbox).then($ctrl.onData, $ctrl.onError)">getMap</button>
+        <button class="btn btn-default" ng-click="$ctrl.osmAPI.getNotes($ctrl.bbox).then($ctrl.onData, $ctrl.onError)">getNotes</button>
+    </div>
+    <hr/>
+    <form name="getelement">
+        <div class="form-group">
+            <input type="text" class="form-control" ng-model="$ctrl.element_id" placeholder="element_id"/>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-default" ng-click="$ctrl.osmAPI.getNode($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getNode</button>
+            <button class="btn btn-default" ng-click="$ctrl.osmAPI.getWay($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getWay</button>
+            <button class="btn btn-default" ng-click="$ctrl.osmAPI.getRelation($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getRelation</button>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-default" ng-click="$ctrl.osmAPI.getWayFull($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getWayFull</button>
+            <button class="btn btn-default" ng-click="$ctrl.osmAPI.getRelationFull($ctrl.element_id).then($ctrl.onData, $ctrl.onError)">getRelationFull</button>
+        </div>
+    </form>
+</div>
