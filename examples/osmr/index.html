@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>angular-osm osrm</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+
+	<script type="text/javascript" src="https://npmcdn.com/angular@1.5.5/angular.min.js"></script>
+	<script type="text/javascript" src="https://npmcdn.com/angular-leaflet-light@0.0.4/dist/angular-leaflet.js"></script>
+	<script type="text/javascript" src="../../dist/osm-osrm.js"></script>
+	<script type="text/javascript" src="example.js"></script>
+</head>
+<body ng-app="example" ng-controller="ExampleCtrl as $ctrl">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<p class="help-block">This example show you how to use osrm</p>
+				<a target="_blank" href="https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md">Official HTTP API Documentation</a>
+				<form name="keyform">
+					<h2>Shared params</h2>
+					<div class="form-group">
+						<label>Profile</label>
+						<select class="form-control" ng-model="$ctrl.profile">
+							<option value="car">car</option>
+							<option value="bicycle">bicycle</option>
+							<option value="foot">foot</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Coordinates</label>
+						<leaflet style="height: 300px" on-map-initialized="$ctrl.onMapInitialized(map)"></leaflet>
+						<p class="help-block" ng-repeat="coordinate in $ctrl.coordinates">{{coordinate}}</p>
+						<div class="btn-group">
+							<button type="button" class="btn btn-xs btn-default"
+								ng-click="$ctrl.addCoordinate()">add center as coordinate
+							</button>
+							<button type="button" class="btn btn-xs btn-danger"
+								ng-click="$ctrl.resetCoordinates()">reset coordinates
+							</button>
+						</div>
+					</div>
+
+					<hr/>
+					<h2>Nearest</h2>
+					<div class="form-group">
+						<label>Number</label>
+						<p class="help-block">Number of nearest segments that should be returned.</p>
+						<input class="form-control" ng-model="$ctrl.nearestNumber" type="number"/>
+					</div>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.nearest()">nearest</button>
+
+					<hr/>
+					<h2>Table</h2>
+					<button class="btn btn-default btn-block" ng-click="$ctrl.table()">table</button>
+
+					<hr/>
+					<h2>Route</h2>
+					 <div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="$ctrl.routeOptions.alternatives"> alternatives
+						</label>
+					</div>
+					 <div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="$ctrl.routeOptions.steps"> steps
+						</label>
+					</div>
+					 <div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="$ctrl.routeOptions.annotate"> annotate
+						</label>
+					</div>
+					<div class="form-group">
+						<label>routeOptions geometries</label>
+						<select class="form-control" ng-model="$ctrl.routeOptions.geometries">
+							<option value="polyline">polyline</option>
+							<option value="geojson">geojson</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>routeOptions overview</label>
+						<select class="form-control" ng-model="$ctrl.routeOptions.overview">
+							<option value="simplified">simplified</option>
+							<option value="full">full</option>
+							<option value="false">false</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>routeOptions continue_straight</label>
+						<select class="form-control" ng-model="$ctrl.routeOptions.continue_straight">
+							<option value="default">default</option>
+							<option value="true">true</option>
+							<option value="false">false</option>
+						</select>
+					</div>
+					<div class="btn-group">
+						<button class="btn btn-default btn-block" ng-click="$ctrl.route()">route</button>
+						<button class="btn btn-default btn-block" ng-click="$ctrl.trip()">trip</button>
+					</div>
+
+
+
+				</form>
+			</div>
+			<ng-include src="'../display.html'"></ng-include>
+		</div>
+	</div>
+</body>
+</html>

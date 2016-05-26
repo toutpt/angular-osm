@@ -73,13 +73,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
-	var _togeojson3 = __webpack_require__(17);
-
-	var _togeojson4 = _interopRequireDefault(_togeojson3);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmtogeojsonModule = angular.module('osm.togeojson', []).factory('osmtogeojson', _togeojson4.default).provider('osmtogeojson', _togeojson2.default);
+	var osmtogeojsonModule = angular.module('osm.togeojson', []).provider('osmtogeojson', _togeojson2.default);
 
 	exports.default = osmtogeojsonModule;
 
