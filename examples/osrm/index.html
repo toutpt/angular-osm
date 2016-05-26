@@ -14,7 +14,7 @@
 </head>
 <body ng-app="example" ng-controller="ExampleCtrl as $ctrl">
 	<div class="container">
-		<div class="row">
+		<div class="row" style="padding-bottom: 200px">
 			<div class="col-md-6">
 				<p class="help-block">This example show you how to use osrm</p>
 				<a target="_blank" href="https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md">Official HTTP API Documentation</a>
@@ -96,12 +96,9 @@
 						</select>
 					</div>
 					<div class="btn-group">
-						<button class="btn btn-default btn-block" ng-click="$ctrl.route()">route</button>
-						<button class="btn btn-default btn-block" ng-click="$ctrl.trip()">trip</button>
+						<button class="btn btn-lg btn-default" ng-click="$ctrl.route()">route</button>
+						<button class="btn btn-lg btn-default" ng-click="$ctrl.trip()">trip</button>
 					</div>
-
-
-
 				</form>
 			</div>
 			<ng-include src="'../display.html'"></ng-include>
