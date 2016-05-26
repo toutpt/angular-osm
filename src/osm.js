@@ -7,6 +7,7 @@ import overpass from './overpass/overpass';
 import taginfo from './taginfo/taginfo';
 import nominatim from './nominatim/nominatim';
 import togeojson from './togeojson/togeojson';
+import osrm from './osrm/osrm';
 
 angular.module('osm', [
     api.name,
@@ -15,5 +16,6 @@ angular.module('osm', [
     overpass.name,
     taginfo.name,
     nominatim.name,
-    togeojson.name
+    togeojson.name,
+    osrm.name
 ]);
