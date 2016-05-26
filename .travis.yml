@@ -13,7 +13,6 @@ before_script:
   - npm prune
 after_success:
   - npm run semantic-release
-  - bash <(curl -s https://codecov.io/bash)
   - cat coverage/PhantomJS*/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 branches:
   except:
