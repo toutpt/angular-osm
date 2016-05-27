@@ -19,8 +19,8 @@ Angular OSM
 [travis-ci-image]: https://travis-ci.org/toutpt/angular-osm.png?branch=master
 [travis-ci-url]: https://travis-ci.org/toutpt/angular-osm
 
-[coverage-image]: https://coveralls.io/repos/toutpt/angular-osm/badge.png
-[coverage-url]: https://coveralls.io/r/toutpt/angular-osm
+[coverage-image]: https://coveralls.io/repos/github/toutpt/angular-osm/badge.svg?branch=master
+[coverage-url]: https://coveralls.io/github/toutpt/angular-osm?branch=master
 [dependencies-image]: https://david-dm.org/toutpt/angular-osm.png
 [dependencies-url]: https://david-dm.org/toutpt/angular-osm
 [devdependencies-image]: https://david-dm.org/toutpt/angular-osm/dev-status.png
