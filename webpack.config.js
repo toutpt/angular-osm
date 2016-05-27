@@ -13,14 +13,6 @@ var config = {
         togeojson: ['./src/togeojson/togeojson.js'],
         nominatim: ['./src/nominatim/nominatim.js']
     },
-    externals: {
-        angular: 'angular',
-        'osm-auth': 'osm-auth',
-        'osmAuth': 'osmAuth',
-        'angular-base64': 'angular-base64',
-        ngstorage: 'ngstorage',
-        osmtogeojson: 'osmtogeojson'
-    },
     output: {
         path: __dirname,
         filename: 'dist/osm-[name].js',
