@@ -110,3 +110,4 @@ The complete list of injectable services:
 | osm.api | osm.nominatim | osm.oauth      | osm.overpass   | osm.taginfo   | osm.togeojson | osm.base64 |
 |---------|---------------|----------------|----------------|---------------|---------------|------------|
 | osmAPI  | osmNominatim  | osmAuthService | osmOverpassAPI | osmTagInfoAPI | osmtogeojson  | osmBase64  |
+
