@@ -1,3 +1,6 @@
+/**
+ * @module osm.base64
+ */
 import osmBase64 from './base64.service';
 import osmAPIModule from '../api/api';
 import osmx2jsModule from '../x2js/x2js';

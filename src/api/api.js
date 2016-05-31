@@ -1,3 +1,6 @@
+/**
+ * @module osm.api
+ */
 import osmAPI from './api.service';
 import osmx2jsModule from '../x2js/x2js';
 

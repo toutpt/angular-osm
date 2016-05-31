@@ -1,3 +1,6 @@
+/**
+ * @module osm.overpass
+ */
 import osmOverpassAPI from './overpass.service';
 
 var osmOverpassModule = angular.module('osm.overpass', [])

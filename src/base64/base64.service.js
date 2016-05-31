@@ -1,6 +1,17 @@
 
-
-class Base64backend{
+/**
+ * @class
+ * Create osmBase64 angular service instance.
+ * This can be used as osmAPI adapter.
+ */
+class Base64Adapter{
+    /**
+     * the constructor
+     * @param {Object} $base64 service provided by angular-base64 module
+     * @param {Object} $http angular $http service
+     * @param {Object} osmx2js angular-osm service
+     * to transform response from xml to object
+     */
     constructor($base64, $http, osmx2js) {
         this.$base64 = $base64;
         this.storage = {};
@@ -8,6 +19,11 @@ class Base64backend{
         this.url = 'http://api.openstreetmap.org/api';
         this.osmx2js = osmx2js;
     }
+    /**
+     * the main method used to do the call to the API
+     * @param {Object} options
+     * @returns {Promise} $http response
+     */
     xhr(options) {
         var self = this;
         options.url = this.url + options.path;
@@ -28,11 +44,11 @@ class Base64backend{
         });
     }
     /**
-     * @ngdoc method
-     * @name setCredentials
-     * @description if you don't use oauth, you can save
+     * if you don't use oauth, you can save
      * credentials here using base64 localstorage (completly unsecure)
-     * @methodOf osm.api.osmAPI
+     * @param {string} username your username
+     * @param {string} password the user password.
+     * WARNING base64 is unsafe and the credentials are stored in the localstorage
      * @returns {string} crendentials
     */
     setCredentials(username, password) {
@@ -42,31 +58,22 @@ class Base64backend{
         return credentials;
     }
     /**
-     * @ngdoc method
-     * @name getCredentials
-     * @description if you don't use oauth, you can manage
+     * if you don't use oauth, you can manage
      * credentials here using base64 headers
-     * @methodOf osm.api.osmAPI
      * @returns {string} crendentials from the last set
     */
     getCredentials() {
         return this.storage.credentials;
     }
     /**
-     * @ngdoc method
-     * @name getAuthorization
-     * @description compute authorization header from credentials
-     * @methodOf osm.api.osmAPI
+     * compute authorization header from credentials
      * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
     */
     getAuthorization() {
         return 'Basic ' + this.storage.credentials;
     }
     /**
-     * @ngdoc method
-     * @name clearCredentials
-     * @description remove credentials from the localstorage
-     * @methodOf osm.api.osmAPI
+     * remove credentials from the localstorage
      * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
     */
     clearCredentials() {
@@ -78,6 +85,6 @@ class Base64backend{
     }
 }
 
-Base64backend.$inject = ['$base64', '$http', 'osmx2js'];
+Base64Adapter.$inject = ['$base64', '$http', 'osmx2js'];
 
-export default Base64backend;
+export default Base64Adapter;

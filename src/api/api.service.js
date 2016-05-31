@@ -1,12 +1,16 @@
 /**
- * @ngdoc service
- * @name osm.oauth.osmAuthService
- * @description The main idea is use geojson object where it is possible
- * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
- * @param  {Object} $http angular http
- * @param  {Object} $q angular promise
+ * @class
+ * Create the angular service instance.
+ * The main idea is to provide only object and hide the XML related stuf.
+ * This is achieve using XML2JS.
  */
-class osmAPI {
+class OSMAPI {
+    /**
+     * @param  {Object} $http angular http
+     * @param  {Object} $q angular promise
+     * @param  {Object} osmx2js service
+     * @param  {Object} options to get set url of the API
+     */
     constructor($http, $q, osmx2js, options) {
         this.url = options.url;
         this.$http = $http;
@@ -16,21 +20,17 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name setAuthAdapter
-     * @description provide an adapter to make authenticated request
-     * @methodOf osm.api.osmAPI
+     * Set the adapter to make authenticated request.
+     * @param {Object} adapter must provide xhr method.
+     * angular-osm provide two adapter: osmBase64 and osmAuthService
     */
-    setAuthAdapter(oauth) {
-        this._oauth = oauth;
+    setAuthAdapter(adapter) {
+        this._oauth = adapter;
     }
 
     /**
-     * @ngdoc method
-     * @name setOauth
-     * @description use oauth object to call API
-     * @methodOf osm.api.osmAPI
-     * @return {Object} oauth
+     * Get the adapter used to do authenticated xhr
+     * @return {Object}
     */
     getAuthAdapter() {
         return this._oauth;
@@ -40,9 +40,7 @@ class osmAPI {
     // ------------------ INTERNAL CALL SERVER (API) -----------------
 
     /**
-     * @ngdoc method
-     * @name xhr
-     * @description call the API
+     * Call the API
      * @param {Object} options
      * ```
         var options = {
@@ -52,8 +50,7 @@ class osmAPI {
         };
         osmAPI.xhr(options);
         ```
-     * @methodOf osm.api.osmAPI
-     * @return {Object} oauth
+     * @return {Promise} the adapter response
     */
     xhr(options) {
         let deferred = this.$q.defer();
@@ -61,10 +58,7 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getAuthenticated
-     * @description send a get request to OSM with
-     * @methodOf osm.api.osmAPI
+     * send a get request to OSM with
      * @returns {Promise} $http response
     */
     getAuthenticated(method, config) {
@@ -77,10 +71,7 @@ class osmAPI {
         return this.xhr(_config);
     }
     /**
-     * @ngdoc method
-     * @name get
-     * @description send a get request
-     * @methodOf osm.api.osmAPI
+     * send a get request
      * @param {string} method the api method
      * @param {Object} config the $http.get config
      * @returns {Promise} $http response with XML as string
@@ -97,10 +88,7 @@ class osmAPI {
         return deferred.promise;
     }
     /**
-     * @ngdoc method
-     * @name put
-     * @description send a put request
-     * @methodOf osm.api.osmAPI
+     * send a put request
      * @param {string} method the api method
      * @param {Object} content payload
      * @param {Object} config the $http.put config
@@ -117,10 +105,7 @@ class osmAPI {
         return this.xhr(_config);
     }
     /**
-     * @ngdoc method
-     * @name delete
-     * @description send a delete request
-     * @methodOf osm.api.osmAPI
+     * send a delete request
      * @param {string} method the api method
      * @param {Object} config the $http.delete config
      * @returns {Promise} $http response
@@ -140,9 +125,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name createChangeset
-     * @methodOf osm.api.osmAPI
      * @param {string} comment the comment assiociated to the changeset
      * @returns {Promise} $http response
     */
@@ -163,9 +145,6 @@ class osmAPI {
         return deferred.promise;
     }
     /**
-     * @ngdoc method
-     * @name getLastOpenedChangesetId
-     * @methodOf osm.api.osmAPI
      * @returns {Promise} $http response with the last changeset id
      * or undefined if no changeset was opened
     */
@@ -188,9 +167,6 @@ class osmAPI {
         return deferred.promise;
     }
     /**
-     * @ngdoc method
-     * @name closeChangeset
-     * @methodOf osm.api.osmAPI
      * @returns {Promise} $http.put response of
      * /0.6/changeset/CHANGESET_ID/close
     */
@@ -206,9 +182,6 @@ class osmAPI {
     // ------------------ USER API -----------------
 
     /**
-     * @ngdoc method
-     * @name getUserById
-     * @methodOf osm.api.osmAPI
      * @param {string} id id of the user
      * @returns {Promise} $http.get response
      * /0.6/user/#id
@@ -219,9 +192,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name getUserDetails
-     * @methodOf osm.api.osmAPI
      * @returns {Promise} $http.get response
      * /0.6/user/details
     */
@@ -229,9 +199,6 @@ class osmAPI {
         return this.getAuthenticated('/0.6/user/details');
     }
     /**
-     * @ngdoc method
-     * @name getUserPreferences
-     * @methodOf osm.api.osmAPI
      * @returns {Promise} $http.get response
      * /0.6/user/preferences
     */
@@ -240,9 +207,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name putUserPreferences
-     * @methodOf osm.api.osmAPI
      * @param {string} key the preference key
      * @param {string} value the preference value
      * @returns {Promise} $http.get response
@@ -256,9 +220,6 @@ class osmAPI {
     //------------------ MAP DATA -------------------------
 
     /**
-     * @ngdoc method
-     * @name getMap
-     * @methodOf osm.api.osmAPI
      * @param {string} bbox left,bottom,right,top
      * where:
         left is the longitude of the left (westernmost) side of the bounding box.
@@ -274,9 +235,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name getNotes
-     * @methodOf osm.api.osmAPI
      * @param {string} bbox left,bottom,right,top
      * where:
         left is the longitude of the left (westernmost) side of the bounding box.
@@ -295,9 +253,6 @@ class osmAPI {
     //------------------ ELEMENTS: Node ----------------
 
     /**
-     * @ngdoc method
-     * @name createNode
-     * @methodOf osm.api.osmAPI
      * @param {Object/string} node
          var node = {osm: {node: {
             _changeset: '12', _lat: '...', _lon: '...',
@@ -313,9 +268,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getNode
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id
@@ -325,9 +277,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getNodeRelations
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id/relations
@@ -337,9 +286,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getNodeWays
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id/ways
@@ -349,9 +295,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getNodes
-     * @methodOf osm.api.osmAPI
      * @param {array} ids ids
      * @returns {Promise} $http.get response
      * GET /0.6/node/#id
@@ -361,9 +304,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name deleteNode
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.delete response
      * DELETE /0.6/node/#id
@@ -378,9 +318,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name createWay
-     * @methodOf osm.api.osmAPI
      * @param {Object/string} way
         var way = {osm: {way: {
             _changeset: '12', _lat: '...', _lon: '...',
@@ -400,9 +337,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getWay
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id
@@ -412,9 +346,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getWayRelations
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id/relations
@@ -425,9 +356,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name getWayFull
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/way/#id/full
@@ -437,9 +365,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getWays
-     * @methodOf osm.api.osmAPI
      * @param {array} ids ids
      * @returns {Promise} $http.get response
      * GET /0.6/ways?ways=ids
@@ -450,9 +375,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name deleteWay
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.delete response
      * DELETE /0.6/way/#id
@@ -465,9 +387,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name createRelation
-     * @methodOf osm.api.osmAPI
      * @param {Object/string} relation
         var relation = {osm: {relation: {
             _changeset: '12', _lat: '...', _lon: '...',
@@ -487,9 +406,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getRelation
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id
@@ -498,9 +414,6 @@ class osmAPI {
         return this.get('/0.6/relation/' + id);
     }
     /**
-     * @ngdoc method
-     * @name getRelationRelations
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id/relations
@@ -511,9 +424,6 @@ class osmAPI {
 
 
     /**
-     * @ngdoc method
-     * @name getRelationFull
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.get response
      * GET /0.6/relation/#id/full
@@ -523,9 +433,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name getRelations
-     * @methodOf osm.api.osmAPI
      * @param {array} ids ids
      * @returns {Promise} $http.get response
      * GET /0.6/relations?relations=ids
@@ -535,9 +442,6 @@ class osmAPI {
     }
 
     /**
-     * @ngdoc method
-     * @name deleteRelation
-     * @methodOf osm.api.osmAPI
      * @param {string} id id
      * @returns {Promise} $http.delete response
      * DELETE /0.6/relation/#id
@@ -548,5 +452,5 @@ class osmAPI {
 
 }
 
-osmAPI.$inject = ['$http', '$q', 'osmx2js'];
-export default osmAPI;
+OSMAPI.$inject = ['$http', '$q', 'osmx2js'];
+export default OSMAPI;

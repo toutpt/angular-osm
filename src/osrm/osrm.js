@@ -1,3 +1,6 @@
+/**
+ * @module osm.osrm
+ */
 import osrmAPI from './osrm.service';
 
 var osrmModule = angular.module('osm.osrm', [])

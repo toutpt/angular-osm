@@ -1,10 +1,14 @@
 
 /**
-* @ngdoc service
-* @name osm.oauth.osmAuthService
-* @description handle osm oauth
-*/
-class osmAuthService{
+ * @class
+ * Create osmAuthService service instance
+ */
+class OAuthAdapter{
+    /**
+     * @param {Object} $q angular $q service
+     * @param {Object} osmx2js angular osm service
+     * @param {Object} options set options for the lib https://github.com/osmlab/osm-auth
+     */
     constructor($q, osmx2js, options) {
         if (options) {
             if (options.oauth_secret && options.oauth_consumer_key) {
@@ -16,27 +20,20 @@ class osmAuthService{
         this._options = options;
     }
     /**
-     * @ngdoc method
-     * @name logout
-     * @methodOf osm.auth.osmAuthService
+     * Just logout. Warning this is synchronous code
+     * and doesn t return anything.
      */
     logout() {
         this.auth.logout();
     }
     /**
-     * @ngdoc method
-     * @name authenticated
-     * @methodOf osm.auth.osmAuthService
-     * @return {boolean} authenticated
+     * @return {boolean}
      */
     authenticated() {
         return this.auth.authenticated();
     }
     /**
-     * @ngdoc method
-     * @name authenticate
-     * @methodOf osm.auth.osmAuthService
-     * @return {Promise} true/false
+     * @return {Promise} true/false value
      */
     authenticate() {
         var deferred = this.$q.defer();
@@ -46,9 +43,7 @@ class osmAuthService{
         return deferred.promise;
     }
     /**
-     * @ngdoc method
-     * @name xhr
-     * @methodOf osm.auth.osmAuthService
+     * @param {Object} options
      * @return {Promise} http response
      */
     xhr(options) {
@@ -73,9 +68,8 @@ class osmAuthService{
         return deferred.promise;
     }
     /**
-     * @ngdoc method
-     * @name options
-     * @methodOf osm.auth.osmAuthService
+     * Set the options of the oauth lib
+     * @param {Object} options set options for the lib https://github.com/osmlab/osm-auth
      */
     options(options) {
         if (this.auth) {
@@ -86,4 +80,6 @@ class osmAuthService{
     }
 }
 
-export default osmAuthService;
+OAuthAdapter.$inject = ['$q', 'osmx2js'];
+
+export default OAuthAdapter;

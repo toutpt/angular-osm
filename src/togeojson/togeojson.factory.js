@@ -1,9 +1,8 @@
 
 /**
- * @ngdoc service
- * @name osmtogeojson
+ * @constructor ToGeoJSON
+ * @param {Object} options provided by the provider
  * @description osm to geojson without dependencies :)
-   
    Import Note : geojson wait for lon/lat where every body else use lat/lon
  */
 function factory(options) {

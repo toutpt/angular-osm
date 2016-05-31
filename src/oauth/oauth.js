@@ -1,3 +1,6 @@
+/**
+ * @module osm.oauth
+ */
 import osmAuthService from './oauth.service';
 import osmAPIModule from '../api/api';
 import osmx2jsModule from '../x2js/x2js';

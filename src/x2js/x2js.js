@@ -1,4 +1,6 @@
-//https://github.com/abdmob/x2js as angular service
+/**
+ * @module osm.x2js
+ */
 var osmx2jsModule = angular.module('osm.x2js', [])
 .provider('osmx2js', function osmx2jsProvider () {
     this.options = {};

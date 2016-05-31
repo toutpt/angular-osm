@@ -1,21 +1,22 @@
 
 /**
-* @ngdoc service
-* @name osm.nominatim.osmNominatim
-* @description handle nominatim query
-*/
-class osmNominatim{
+ * @class
+ * Create osmNominatim service instance.
+ * This service create nominatim query.
+ */
+class NominatimAPI{
+    /**
+     * @param {Object} $http angular $http service
+     * @param {Object} options set by the provider to set the url
+     */
     constructor($http, options) {
         this.url = options.url;
         this.$http = $http;
     }
 
     /**
-     * @ngdoc method
-     * @name search
      * @param {Object/String} query
      * http://wiki.openstreetmap.org/wiki/Nominatim
-     * @methodOf osm.nominatim.osmNominatim
      * @return {Promise} $http.get
     */
     search(query) {
@@ -40,11 +41,8 @@ class osmNominatim{
     }
 
     /**
-     * @ngdoc method
-     * @name reverse
      * @param {Object/String} query
      * http://wiki.openstreetmap.org/wiki/Nominatim
-     * @methodOf osm.nominatim.osmNominatim
      * @return {Promise} $http.get
     */
     reverse(query) {
@@ -70,13 +68,9 @@ class osmNominatim{
 
 
     /**
-     * @ngdoc method
-     * @name lookup
-     * @description
      *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
      * @param {Object/String} query
      * http://wiki.openstreetmap.org/wiki/Nominatim
-     * @methodOf osm.nominatim.osmNominatim
      * @return {Promise} $http.get
     */
     lookup(query) {
@@ -99,4 +93,6 @@ class osmNominatim{
 
 }
 
-export default osmNominatim;
+NominatimAPI.$inject =  ['$http'];
+
+export default NominatimAPI;

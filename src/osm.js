@@ -1,3 +1,7 @@
+/**
+ * @module osm
+ */
+
 import oauth from './oauth/oauth';
 import base64 from './base64/base64';
 import api from './api/api';

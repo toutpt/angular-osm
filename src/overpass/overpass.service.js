@@ -1,23 +1,23 @@
 
 
 /**
- * @ngdoc service
- * @name overpassAPI
- * @param  {any} $http
- * @param  {any} $q
+ * @class
+ * Create osmOverpassAPI service instance
  */
-class osmOverpassAPI{
+class OverpassAPI{
+    /**
+     * @param {Object} $http angular $http service
+     * @param {Object} $q  angular $q service
+     * @param {Object} options
+     */
     constructor($http, $q, options) {
         this.url = options.url;
         this.$http = $http;
         this.$q = $q;
     }
     /**
-     * @ngdoc method
-     * @name overpass
      * @param {Object/String} query
      * http://wiki.openstreetmap.org/wiki/FR:Overpass_API
-     * @methodOf osm.overpass.osmOverpassAPI
      * @return {Promise} $http.get
     */
     overpass(query) {
@@ -38,14 +38,10 @@ class osmOverpassAPI{
         return deferred.promise;
     }
     /**
-     * @ngdoc method
-     * @name overpass
-     * @description
      * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
         By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
      * @param {String} type 'r'/'relation' or 'w'/'way'
      * @param {String/Number} osmId the id of the element
-     * @methodOf osm.overpass.osmOverpassAPI
      * @return {Number} the area id
     */
     getAreaId(type, osmId) {
@@ -139,4 +135,4 @@ class osmOverpassAPI{
     }
 }
 
-export default osmOverpassAPI;
+export default OverpassAPI;
