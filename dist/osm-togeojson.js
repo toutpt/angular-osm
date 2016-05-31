@@ -75,7 +75,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmtogeojsonModule = angular.module('osm.togeojson', []).provider('osmtogeojson', _togeojson2.default);
+	var osmtogeojsonModule = angular.module('osm.togeojson', []).provider('osmtogeojson', _togeojson2.default); /**
+	                                                                                                             * @module osm.togeojson
+	                                                                                                             */
 
 	exports.default = osmtogeojsonModule;
 
@@ -122,10 +124,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	/**
-	 * @ngdoc service
-	 * @name osmtogeojson
+	 * @constructor ToGeoJSON
+	 * @param {Object} options provided by the provider
 	 * @description osm to geojson without dependencies :)
-	   
 	   Import Note : geojson wait for lon/lat where every body else use lat/lon
 	 */
 	function factory(options) {

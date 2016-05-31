@@ -77,6 +77,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	/**
+	 * @module osm.api
+	 */
+
+
 	var osmAPIModule = angular.module('osm.api', [_x2js2.default.name]).provider('osmAPI', function osmAPIProvider() {
 	    this.options = {
 	        url: 'http://api.openstreetmap.org/api'
@@ -104,17 +109,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * @ngdoc service
-	 * @name osm.oauth.osmAuthService
-	 * @description The main idea is use geojson object where it is possible
-	 * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
-	 * @param  {Object} $http angular http
-	 * @param  {Object} $q angular promise
+	 * @class
+	 * Create the angular service instance.
+	 * The main idea is to provide only object and hide the XML related stuf.
+	 * This is achieve using XML2JS.
 	 */
 
-	var osmAPI = function () {
-	    function osmAPI($http, $q, osmx2js, options) {
-	        _classCallCheck(this, osmAPI);
+	var OSMAPI = function () {
+	    /**
+	     * @param  {Object} $http angular http
+	     * @param  {Object} $q angular promise
+	     * @param  {Object} osmx2js service
+	     * @param  {Object} options to get set url of the API
+	     */
+
+	    function OSMAPI($http, $q, osmx2js, options) {
+	        _classCallCheck(this, OSMAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
@@ -124,25 +134,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    /**
-	     * @ngdoc method
-	     * @name setAuthAdapter
-	     * @description provide an adapter to make authenticated request
-	     * @methodOf osm.api.osmAPI
+	     * Set the adapter to make authenticated request.
+	     * @param {Object} adapter must provide xhr method.
+	     * angular-osm provide two adapter: osmBase64 and osmAuthService
 	    */
 
 
-	    _createClass(osmAPI, [{
+	    _createClass(OSMAPI, [{
 	        key: 'setAuthAdapter',
-	        value: function setAuthAdapter(oauth) {
-	            this._oauth = oauth;
+	        value: function setAuthAdapter(adapter) {
+	            this._oauth = adapter;
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name setOauth
-	         * @description use oauth object to call API
-	         * @methodOf osm.api.osmAPI
-	         * @return {Object} oauth
+	         * Get the adapter used to do authenticated xhr
+	         * @return {Object}
 	        */
 
 	    }, {
@@ -154,9 +160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ------------------ INTERNAL CALL SERVER (API) -----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name xhr
-	         * @description call the API
+	         * Call the API
 	         * @param {Object} options
 	         * ```
 	            var options = {
@@ -166,8 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	            osmAPI.xhr(options);
 	            ```
-	         * @methodOf osm.api.osmAPI
-	         * @return {Object} oauth
+	         * @return {Promise} the adapter response
 	        */
 
 	    }, {
@@ -178,10 +181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getAuthenticated
-	         * @description send a get request to OSM with
-	         * @methodOf osm.api.osmAPI
+	         * send a get request to OSM with
 	         * @returns {Promise} $http response
 	        */
 
@@ -197,10 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.xhr(_config);
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name get
-	         * @description send a get request
-	         * @methodOf osm.api.osmAPI
+	         * send a get request
 	         * @param {string} method the api method
 	         * @param {Object} config the $http.get config
 	         * @returns {Promise} $http response with XML as string
@@ -220,10 +217,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name put
-	         * @description send a put request
-	         * @methodOf osm.api.osmAPI
+	         * send a put request
 	         * @param {string} method the api method
 	         * @param {Object} content payload
 	         * @param {Object} config the $http.put config
@@ -243,10 +237,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.xhr(_config);
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name delete
-	         * @description send a delete request
-	         * @methodOf osm.api.osmAPI
+	         * send a delete request
 	         * @param {string} method the api method
 	         * @param {Object} config the $http.delete config
 	         * @returns {Promise} $http response
@@ -267,9 +258,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ------------------ CHANGESET -----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createChangeset
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} comment the comment assiociated to the changeset
 	         * @returns {Promise} $http response
 	        */
@@ -290,9 +278,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getLastOpenedChangesetId
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http response with the last changeset id
 	         * or undefined if no changeset was opened
 	        */
@@ -318,9 +303,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name closeChangeset
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http.put response of
 	         * /0.6/changeset/CHANGESET_ID/close
 	        */
@@ -337,9 +319,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ------------------ USER API -----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name getUserById
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id of the user
 	         * @returns {Promise} $http.get response
 	         * /0.6/user/#id
@@ -352,9 +331,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getUserDetails
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http.get response
 	         * /0.6/user/details
 	        */
@@ -365,9 +341,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.getAuthenticated('/0.6/user/details');
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getUserPreferences
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http.get response
 	         * /0.6/user/preferences
 	        */
@@ -379,9 +352,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name putUserPreferences
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} key the preference key
 	         * @param {string} value the preference value
 	         * @returns {Promise} $http.get response
@@ -397,9 +367,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ MAP DATA -------------------------
 
 	        /**
-	         * @ngdoc method
-	         * @name getMap
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} bbox left,bottom,right,top
 	         * where:
 	            left is the longitude of the left (westernmost) side of the bounding box.
@@ -417,9 +384,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNotes
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} bbox left,bottom,right,top
 	         * where:
 	            left is the longitude of the left (westernmost) side of the bounding box.
@@ -439,9 +403,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ ELEMENTS: Node ----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createNode
-	         * @methodOf osm.api.osmAPI
 	         * @param {Object/string} node
 	             var node = {osm: {node: {
 	                _changeset: '12', _lat: '...', _lon: '...',
@@ -460,9 +421,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNode
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id
@@ -475,9 +433,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNodeRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id/relations
@@ -490,9 +445,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNodeWays
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id/ways
@@ -505,9 +457,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNodes
-	         * @methodOf osm.api.osmAPI
 	         * @param {array} ids ids
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id
@@ -520,9 +469,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name deleteNode
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.delete response
 	         * DELETE /0.6/node/#id
@@ -537,9 +483,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ ELEMENTS: WAY ----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createWay
-	         * @methodOf osm.api.osmAPI
 	         * @param {Object/string} way
 	            var way = {osm: {way: {
 	                _changeset: '12', _lat: '...', _lon: '...',
@@ -562,9 +505,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWay
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/way/#id
@@ -577,9 +517,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWayRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/way/#id/relations
@@ -592,9 +529,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWayFull
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/way/#id/full
@@ -607,9 +541,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWays
-	         * @methodOf osm.api.osmAPI
 	         * @param {array} ids ids
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/ways?ways=ids
@@ -622,9 +553,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name deleteWay
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.delete response
 	         * DELETE /0.6/way/#id
@@ -639,9 +567,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ ELEMENTS: RELATION ----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createRelation
-	         * @methodOf osm.api.osmAPI
 	         * @param {Object/string} relation
 	            var relation = {osm: {relation: {
 	                _changeset: '12', _lat: '...', _lon: '...',
@@ -664,9 +589,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getRelation
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relation/#id
@@ -678,9 +600,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/0.6/relation/' + id);
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getRelationRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relation/#id/relations
@@ -693,9 +612,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getRelationFull
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relation/#id/full
@@ -708,9 +624,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {array} ids ids
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relations?relations=ids
@@ -723,9 +636,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name deleteRelation
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.delete response
 	         * DELETE /0.6/relation/#id
@@ -738,11 +648,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmAPI;
+	    return OSMAPI;
 	}();
 
-	osmAPI.$inject = ['$http', '$q', 'osmx2js'];
-	exports.default = osmAPI;
+	OSMAPI.$inject = ['$http', '$q', 'osmx2js'];
+	exports.default = OSMAPI;
 
 /***/ },
 /* 3 */
@@ -753,7 +663,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	//https://github.com/abdmob/x2js as angular service
+	/**
+	 * @module osm.x2js
+	 */
 	var osmx2jsModule = angular.module('osm.x2js', []).provider('osmx2js', function osmx2jsProvider() {
 	    this.options = {};
 	    this.$get = function osmx2jsFactory() {
@@ -795,7 +707,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new _base2.default($base64, $http, $q, osmx2js, this.options);
 	    };
 	    this.$get.$inject = ['$base64', '$http', 'osmx2js'];
-	});
+	}); /**
+	     * @module osm.base64
+	     */
+
 
 	exports.default = osmBase64Module;
 
@@ -813,9 +728,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Base64backend = function () {
-	    function Base64backend($base64, $http, osmx2js) {
-	        _classCallCheck(this, Base64backend);
+	/**
+	 * @class
+	 * Create osmBase64 angular service instance.
+	 * This can be used as osmAPI adapter.
+	 */
+
+	var Base64Adapter = function () {
+	    /**
+	     * the constructor
+	     * @param {Object} $base64 service provided by angular-base64 module
+	     * @param {Object} $http angular $http service
+	     * @param {Object} osmx2js angular-osm service
+	     * to transform response from xml to object
+	     */
+
+	    function Base64Adapter($base64, $http, osmx2js) {
+	        _classCallCheck(this, Base64Adapter);
 
 	        this.$base64 = $base64;
 	        this.storage = {};
@@ -823,8 +752,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.url = 'http://api.openstreetmap.org/api';
 	        this.osmx2js = osmx2js;
 	    }
+	    /**
+	     * the main method used to do the call to the API
+	     * @param {Object} options
+	     * @returns {Promise} $http response
+	     */
 
-	    _createClass(Base64backend, [{
+
+	    _createClass(Base64Adapter, [{
 	        key: 'xhr',
 	        value: function xhr(options) {
 	            var self = this;
@@ -846,11 +781,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name setCredentials
-	         * @description if you don't use oauth, you can save
+	         * if you don't use oauth, you can save
 	         * credentials here using base64 localstorage (completly unsecure)
-	         * @methodOf osm.api.osmAPI
+	         * @param {string} username your username
+	         * @param {string} password the user password.
+	         * WARNING base64 is unsafe and the credentials are stored in the localstorage
 	         * @returns {string} crendentials
 	        */
 
@@ -863,11 +798,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return credentials;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getCredentials
-	         * @description if you don't use oauth, you can manage
+	         * if you don't use oauth, you can manage
 	         * credentials here using base64 headers
-	         * @methodOf osm.api.osmAPI
 	         * @returns {string} crendentials from the last set
 	        */
 
@@ -877,10 +809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.storage.credentials;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getAuthorization
-	         * @description compute authorization header from credentials
-	         * @methodOf osm.api.osmAPI
+	         * compute authorization header from credentials
 	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
 	        */
 
@@ -890,10 +819,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return 'Basic ' + this.storage.credentials;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name clearCredentials
-	         * @description remove credentials from the localstorage
-	         * @methodOf osm.api.osmAPI
+	         * remove credentials from the localstorage
 	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
 	        */
 
@@ -908,12 +834,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return Base64backend;
+	    return Base64Adapter;
 	}();
 
-	Base64backend.$inject = ['$base64', '$http', 'osmx2js'];
+	Base64Adapter.$inject = ['$base64', '$http', 'osmx2js'];
 
-	exports.default = Base64backend;
+	exports.default = Base64Adapter;
 
 /***/ }
 /******/ ])

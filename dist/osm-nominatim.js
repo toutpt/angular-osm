@@ -79,11 +79,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.options = {
 	        url: 'https://nominatim.openstreetmap.org'
 	    };
-	    this.$get = function osmNominatimFactory($q) {
-	        return new _nominatim2.default($q, this.options);
+	    this.$get = function osmNominatimFactory($http) {
+	        return new _nominatim2.default($http, this.options);
 	    };
 	    this.$get.$inject = ['$http'];
-	});
+	}); /**
+	     * @module osm.nominatim
+	     */
+
 
 	exports.default = osmNominatimModule;
 
@@ -103,30 +106,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	* @ngdoc service
-	* @name osm.nominatim.osmNominatim
-	* @description handle nominatim query
-	*/
+	 * @class
+	 * Create osmNominatim service instance.
+	 * This service create nominatim query.
+	 */
 
-	var osmNominatim = function () {
-	    function osmNominatim($http, options) {
-	        _classCallCheck(this, osmNominatim);
+	var NominatimAPI = function () {
+	    /**
+	     * @param {Object} $http angular $http service
+	     * @param {Object} options set by the provider to set the url
+	     */
+
+	    function NominatimAPI($http, options) {
+	        _classCallCheck(this, NominatimAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
 	    }
 
 	    /**
-	     * @ngdoc method
-	     * @name search
 	     * @param {Object/String} query
 	     * http://wiki.openstreetmap.org/wiki/Nominatim
-	     * @methodOf osm.nominatim.osmNominatim
 	     * @return {Promise} $http.get
 	    */
 
 
-	    _createClass(osmNominatim, [{
+	    _createClass(NominatimAPI, [{
 	        key: 'search',
 	        value: function search(query) {
 	            //https://nominatim.openstreetmap.org/search
@@ -150,11 +155,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name reverse
 	         * @param {Object/String} query
 	         * http://wiki.openstreetmap.org/wiki/Nominatim
-	         * @methodOf osm.nominatim.osmNominatim
 	         * @return {Promise} $http.get
 	        */
 
@@ -182,13 +184,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name lookup
-	         * @description
 	         *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
 	         * @param {Object/String} query
 	         * http://wiki.openstreetmap.org/wiki/Nominatim
-	         * @methodOf osm.nominatim.osmNominatim
 	         * @return {Promise} $http.get
 	        */
 
@@ -213,10 +211,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmNominatim;
+	    return NominatimAPI;
 	}();
 
-	exports.default = osmNominatim;
+	NominatimAPI.$inject = ['$http'];
+
+	exports.default = NominatimAPI;
 
 /***/ }
 

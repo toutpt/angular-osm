@@ -83,7 +83,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new _osrm2.default($http, $q, this.options);
 	    };
 	    this.$get.$inject = ['$http', '$q'];
-	});
+	}); /**
+	     * @module osm.osrm
+	     */
+
 
 	exports.default = osrmModule;
 
@@ -103,24 +106,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * @ngdoc service
-	 * @name osrmAPI
-	 * @param  {any} $http
-	 * @param  {any} $q
-	 * @description
-	 * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md
+	 * @class
+	 * Create osrmAPI service instance
 	 */
 
-	var osrmAPI = function () {
-	    function osrmAPI($http, $q, options) {
-	        _classCallCheck(this, osrmAPI);
+	var OSRMAPI = function () {
+	    /**
+	     * @param  {any} $http
+	     * @param  {any} $q
+	     * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md
+	     */
+
+	    function OSRMAPI($http, $q, options) {
+	        _classCallCheck(this, OSRMAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
 	        this.$q = $q;
 	    }
+	    /**
+	     * internal get request to the remote API
+	     * @param {string} service
+	     * @param {string} version
+	     * @param {string} profile
+	     * @param {string|Object} coordinates
+	     * the string format is {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
+	     * @param {Object} options
+	     */
 
-	    _createClass(osrmAPI, [{
+
+	    _createClass(OSRMAPI, [{
 	        key: 'get',
 	        value: function get(service, version, profile, coordinates, options) {
 	            var _coordinates = coordinates;
@@ -130,7 +145,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var url = this.url + '/' + service + '/' + version + '/' + profile + '/' + _coordinates;
 	            return this.$http.get(url, { params: options });
 	        }
-	        //coordinates is String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
+	        /**
+	         * neareset service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {number} number integer >= 1 (default 1)	Number of nearest segments that should be returned.
+	         */
 
 	    }, {
 	        key: 'nearest',
@@ -141,21 +161,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return this.get('nearest', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * route service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-route
+	         */
+
 	    }, {
 	        key: 'route',
 	        value: function route(profile, coordinates, options) {
 	            return this.get('route', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * table service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-table
+	         */
+
 	    }, {
 	        key: 'table',
 	        value: function table(profile, coordinates, options) {
 	            return this.get('table', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * match service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-match
+	         */
+
 	    }, {
 	        key: 'match',
 	        value: function match(profile, coordinates, options) {
 	            return this.get('match', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * trip service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-trip
+	         */
+
 	    }, {
 	        key: 'trip',
 	        value: function trip(profile, coordinates, options) {
@@ -163,10 +215,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osrmAPI;
+	    return OSRMAPI;
 	}();
 
-	exports.default = osrmAPI;
+	OSRMAPI.$inject = ['$http', '$q'];
+
+	exports.default = OSRMAPI;
 
 /***/ }
 

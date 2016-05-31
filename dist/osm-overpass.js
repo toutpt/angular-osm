@@ -83,7 +83,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new _overpass2.default($http, $q, this.options);
 	    };
 	    this.$get.$inject = ['$http', '$q'];
-	});
+	}); /**
+	     * @module osm.overpass
+	     */
+
 
 	exports.default = osmOverpassModule;
 
@@ -103,31 +106,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * @ngdoc service
-	 * @name overpassAPI
-	 * @param  {any} $http
-	 * @param  {any} $q
+	 * @class
+	 * Create osmOverpassAPI service instance
 	 */
 
-	var osmOverpassAPI = function () {
-	    function osmOverpassAPI($http, $q, options) {
-	        _classCallCheck(this, osmOverpassAPI);
+	var OverpassAPI = function () {
+	    /**
+	     * @param {Object} $http angular $http service
+	     * @param {Object} $q  angular $q service
+	     * @param {Object} options
+	     */
+
+	    function OverpassAPI($http, $q, options) {
+	        _classCallCheck(this, OverpassAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
 	        this.$q = $q;
 	    }
 	    /**
-	     * @ngdoc method
-	     * @name overpass
 	     * @param {Object/String} query
 	     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API
-	     * @methodOf osm.overpass.osmOverpassAPI
 	     * @return {Promise} $http.get
 	    */
 
 
-	    _createClass(osmOverpassAPI, [{
+	    _createClass(OverpassAPI, [{
 	        key: 'overpass',
 	        value: function overpass(query) {
 	            var url = this.url;
@@ -143,14 +147,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name overpass
-	         * @description
 	         * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
 	            By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
 	         * @param {String} type 'r'/'relation' or 'w'/'way'
 	         * @param {String/Number} osmId the id of the element
-	         * @methodOf osm.overpass.osmOverpassAPI
 	         * @return {Number} the area id
 	        */
 
@@ -246,10 +246,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmOverpassAPI;
+	    return OverpassAPI;
 	}();
 
-	exports.default = osmOverpassAPI;
+	exports.default = OverpassAPI;
 
 /***/ }
 

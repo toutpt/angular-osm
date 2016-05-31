@@ -94,6 +94,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	/**
+	 * @module osm
+	 */
+
 	angular.module('osm', [_api2.default.name, _base2.default.name, _oauth2.default.name, _overpass2.default.name, _taginfo2.default.name, _nominatim2.default.name, _togeojson2.default.name, _osrm2.default.name]);
 	exports.default = angular.module('osm');
 
@@ -116,6 +120,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _x2js2 = _interopRequireDefault(_x2js);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @module osm.api
+	 */
+
 
 	var osmAPIModule = angular.module('osm.api', [_x2js2.default.name]).provider('osmAPI', function osmAPIProvider() {
 	    this.options = {
@@ -144,17 +153,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * @ngdoc service
-	 * @name osm.oauth.osmAuthService
-	 * @description The main idea is use geojson object where it is possible
-	 * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
-	 * @param  {Object} $http angular http
-	 * @param  {Object} $q angular promise
+	 * @class
+	 * Create the angular service instance.
+	 * The main idea is to provide only object and hide the XML related stuf.
+	 * This is achieve using XML2JS.
 	 */
 
-	var osmAPI = function () {
-	    function osmAPI($http, $q, osmx2js, options) {
-	        _classCallCheck(this, osmAPI);
+	var OSMAPI = function () {
+	    /**
+	     * @param  {Object} $http angular http
+	     * @param  {Object} $q angular promise
+	     * @param  {Object} osmx2js service
+	     * @param  {Object} options to get set url of the API
+	     */
+
+	    function OSMAPI($http, $q, osmx2js, options) {
+	        _classCallCheck(this, OSMAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
@@ -164,25 +178,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    /**
-	     * @ngdoc method
-	     * @name setAuthAdapter
-	     * @description provide an adapter to make authenticated request
-	     * @methodOf osm.api.osmAPI
+	     * Set the adapter to make authenticated request.
+	     * @param {Object} adapter must provide xhr method.
+	     * angular-osm provide two adapter: osmBase64 and osmAuthService
 	    */
 
 
-	    _createClass(osmAPI, [{
+	    _createClass(OSMAPI, [{
 	        key: 'setAuthAdapter',
-	        value: function setAuthAdapter(oauth) {
-	            this._oauth = oauth;
+	        value: function setAuthAdapter(adapter) {
+	            this._oauth = adapter;
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name setOauth
-	         * @description use oauth object to call API
-	         * @methodOf osm.api.osmAPI
-	         * @return {Object} oauth
+	         * Get the adapter used to do authenticated xhr
+	         * @return {Object}
 	        */
 
 	    }, {
@@ -194,9 +204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ------------------ INTERNAL CALL SERVER (API) -----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name xhr
-	         * @description call the API
+	         * Call the API
 	         * @param {Object} options
 	         * ```
 	            var options = {
@@ -206,8 +214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	            osmAPI.xhr(options);
 	            ```
-	         * @methodOf osm.api.osmAPI
-	         * @return {Object} oauth
+	         * @return {Promise} the adapter response
 	        */
 
 	    }, {
@@ -218,10 +225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getAuthenticated
-	         * @description send a get request to OSM with
-	         * @methodOf osm.api.osmAPI
+	         * send a get request to OSM with
 	         * @returns {Promise} $http response
 	        */
 
@@ -237,10 +241,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.xhr(_config);
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name get
-	         * @description send a get request
-	         * @methodOf osm.api.osmAPI
+	         * send a get request
 	         * @param {string} method the api method
 	         * @param {Object} config the $http.get config
 	         * @returns {Promise} $http response with XML as string
@@ -260,10 +261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name put
-	         * @description send a put request
-	         * @methodOf osm.api.osmAPI
+	         * send a put request
 	         * @param {string} method the api method
 	         * @param {Object} content payload
 	         * @param {Object} config the $http.put config
@@ -283,10 +281,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.xhr(_config);
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name delete
-	         * @description send a delete request
-	         * @methodOf osm.api.osmAPI
+	         * send a delete request
 	         * @param {string} method the api method
 	         * @param {Object} config the $http.delete config
 	         * @returns {Promise} $http response
@@ -307,9 +302,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ------------------ CHANGESET -----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createChangeset
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} comment the comment assiociated to the changeset
 	         * @returns {Promise} $http response
 	        */
@@ -330,9 +322,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getLastOpenedChangesetId
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http response with the last changeset id
 	         * or undefined if no changeset was opened
 	        */
@@ -358,9 +347,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name closeChangeset
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http.put response of
 	         * /0.6/changeset/CHANGESET_ID/close
 	        */
@@ -377,9 +363,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // ------------------ USER API -----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name getUserById
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id of the user
 	         * @returns {Promise} $http.get response
 	         * /0.6/user/#id
@@ -392,9 +375,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getUserDetails
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http.get response
 	         * /0.6/user/details
 	        */
@@ -405,9 +385,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.getAuthenticated('/0.6/user/details');
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getUserPreferences
-	         * @methodOf osm.api.osmAPI
 	         * @returns {Promise} $http.get response
 	         * /0.6/user/preferences
 	        */
@@ -419,9 +396,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name putUserPreferences
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} key the preference key
 	         * @param {string} value the preference value
 	         * @returns {Promise} $http.get response
@@ -437,9 +411,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ MAP DATA -------------------------
 
 	        /**
-	         * @ngdoc method
-	         * @name getMap
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} bbox left,bottom,right,top
 	         * where:
 	            left is the longitude of the left (westernmost) side of the bounding box.
@@ -457,9 +428,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNotes
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} bbox left,bottom,right,top
 	         * where:
 	            left is the longitude of the left (westernmost) side of the bounding box.
@@ -479,9 +447,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ ELEMENTS: Node ----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createNode
-	         * @methodOf osm.api.osmAPI
 	         * @param {Object/string} node
 	             var node = {osm: {node: {
 	                _changeset: '12', _lat: '...', _lon: '...',
@@ -500,9 +465,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNode
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id
@@ -515,9 +477,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNodeRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id/relations
@@ -530,9 +489,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNodeWays
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id/ways
@@ -545,9 +501,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getNodes
-	         * @methodOf osm.api.osmAPI
 	         * @param {array} ids ids
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/node/#id
@@ -560,9 +513,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name deleteNode
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.delete response
 	         * DELETE /0.6/node/#id
@@ -577,9 +527,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ ELEMENTS: WAY ----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createWay
-	         * @methodOf osm.api.osmAPI
 	         * @param {Object/string} way
 	            var way = {osm: {way: {
 	                _changeset: '12', _lat: '...', _lon: '...',
@@ -602,9 +549,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWay
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/way/#id
@@ -617,9 +561,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWayRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/way/#id/relations
@@ -632,9 +573,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWayFull
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/way/#id/full
@@ -647,9 +585,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getWays
-	         * @methodOf osm.api.osmAPI
 	         * @param {array} ids ids
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/ways?ways=ids
@@ -662,9 +597,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name deleteWay
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.delete response
 	         * DELETE /0.6/way/#id
@@ -679,9 +611,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //------------------ ELEMENTS: RELATION ----------------
 
 	        /**
-	         * @ngdoc method
-	         * @name createRelation
-	         * @methodOf osm.api.osmAPI
 	         * @param {Object/string} relation
 	            var relation = {osm: {relation: {
 	                _changeset: '12', _lat: '...', _lon: '...',
@@ -704,9 +633,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getRelation
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relation/#id
@@ -718,9 +644,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/0.6/relation/' + id);
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getRelationRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relation/#id/relations
@@ -733,9 +656,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getRelationFull
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relation/#id/full
@@ -748,9 +668,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name getRelations
-	         * @methodOf osm.api.osmAPI
 	         * @param {array} ids ids
 	         * @returns {Promise} $http.get response
 	         * GET /0.6/relations?relations=ids
@@ -763,9 +680,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name deleteRelation
-	         * @methodOf osm.api.osmAPI
 	         * @param {string} id id
 	         * @returns {Promise} $http.delete response
 	         * DELETE /0.6/relation/#id
@@ -778,11 +692,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmAPI;
+	    return OSMAPI;
 	}();
 
-	osmAPI.$inject = ['$http', '$q', 'osmx2js'];
-	exports.default = osmAPI;
+	OSMAPI.$inject = ['$http', '$q', 'osmx2js'];
+	exports.default = OSMAPI;
 
 /***/ },
 /* 3 */
@@ -793,7 +707,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	//https://github.com/abdmob/x2js as angular service
+	/**
+	 * @module osm.x2js
+	 */
 	var osmx2jsModule = angular.module('osm.x2js', []).provider('osmx2js', function osmx2jsProvider() {
 	    this.options = {};
 	    this.$get = function osmx2jsFactory() {
@@ -835,7 +751,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new _base2.default($base64, $http, $q, osmx2js, this.options);
 	    };
 	    this.$get.$inject = ['$base64', '$http', 'osmx2js'];
-	});
+	}); /**
+	     * @module osm.base64
+	     */
+
 
 	exports.default = osmBase64Module;
 
@@ -853,9 +772,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Base64backend = function () {
-	    function Base64backend($base64, $http, osmx2js) {
-	        _classCallCheck(this, Base64backend);
+	/**
+	 * @class
+	 * Create osmBase64 angular service instance.
+	 * This can be used as osmAPI adapter.
+	 */
+
+	var Base64Adapter = function () {
+	    /**
+	     * the constructor
+	     * @param {Object} $base64 service provided by angular-base64 module
+	     * @param {Object} $http angular $http service
+	     * @param {Object} osmx2js angular-osm service
+	     * to transform response from xml to object
+	     */
+
+	    function Base64Adapter($base64, $http, osmx2js) {
+	        _classCallCheck(this, Base64Adapter);
 
 	        this.$base64 = $base64;
 	        this.storage = {};
@@ -863,8 +796,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.url = 'http://api.openstreetmap.org/api';
 	        this.osmx2js = osmx2js;
 	    }
+	    /**
+	     * the main method used to do the call to the API
+	     * @param {Object} options
+	     * @returns {Promise} $http response
+	     */
 
-	    _createClass(Base64backend, [{
+
+	    _createClass(Base64Adapter, [{
 	        key: 'xhr',
 	        value: function xhr(options) {
 	            var self = this;
@@ -886,11 +825,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name setCredentials
-	         * @description if you don't use oauth, you can save
+	         * if you don't use oauth, you can save
 	         * credentials here using base64 localstorage (completly unsecure)
-	         * @methodOf osm.api.osmAPI
+	         * @param {string} username your username
+	         * @param {string} password the user password.
+	         * WARNING base64 is unsafe and the credentials are stored in the localstorage
 	         * @returns {string} crendentials
 	        */
 
@@ -903,11 +842,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return credentials;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getCredentials
-	         * @description if you don't use oauth, you can manage
+	         * if you don't use oauth, you can manage
 	         * credentials here using base64 headers
-	         * @methodOf osm.api.osmAPI
 	         * @returns {string} crendentials from the last set
 	        */
 
@@ -917,10 +853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.storage.credentials;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getAuthorization
-	         * @description compute authorization header from credentials
-	         * @methodOf osm.api.osmAPI
+	         * compute authorization header from credentials
 	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
 	        */
 
@@ -930,10 +863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return 'Basic ' + this.storage.credentials;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name clearCredentials
-	         * @description remove credentials from the localstorage
-	         * @methodOf osm.api.osmAPI
+	         * remove credentials from the localstorage
 	         * @returns {string} HTTP Header 'Basic CREDENTIAL AS BASE64'
 	        */
 
@@ -948,12 +878,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return Base64backend;
+	    return Base64Adapter;
 	}();
 
-	Base64backend.$inject = ['$base64', '$http', 'osmx2js'];
+	Base64Adapter.$inject = ['$base64', '$http', 'osmx2js'];
 
-	exports.default = Base64backend;
+	exports.default = Base64Adapter;
 
 /***/ },
 /* 6 */
@@ -986,7 +916,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new _oauth2.default($q, osmx2js, this.options);
 	    };
 	    this.$get.$inject = ['$q', 'osmx2js'];
-	});
+	}); /**
+	     * @module osm.oauth
+	     */
+
 
 	exports.default = osmOAuthModule;
 
@@ -1005,14 +938,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	* @ngdoc service
-	* @name osm.oauth.osmAuthService
-	* @description handle osm oauth
-	*/
+	 * @class
+	 * Create osmAuthService service instance
+	 */
 
-	var osmAuthService = function () {
-	    function osmAuthService($q, osmx2js, options) {
-	        _classCallCheck(this, osmAuthService);
+	var OAuthAdapter = function () {
+	    /**
+	     * @param {Object} $q angular $q service
+	     * @param {Object} osmx2js angular osm service
+	     * @param {Object} options set options for the lib https://github.com/osmlab/osm-auth
+	     */
+
+	    function OAuthAdapter($q, osmx2js, options) {
+	        _classCallCheck(this, OAuthAdapter);
 
 	        if (options) {
 	            if (options.oauth_secret && options.oauth_consumer_key) {
@@ -1024,22 +962,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._options = options;
 	    }
 	    /**
-	     * @ngdoc method
-	     * @name logout
-	     * @methodOf osm.auth.osmAuthService
+	     * Just logout. Warning this is synchronous code
+	     * and doesn t return anything.
 	     */
 
 
-	    _createClass(osmAuthService, [{
+	    _createClass(OAuthAdapter, [{
 	        key: 'logout',
 	        value: function logout() {
 	            this.auth.logout();
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name authenticated
-	         * @methodOf osm.auth.osmAuthService
-	         * @return {boolean} authenticated
+	         * @return {boolean}
 	         */
 
 	    }, {
@@ -1048,10 +982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.auth.authenticated();
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name authenticate
-	         * @methodOf osm.auth.osmAuthService
-	         * @return {Promise} true/false
+	         * @return {Promise} true/false value
 	         */
 
 	    }, {
@@ -1064,9 +995,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name xhr
-	         * @methodOf osm.auth.osmAuthService
+	         * @param {Object} options
 	         * @return {Promise} http response
 	         */
 
@@ -1094,9 +1023,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name options
-	         * @methodOf osm.auth.osmAuthService
+	         * Set the options of the oauth lib
+	         * @param {Object} options set options for the lib https://github.com/osmlab/osm-auth
 	         */
 
 	    }, {
@@ -1110,10 +1038,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmAuthService;
+	    return OAuthAdapter;
 	}();
 
-	exports.default = osmAuthService;
+	OAuthAdapter.$inject = ['$q', 'osmx2js'];
+
+	exports.default = OAuthAdapter;
 
 /***/ },
 /* 8 */
@@ -1139,7 +1069,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new _overpass2.default($http, $q, this.options);
 	    };
 	    this.$get.$inject = ['$http', '$q'];
-	});
+	}); /**
+	     * @module osm.overpass
+	     */
+
 
 	exports.default = osmOverpassModule;
 
@@ -1158,31 +1091,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * @ngdoc service
-	 * @name overpassAPI
-	 * @param  {any} $http
-	 * @param  {any} $q
+	 * @class
+	 * Create osmOverpassAPI service instance
 	 */
 
-	var osmOverpassAPI = function () {
-	    function osmOverpassAPI($http, $q, options) {
-	        _classCallCheck(this, osmOverpassAPI);
+	var OverpassAPI = function () {
+	    /**
+	     * @param {Object} $http angular $http service
+	     * @param {Object} $q  angular $q service
+	     * @param {Object} options
+	     */
+
+	    function OverpassAPI($http, $q, options) {
+	        _classCallCheck(this, OverpassAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
 	        this.$q = $q;
 	    }
 	    /**
-	     * @ngdoc method
-	     * @name overpass
 	     * @param {Object/String} query
 	     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API
-	     * @methodOf osm.overpass.osmOverpassAPI
 	     * @return {Promise} $http.get
 	    */
 
 
-	    _createClass(osmOverpassAPI, [{
+	    _createClass(OverpassAPI, [{
 	        key: 'overpass',
 	        value: function overpass(query) {
 	            var url = this.url;
@@ -1198,14 +1132,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name overpass
-	         * @description
 	         * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
 	            By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
 	         * @param {String} type 'r'/'relation' or 'w'/'way'
 	         * @param {String/Number} osmId the id of the element
-	         * @methodOf osm.overpass.osmOverpassAPI
 	         * @return {Number} the area id
 	        */
 
@@ -1301,10 +1231,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmOverpassAPI;
+	    return OverpassAPI;
 	}();
 
-	exports.default = osmOverpassAPI;
+	exports.default = OverpassAPI;
 
 /***/ },
 /* 10 */
@@ -1322,7 +1252,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmTagInfoModule = angular.module('osm.taginfo', []).service('osmTagInfoAPI', _taginfo2.default);
+	var osmTagInfoModule = angular.module('osm.taginfo', []).service('osmTagInfoAPI', _taginfo2.default); /**
+	                                                                                                       * @module osm.taginfo
+	                                                                                                       */
+
 
 	exports.default = osmTagInfoModule;
 
@@ -1341,24 +1274,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * @ngdoc service
-	 * @name osmTagInfoAPI
-	 * @description integration of taginfo
+	 * @class
+	 * Create osmTafInforAPI service instance.
 	 * http://taginfo.openstreetmap.org/taginfo/apidoc
-	 * @param  {any} $http
-	 * @param  {any} $q
 	 */
 
-	var osmTagInfoAPI = function () {
-	    function osmTagInfoAPI($http, $q) {
-	        _classCallCheck(this, osmTagInfoAPI);
+	var TagInfoAPI = function () {
+	    /**
+	     * @param {Object} $http angular $http service
+	     * @param {Object} $q angular $q service
+	     */
+
+	    function TagInfoAPI($http, $q) {
+	        _classCallCheck(this, TagInfoAPI);
 
 	        this.$http = $http;
 	        this.$q = $q;
 	        this.url = 'https://taginfo.openstreetmap.org/api/4';
 	    }
+	    /**
+	     * internal get request to the remote API
+	     * @param {string} method
+	     * @param {Object} config $http config object
+	     * @return {Promise}
+	     */
 
-	    _createClass(osmTagInfoAPI, [{
+
+	    _createClass(TagInfoAPI, [{
 	        key: 'get',
 	        value: function get(method, config) {
 	            var deferred = this.$q.defer();
@@ -1370,9 +1312,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return deferred.promise;
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeyCombinations
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	            query — Only show results where the other_key matches this query (substring match, optional).
@@ -1384,9 +1323,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/key/combinations', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeyDistributionNodes
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	         */
@@ -1397,9 +1333,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/key/distribution/nodes', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeyDistributionWays
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	         * key — Tag key (required).
 	         */
@@ -1410,9 +1343,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/key/distribution/ways', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeyStats
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	         * key — Tag key (required).
 	         */
@@ -1423,9 +1353,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/key/stats', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeyValues
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	            lang — Language for description (optional, default: 'en').
@@ -1438,9 +1365,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/key/values', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeyWikiPages
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	         */
@@ -1451,9 +1375,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/key/wiki_pages', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeysAll
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Only show keys matching this query (substring match, optional).
 	         */
@@ -1464,9 +1385,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/keys/all', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeysWikiPages
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Only show keys matching this query (substring match, optional).
 	         */
@@ -1477,9 +1395,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/keys/wiki_pages', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getKeysWithoutWikiPage
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            english — Check for key wiki pages in any language (0, default) or in the English language (1).
 	            min_count — How many tags with this key must there be at least to show up here? (default 10000).
@@ -1492,9 +1407,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/keys/without_wiki_page', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getRelationRoles
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Only show results where the role matches this query (substring match, optional).
 	            rtype — Relation type (required).
@@ -1506,9 +1418,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/relation/roles', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getRelationStats
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            rtype — Relation type (required).
 	         */
@@ -1519,9 +1428,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/relation/stats', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getRelationWikiPages
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            rtype — Relation type (required).
 	         */
@@ -1532,9 +1438,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/relation/wiki_pages', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getRelationsAll
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Only show results where the relation type matches this query (substring match, optional).
 	         */
@@ -1545,9 +1448,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/relations/all', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getSearchByKeyAndValue
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Value to search for (substring search, required).
 	         */
@@ -1558,9 +1458,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/search/by_key_and_value', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getSearchByKeyword
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Value to search for (substring search, required).
 	         */
@@ -1571,9 +1468,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/search/by_keyword', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getSearchByRole
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Role to search for (substring search, required).
 	         */
@@ -1584,9 +1478,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/search/by_role', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getSearchByValue
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Value to search for (substring search, required).
 	         */
@@ -1597,9 +1488,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/search/by_value', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getSiteInfo
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	             param: No params
 	         */
@@ -1610,9 +1498,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/site/info', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getSiteSources
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	             param: No params
 	         */
@@ -1623,9 +1508,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/site/sources', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getTagCombinations
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	            query — Only show results where the other_key or other_value matches this query (substring match, optional).
@@ -1638,9 +1520,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/tag/combinations', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getTagDistributionNodes
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	            value — Tag value (required).
@@ -1652,9 +1531,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/tag/distribution/nodes', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getTagDistributionWays
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	            value — Tag value (required).
@@ -1666,9 +1542,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/tag/distribution/ways', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getTagStats
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	            value — Tag value (required).
@@ -1680,9 +1553,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/tag/stats', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getTagWikiPages
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            key — Tag key (required).
 	            value — Tag value (required).
@@ -1694,9 +1564,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/tag/wiki_pages', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getTagsPopular
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	            query — Only show tags matching this query (substring match in key and value, optional).
 	         */
@@ -1707,9 +1574,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.get('/tags/popular', { params: params });
 	        }
 	        /**
-	         * @ngdoc method
-	         * @name getWikiLanguages
-	         * @methodOf osm.taginfo.osmTagInfoAPI
 	         * @param {any} params
 	             param: No params
 	         */
@@ -1721,12 +1585,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmTagInfoAPI;
+	    return TagInfoAPI;
 	}();
 
-	osmTagInfoAPI.$inject = ['$http', '$q'];
+	TagInfoAPI.$inject = ['$http', '$q'];
 
-	exports.default = osmTagInfoAPI;
+	exports.default = TagInfoAPI;
 
 /***/ },
 /* 12 */
@@ -1748,11 +1612,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.options = {
 	        url: 'https://nominatim.openstreetmap.org'
 	    };
-	    this.$get = function osmNominatimFactory($q) {
-	        return new _nominatim2.default($q, this.options);
+	    this.$get = function osmNominatimFactory($http) {
+	        return new _nominatim2.default($http, this.options);
 	    };
 	    this.$get.$inject = ['$http'];
-	});
+	}); /**
+	     * @module osm.nominatim
+	     */
+
 
 	exports.default = osmNominatimModule;
 
@@ -1771,30 +1638,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	* @ngdoc service
-	* @name osm.nominatim.osmNominatim
-	* @description handle nominatim query
-	*/
+	 * @class
+	 * Create osmNominatim service instance.
+	 * This service create nominatim query.
+	 */
 
-	var osmNominatim = function () {
-	    function osmNominatim($http, options) {
-	        _classCallCheck(this, osmNominatim);
+	var NominatimAPI = function () {
+	    /**
+	     * @param {Object} $http angular $http service
+	     * @param {Object} options set by the provider to set the url
+	     */
+
+	    function NominatimAPI($http, options) {
+	        _classCallCheck(this, NominatimAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
 	    }
 
 	    /**
-	     * @ngdoc method
-	     * @name search
 	     * @param {Object/String} query
 	     * http://wiki.openstreetmap.org/wiki/Nominatim
-	     * @methodOf osm.nominatim.osmNominatim
 	     * @return {Promise} $http.get
 	    */
 
 
-	    _createClass(osmNominatim, [{
+	    _createClass(NominatimAPI, [{
 	        key: 'search',
 	        value: function search(query) {
 	            //https://nominatim.openstreetmap.org/search
@@ -1818,11 +1687,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name reverse
 	         * @param {Object/String} query
 	         * http://wiki.openstreetmap.org/wiki/Nominatim
-	         * @methodOf osm.nominatim.osmNominatim
 	         * @return {Promise} $http.get
 	        */
 
@@ -1850,13 +1716,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
-	         * @ngdoc method
-	         * @name lookup
-	         * @description
 	         *  http://nominatim.openstreetmap.org/lookup?osm_ids=R146656,W104393803,N240109189
 	         * @param {Object/String} query
 	         * http://wiki.openstreetmap.org/wiki/Nominatim
-	         * @methodOf osm.nominatim.osmNominatim
 	         * @return {Promise} $http.get
 	        */
 
@@ -1881,10 +1743,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osmNominatim;
+	    return NominatimAPI;
 	}();
 
-	exports.default = osmNominatim;
+	NominatimAPI.$inject = ['$http'];
+
+	exports.default = NominatimAPI;
 
 /***/ },
 /* 14 */
@@ -1902,7 +1766,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmtogeojsonModule = angular.module('osm.togeojson', []).provider('osmtogeojson', _togeojson2.default);
+	var osmtogeojsonModule = angular.module('osm.togeojson', []).provider('osmtogeojson', _togeojson2.default); /**
+	                                                                                                             * @module osm.togeojson
+	                                                                                                             */
 
 	exports.default = osmtogeojsonModule;
 
@@ -1947,10 +1813,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	/**
-	 * @ngdoc service
-	 * @name osmtogeojson
+	 * @constructor ToGeoJSON
+	 * @param {Object} options provided by the provider
 	 * @description osm to geojson without dependencies :)
-	   
 	   Import Note : geojson wait for lon/lat where every body else use lat/lon
 	 */
 	function factory(options) {
@@ -2204,7 +2069,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return new _osrm2.default($http, $q, this.options);
 	    };
 	    this.$get.$inject = ['$http', '$q'];
-	});
+	}); /**
+	     * @module osm.osrm
+	     */
+
 
 	exports.default = osrmModule;
 
@@ -2223,24 +2091,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * @ngdoc service
-	 * @name osrmAPI
-	 * @param  {any} $http
-	 * @param  {any} $q
-	 * @description
-	 * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md
+	 * @class
+	 * Create osrmAPI service instance
 	 */
 
-	var osrmAPI = function () {
-	    function osrmAPI($http, $q, options) {
-	        _classCallCheck(this, osrmAPI);
+	var OSRMAPI = function () {
+	    /**
+	     * @param  {any} $http
+	     * @param  {any} $q
+	     * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md
+	     */
+
+	    function OSRMAPI($http, $q, options) {
+	        _classCallCheck(this, OSRMAPI);
 
 	        this.url = options.url;
 	        this.$http = $http;
 	        this.$q = $q;
 	    }
+	    /**
+	     * internal get request to the remote API
+	     * @param {string} service
+	     * @param {string} version
+	     * @param {string} profile
+	     * @param {string|Object} coordinates
+	     * the string format is {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
+	     * @param {Object} options
+	     */
 
-	    _createClass(osrmAPI, [{
+
+	    _createClass(OSRMAPI, [{
 	        key: 'get',
 	        value: function get(service, version, profile, coordinates, options) {
 	            var _coordinates = coordinates;
@@ -2250,7 +2130,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var url = this.url + '/' + service + '/' + version + '/' + profile + '/' + _coordinates;
 	            return this.$http.get(url, { params: options });
 	        }
-	        //coordinates is String of format {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
+	        /**
+	         * neareset service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {number} number integer >= 1 (default 1)	Number of nearest segments that should be returned.
+	         */
 
 	    }, {
 	        key: 'nearest',
@@ -2261,21 +2146,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return this.get('nearest', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * route service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-route
+	         */
+
 	    }, {
 	        key: 'route',
 	        value: function route(profile, coordinates, options) {
 	            return this.get('route', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * table service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-table
+	         */
+
 	    }, {
 	        key: 'table',
 	        value: function table(profile, coordinates, options) {
 	            return this.get('table', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * match service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-match
+	         */
+
 	    }, {
 	        key: 'match',
 	        value: function match(profile, coordinates, options) {
 	            return this.get('match', 'v1', profile, coordinates, options);
 	        }
+	        /**
+	         * trip service
+	         * @param {string} profile
+	         * @param {string|Object} coordinates
+	         * @param {Object} options
+	         * https://github.com/Project-OSRM/osrm-backend/blob/master/docs/http.md#service-trip
+	         */
+
 	    }, {
 	        key: 'trip',
 	        value: function trip(profile, coordinates, options) {
@@ -2283,10 +2200,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }]);
 
-	    return osrmAPI;
+	    return OSRMAPI;
 	}();
 
-	exports.default = osrmAPI;
+	OSRMAPI.$inject = ['$http', '$q'];
+
+	exports.default = OSRMAPI;
 
 /***/ }
 /******/ ])
