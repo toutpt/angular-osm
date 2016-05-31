@@ -40,7 +40,37 @@ Angular OSM
 
 Angular OSM is a set of angular services to use OSM APIs.
 
-Please visit the website (with examples) http://toutpt.github.io/angular-osm
+Please show me examples
+-----------------------
+
+[Example : OSM API](http://toutpt.github.io/angular-osm/examples/api)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/api)
+
+[Example : base64 adapter](http://toutpt.github.io/angular-osm/examples/base64)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/base64)
+
+[Example : nominatim](http://toutpt.github.io/angular-osm/examples/nominatim)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/nominatim)
+
+[Example : oauth adapter](http://toutpt.github.io/angular-osm/examples/oauth)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/oauth)
+
+[Example : orsm](http://toutpt.github.io/angular-osm/examples/orsm)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/orsm)
+
+[Example : overpass](http://toutpt.github.io/angular-osm/examples/overpass)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/overpass)
+
+[Example : taginfo](http://toutpt.github.io/angular-osm/examples/taginfo)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/taginfo)
+
+[Example : togeojson](http://toutpt.github.io/angular-osm/examples/togeojson)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/togeojson)
+
+[Example : full](http://toutpt.github.io/angular-osm/examples/full)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/full)
+
+
 
 How to add angular openstreetmap to my project
 ==============================================
