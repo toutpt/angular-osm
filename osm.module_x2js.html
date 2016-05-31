@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Angular OSM Index</title>
+	<title>Angular OSM Module: x2js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -70,135 +70,93 @@
 		<div id="main">
 			
 
+	<h1 class="page-title">Module: x2js</h1>
+<section>
+
+<header>
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+<dl class="details">
+    
+
 	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
-
-
-
-
-
-
-
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="src_x2js_x2js.js.html">src/x2js/x2js.js</a>,
+				 <a href="src_x2js_x2js.js.html#sunlight-1-line-1">line 1</a>
+			</li>
+		</ul>
+	</dd>
+	
 
 	
+
 	
 
+	
+</dl>
 
 
+        
+    
+    </div>
 
+    
 
-    <section class="readme-section">
-        <article><h1>Angular OSM</h1><p><a href="https://npmjs.org/package/angular-osm"><img src="https://nodei.co/npm/angular-osm.png?downloads=true" alt="NPM"> </a></p>
-<p><a href="https://travis-ci.org/toutpt/angular-osm"><img src="https://travis-ci.org/toutpt/angular-osm.png?branch=master" alt="Travis CI"> </a>
-<a href="https://www.codacy.com/public/toutpt/angular-osm.git"><img src="https://api.codacy.com/project/badge/Grade/aa28c31e62114c2591e7a7e3161d48ca" alt="Codacy Badge"> </a>
-<a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release"> </a></p>
-<p><a href="http://packagequality.com/#?package=angular-osm"><img src="http://npm.packagequality.com/shield/angular-osm.svg" alt="Quality"> </a>
-<a href="https://toutpt.github.io/angular-osm/coverage/index.html"><img src="https://coveralls.io/repos/github/toutpt/angular-osm/badge.svg?branch=master" alt="Coverage Status"> </a>
-<a href="https://circleci.com/gh/toutpt/angular-osm"><img src="https://circleci.com/gh/toutpt/angular-osm.svg?style=svg" alt="Circle CI"> </a></p>
-<p><a href="https://david-dm.org/toutpt/angular-osm"><img src="https://david-dm.org/toutpt/angular-osm.png" alt="dependencies"> </a>
-<a href="https://david-dm.org/toutpt/angular-osm#info=devDependencies"><img src="https://david-dm.org/toutpt/angular-osm/dev-status.png" alt="devdependencies"> </a></p>
-<p>Angular OSM is a set of angular services to use OSM APIs.</p>
-<p>Please visit the website (with examples) http://toutpt.github.io/angular-osm</p>
-<h1>How to add angular openstreetmap to my project</h1><p>First add it to your dependencies:</p>
-<pre class="prettyprint source"><code>npm install --save angular-osm</code></pre><p>Next it depends what you want to do. The release provide many distributed files:</p>
-<pre class="prettyprint source"><code>node_modules/angular-osm
-├── README.md
-├── dist
-│   ├── osm-api.js
-│   ├── osm-api.min.js
-│   ├── osm-base64.js
-│   ├── osm-base64.min.js
-│   ├── osm-full.js
-│   ├── osm-full.min.js
-│   ├── osm-nominatim.js
-│   ├── osm-nominatim.min.js
-│   ├── osm-oauth.js
-│   ├── osm-oauth.min.js
-│   ├── osm-overpass.js
-│   ├── osm-overpass.min.js
-│   ├── osm-taginfo.js
-│   ├── osm-taginfo.min.js
-│   ├── osm-togeojson.js
-│   ├── osm-togeojson.min.js</code></pre><p>Each build provides one osm api integration so you can just pick the one you want.</p>
-<p>If you want all API just include osm-full.min.js.</p>
-<p>So you may need more dependencies dependening on what you want to do.
-Here is the dependencies table of angular-osm builds:</p>
-<table>
-<thead>
-<tr>
-<th>dist</th>
-<th>dependencies to install</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>osm-api</td>
-<td>npm install --save x2js</td>
-</tr>
-<tr>
-<td>osm-base64</td>
-<td>npm install --save angular-base64 x2js</td>
-</tr>
-<tr>
-<td>osm-oauth</td>
-<td>npm install --save osm-auth x2js</td>
-</tr>
-<tr>
-<td>osm-nominatim</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-overpass</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-taginfo</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-togeojson</td>
-</tr>
-</tbody>
-</table>
-<p>Now you have choose this you can plug the component into your angular app:</p>
-<pre class="prettyprint source"><code>angular.module('example', ['osm.api'])</code></pre><p>If you want, most of provided service can be configured using correspondint providers</p>
-<pre class="prettyprint source"><code>angular.module('example', ['osm.api'])
-.config(function (osmAPIProvider) {
-    osmAPIProvider.options = {
-        url: 'http://api06.dev.openstreetmap.org/api'
-    };
-});</code></pre><p>The complete list of injectable services:</p>
-<table>
-<thead>
-<tr>
-<th>osm.api</th>
-<th>osm.nominatim</th>
-<th>osm.oauth</th>
-<th>osm.overpass</th>
-<th>osm.taginfo</th>
-<th>osm.togeojson</th>
-<th>osm.base64</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>osmAPI</td>
-<td>osmNominatim</td>
-<td>osmAuthService</td>
-<td>osmOverpassAPI</td>
-<td>osmTagInfoAPI</td>
-<td>osmtogeojson</td>
-<td>osmBase64</td>
-</tr>
-</tbody>
-</table></article>
-    </section>
+    
 
+    
 
+    
 
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Angular OSM Source: src/overpass/overpass.service.js</title>
+	<title>Angular OSM Class: OverpassAPI</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -65,158 +65,582 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: src/overpass/overpass.service.js</h1>
-    
+	<h1 class="page-title">Class: OverpassAPI</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">
 
-/**
- * @class
- * Create osmOverpassAPI service instance
- */
-class OverpassAPI{
-    /**
-     * @param {Object} $http angular $http service
-     * @param {Object} $q  angular $q service
-     * @param {Object} options
-     */
-    constructor($http, $q, options) {
-        this.url = options.url;
-        this.$http = $http;
-        this.$q = $q;
-    }
-    /**
-     * @param {Object/String} query
-     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API
-     * @return {Promise} $http.get
-    */
-    overpass(query) {
-        var url = this.url;
-        var deferred = this.$q.defer();
-        var headers = {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        };
-        this.$http.post(
-            url,
-            'data=' + encodeURIComponent(query),
-            {headers: headers}
-        ).then(function (data) {
-            deferred.resolve(data.data);
-        }, function (data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    }
-    /**
-     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
+<header>
+    
+        <h2>
+        OverpassAPI
+        </h2>
+        
+            <div class="class-description">Create osmOverpassAPI service instance</div>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="OverpassAPI"><span class="type-signature"></span>new OverpassAPI($http, $q, options)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>$http</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angular $http service</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>$q</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angular $q service</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="src_overpass_overpass.service.js.html">src/overpass/overpass.service.js</a>,
+				 <a href="src_overpass_overpass.service.js.html#sunlight-1-line-7">line 7</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="getAreaId"><span class="type-signature"></span>getAreaId(type, osmId)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
         By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
-     * @param {String} type 'r'/'relation' or 'w'/'way'
-     * @param {String/Number} osmId the id of the element
-     * @return {Number} the area id
-    */
-    getAreaId(type, osmId) {
-        var id;
-        if (typeof osmId === 'string') {
-            id = parseInt(osmId, 10);
-        } else {
-            id = osmId;
-        }
-        if (type === 'r' || type === 'relation') {
-            return 3600000000 + id;
-        } else if (type === 'w' || type === 'way') {
-            return 2400000000 + id;
-        }
-    }
-    overpassToGeoJSON(query, filter) {
-        var deferred = this.$q.defer();
-        var features = [];
-        var relations = [];
-        var result = {
-            type: 'FeatureCollection',
-            features: features,
-            relations: relations
-        };
-        if (filter === undefined) {
-            filter = function () {};
-        }
-        this.overpass(query).then(function (data) {
-            //TODO check if data is XML or JSON, here it's JSON
-            var node, feature, coordinates;
-            var cache = {loaded:false};
-            function getNodeById (id) {
-                if (!cache.loaded) {
-                    var tmp;
-                    for (var i = 0; i &lt; data.elements.length; i++) {
-                        tmp = data.elements[i];
-                        cache[tmp.id] = tmp;
-                    }
-                }
-                return cache[id];
-            }
-            for (var i = 0; i &lt; data.elements.length; i++) {
-                node = data.elements[i];
-                if (node.type === 'node') {
-                    feature = {
-                        type: 'Feature',
-                        properties:node.tags,
-                        id: node.id,
-                        geometry: {
-                            type:'Point',
-                            coordinates: [node.lon, node.lat]
-                        }
-                    };
-                    if (!filter(feature)) {
-                        features.push(feature);
-                    }
-                } else if (node.type === 'way') {
-                    coordinates = [];
-                    feature = {
-                        type: 'Feature',
-                        properties:node.tags,
-                        id: node.id,
-                        geometry: {
-                            type:'LineString',
-                            coordinates: coordinates
-                        }
-                    };
-                    for (var j = 0; j &lt; node.nodes.length; j++) {
-                        coordinates.push([
-                            getNodeById(node.nodes[j]).lon,
-                            getNodeById(node.nodes[j]).lat
-                        ]);
-                    }
-                    if (!filter(feature)) {
-                        features.push(feature);
-                    }
-                } else if (node.type === 'relation') {
-                    result.relations.push({
-                        ref: node.id,
-                        tags: node.tags,
-                        type: 'relation',
-                        members: node.members
-                    });
-                }
-            }
-            deferred.resolve(result);
-        }, function (error) {
-            deferred.reject(error);
-        });
-        return deferred.promise;
-    }
-}
+    </div>
+    
 
-export default OverpassAPI;
-</pre>
-    </article>
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">'r'/'relation' or 'w'/'way'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>osmId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String/Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the id of the element</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="src_overpass_overpass.service.js.html">src/overpass/overpass.service.js</a>,
+				 <a href="src_overpass_overpass.service.js.html#sunlight-1-line-47">line 47</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the area id
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="overpass"><span class="type-signature"></span>overpass(query)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object/String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">http://wiki.openstreetmap.org/wiki/FR:Overpass_API</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="src_overpass_overpass.service.js.html">src/overpass/overpass.service.js</a>,
+				 <a href="src_overpass_overpass.service.js.html#sunlight-1-line-23">line 23</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    $http.get
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -226,6 +650,10 @@ export default OverpassAPI;
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>
