@@ -1,0 +1,23 @@
+{
+    "source": {
+        "include": ["src/osm.js"],
+        "excludePattern": "(node_modules/*|gh-pages/*)"
+    },
+    "out": "gh-pages",
+    "plugins": [],
+    "templates": {
+        "license": "MIT",
+        "outputSourceFiles"     : true,
+        "systemName"            : "Angular OSM",
+        "navType"               : "vertical",
+        "theme"                 : "cerulean",
+        "linenums"              : true,
+        "collapseSymbols"       : false,
+        "inverseNav"            : false,
+        "dateFormat"            : "YYYY-MM-DD",
+        "analytics": {
+            "ua": "UA-77701501-2",
+            "domain": "auto"
+        }
+    }
+}
