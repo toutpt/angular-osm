@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Angular OSM Index</title>
+	<title>Angular OSM Source: src/overpass/overpass.service.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -58,139 +58,161 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	
-	
+		<h1 class="page-title">Source: src/overpass/overpass.service.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">
 
+/**
+ * @ngdoc service
+ * @name overpassAPI
+ * @param  {any} $http
+ * @param  {any} $q
+ */
+class osmOverpassAPI{
+    constructor($http, $q, options) {
+        this.url = options.url;
+        this.$http = $http;
+        this.$q = $q;
+    }
+    /**
+     * @ngdoc method
+     * @name overpass
+     * @param {Object/String} query
+     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API
+     * @methodOf osm.overpass.osmOverpassAPI
+     * @return {Promise} $http.get
+    */
+    overpass(query) {
+        var url = this.url;
+        var deferred = this.$q.defer();
+        var headers = {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        };
+        this.$http.post(
+            url,
+            'data=' + encodeURIComponent(query),
+            {headers: headers}
+        ).then(function (data) {
+            deferred.resolve(data.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    }
+    /**
+     * @ngdoc method
+     * @name overpass
+     * @description
+     * http://wiki.openstreetmap.org/wiki/FR:Overpass_API/Overpass_QL#By_area_.28area.29
+        By convention the area id can be calculated from an existing OSM way by adding 2400000000 to its OSM id, or in case of a relation by adding 3600000000 respectively. Note that area creation is subject to some extraction rules, i.e. not all ways/relations have an area counterpart (notably those that are tagged with area=no, and most multipolygons and that don't have a defined name=* will not be part of areas).
+     * @param {String} type 'r'/'relation' or 'w'/'way'
+     * @param {String/Number} osmId the id of the element
+     * @methodOf osm.overpass.osmOverpassAPI
+     * @return {Number} the area id
+    */
+    getAreaId(type, osmId) {
+        var id;
+        if (typeof osmId === 'string') {
+            id = parseInt(osmId, 10);
+        } else {
+            id = osmId;
+        }
+        if (type === 'r' || type === 'relation') {
+            return 3600000000 + id;
+        } else if (type === 'w' || type === 'way') {
+            return 2400000000 + id;
+        }
+    }
+    overpassToGeoJSON(query, filter) {
+        var deferred = this.$q.defer();
+        var features = [];
+        var relations = [];
+        var result = {
+            type: 'FeatureCollection',
+            features: features,
+            relations: relations
+        };
+        if (filter === undefined) {
+            filter = function () {};
+        }
+        this.overpass(query).then(function (data) {
+            //TODO check if data is XML or JSON, here it's JSON
+            var node, feature, coordinates;
+            var cache = {loaded:false};
+            function getNodeById (id) {
+                if (!cache.loaded) {
+                    var tmp;
+                    for (var i = 0; i &lt; data.elements.length; i++) {
+                        tmp = data.elements[i];
+                        cache[tmp.id] = tmp;
+                    }
+                }
+                return cache[id];
+            }
+            for (var i = 0; i &lt; data.elements.length; i++) {
+                node = data.elements[i];
+                if (node.type === 'node') {
+                    feature = {
+                        type: 'Feature',
+                        properties:node.tags,
+                        id: node.id,
+                        geometry: {
+                            type:'Point',
+                            coordinates: [node.lon, node.lat]
+                        }
+                    };
+                    if (!filter(feature)) {
+                        features.push(feature);
+                    }
+                } else if (node.type === 'way') {
+                    coordinates = [];
+                    feature = {
+                        type: 'Feature',
+                        properties:node.tags,
+                        id: node.id,
+                        geometry: {
+                            type:'LineString',
+                            coordinates: coordinates
+                        }
+                    };
+                    for (var j = 0; j &lt; node.nodes.length; j++) {
+                        coordinates.push([
+                            getNodeById(node.nodes[j]).lon,
+                            getNodeById(node.nodes[j]).lat
+                        ]);
+                    }
+                    if (!filter(feature)) {
+                        features.push(feature);
+                    }
+                } else if (node.type === 'relation') {
+                    result.relations.push({
+                        ref: node.id,
+                        tags: node.tags,
+                        type: 'relation',
+                        members: node.members
+                    });
+                }
+            }
+            deferred.resolve(result);
+        }, function (error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    }
+}
 
-
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><h1>Angular OSM</h1><p><a href="https://npmjs.org/package/angular-osm"><img src="https://nodei.co/npm/angular-osm.png?downloads=true" alt="NPM"> </a></p>
-<p><a href="https://travis-ci.org/toutpt/angular-osm"><img src="https://travis-ci.org/toutpt/angular-osm.png?branch=master" alt="Travis CI"> </a>
-<a href="https://www.codacy.com/public/toutpt/angular-osm.git"><img src="https://api.codacy.com/project/badge/Grade/aa28c31e62114c2591e7a7e3161d48ca" alt="Codacy Badge"> </a>
-<a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release"> </a></p>
-<p><a href="http://packagequality.com/#?package=angular-osm"><img src="http://npm.packagequality.com/shield/angular-osm.svg" alt="Quality"> </a>
-<a href="https://coveralls.io/github/toutpt/angular-osm?branch=master"><img src="https://coveralls.io/repos/github/toutpt/angular-osm/badge.svg?branch=master" alt="Coverage Status"> </a>
-<a href="https://circleci.com/gh/toutpt/angular-osm"><img src="https://circleci.com/gh/toutpt/angular-osm.svg?style=svg" alt="Circle CI"> </a></p>
-<p><a href="https://david-dm.org/toutpt/angular-osm"><img src="https://david-dm.org/toutpt/angular-osm.png" alt="dependencies"> </a>
-<a href="https://david-dm.org/toutpt/angular-osm#info=devDependencies"><img src="https://david-dm.org/toutpt/angular-osm/dev-status.png" alt="devdependencies"> </a></p>
-<p>Angular OSM is a set of angular services to use OSM APIs.</p>
-<p>Please visit the website (with examples) http://toutpt.github.io/angular-osm</p>
-<h1>How to add angular openstreetmap to my project</h1><p>First add it to your dependencies:</p>
-<pre class="prettyprint source"><code>npm install --save angular-osm</code></pre><p>Next it depends what you want to do. The release provide many distributed files:</p>
-<pre class="prettyprint source"><code>node_modules/angular-osm
-├── README.md
-├── dist
-│   ├── osm-api.js
-│   ├── osm-api.min.js
-│   ├── osm-base64.js
-│   ├── osm-base64.min.js
-│   ├── osm-full.js
-│   ├── osm-full.min.js
-│   ├── osm-nominatim.js
-│   ├── osm-nominatim.min.js
-│   ├── osm-oauth.js
-│   ├── osm-oauth.min.js
-│   ├── osm-overpass.js
-│   ├── osm-overpass.min.js
-│   ├── osm-taginfo.js
-│   ├── osm-taginfo.min.js
-│   ├── osm-togeojson.js
-│   ├── osm-togeojson.min.js</code></pre><p>Each build provides one osm api integration so you can just pick the one you want.</p>
-<p>If you want all API just include osm-full.min.js.</p>
-<p>So you may need more dependencies dependening on what you want to do.
-Here is the dependencies table of angular-osm builds:</p>
-<table>
-<thead>
-<tr>
-<th>dist</th>
-<th>dependencies to install</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>osm-api</td>
-<td>npm install --save x2js</td>
-</tr>
-<tr>
-<td>osm-base64</td>
-<td>npm install --save angular-base64 x2js</td>
-</tr>
-<tr>
-<td>osm-oauth</td>
-<td>npm install --save osm-auth x2js</td>
-</tr>
-<tr>
-<td>osm-nominatim</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-overpass</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-taginfo</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-togeojson</td>
-</tr>
-</tbody>
-</table>
-<p>Now you have choose this you can plug the component into your angular app:</p>
-<pre class="prettyprint source"><code>angular.module('example', ['osm.api'])</code></pre><p>If you want, most of provided service can be configured using correspondint providers</p>
-<pre class="prettyprint source"><code>angular.module('example', ['osm.api'])
-.config(function (osmAPIProvider) {
-    osmAPIProvider.options = {
-        url: 'http://api06.dev.openstreetmap.org/api'
-    };
-});</code></pre><p>The complete list of injectable services:</p>
-<table>
-<thead>
-<tr>
-<th>osm.api</th>
-<th>osm.nominatim</th>
-<th>osm.oauth</th>
-<th>osm.overpass</th>
-<th>osm.taginfo</th>
-<th>osm.togeojson</th>
-<th>osm.base64</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>osmAPI</td>
-<td>osmNominatim</td>
-<td>osmAuthService</td>
-<td>osmOverpassAPI</td>
-<td>osmTagInfoAPI</td>
-<td>osmtogeojson</td>
-<td>osmBase64</td>
-</tr>
-</tbody>
-</table></article>
-    </section>
-
-
+export default osmOverpassAPI;
+</pre>
+    </article>
+</section>
 
 
 
@@ -201,10 +223,6 @@ Here is the dependencies table of angular-osm builds:</p>
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

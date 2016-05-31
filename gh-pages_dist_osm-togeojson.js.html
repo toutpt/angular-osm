@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Angular OSM Source: gh-pages/dist/osm-togeojson.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Angular OSM</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticated">authenticated</a></li><li><a href="global.html#clearCredentials">clearCredentials</a></li><li><a href="global.html#closeChangeset">closeChangeset</a></li><li><a href="global.html#createChangeset">createChangeset</a></li><li><a href="global.html#createNode">createNode</a></li><li><a href="global.html#createRelation">createRelation</a></li><li><a href="global.html#createWay">createWay</a></li><li><a href="global.html#delete">delete</a></li><li><a href="global.html#deleteNode">deleteNode</a></li><li><a href="global.html#deleteRelation">deleteRelation</a></li><li><a href="global.html#deleteWay">deleteWay</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAuthenticated">getAuthenticated</a></li><li><a href="global.html#getAuthorization">getAuthorization</a></li><li><a href="global.html#getCredentials">getCredentials</a></li><li><a href="global.html#getKeyCombinations">getKeyCombinations</a></li><li><a href="global.html#getKeyDistributionNodes">getKeyDistributionNodes</a></li><li><a href="global.html#getKeyDistributionWays">getKeyDistributionWays</a></li><li><a href="global.html#getKeysAll">getKeysAll</a></li><li><a href="global.html#getKeyStats">getKeyStats</a></li><li><a href="global.html#getKeysWikiPages">getKeysWikiPages</a></li><li><a href="global.html#getKeysWithoutWikiPage">getKeysWithoutWikiPage</a></li><li><a href="global.html#getKeyValues">getKeyValues</a></li><li><a href="global.html#getKeyWikiPages">getKeyWikiPages</a></li><li><a href="global.html#getLastOpenedChangesetId">getLastOpenedChangesetId</a></li><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#getNode">getNode</a></li><li><a href="global.html#getNodeRelations">getNodeRelations</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodeWays">getNodeWays</a></li><li><a href="global.html#getNotes">getNotes</a></li><li><a href="global.html#getRelation">getRelation</a></li><li><a href="global.html#getRelationFull">getRelationFull</a></li><li><a href="global.html#getRelationRelations">getRelationRelations</a></li><li><a href="global.html#getRelationRoles">getRelationRoles</a></li><li><a href="global.html#getRelations">getRelations</a></li><li><a href="global.html#getRelationsAll">getRelationsAll</a></li><li><a href="global.html#getRelationStats">getRelationStats</a></li><li><a href="global.html#getRelationWikiPages">getRelationWikiPages</a></li><li><a href="global.html#getSearchByKeyAndValue">getSearchByKeyAndValue</a></li><li><a href="global.html#getSearchByKeyword">getSearchByKeyword</a></li><li><a href="global.html#getSearchByRole">getSearchByRole</a></li><li><a href="global.html#getSearchByValue">getSearchByValue</a></li><li><a href="global.html#getSiteInfo">getSiteInfo</a></li><li><a href="global.html#getSiteSources">getSiteSources</a></li><li><a href="global.html#getTagCombinations">getTagCombinations</a></li><li><a href="global.html#getTagDistributionNodes">getTagDistributionNodes</a></li><li><a href="global.html#getTagDistributionWays">getTagDistributionWays</a></li><li><a href="global.html#getTagsPopular">getTagsPopular</a></li><li><a href="global.html#getTagStats">getTagStats</a></li><li><a href="global.html#getTagWikiPages">getTagWikiPages</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserDetails">getUserDetails</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getWay">getWay</a></li><li><a href="global.html#getWayFull">getWayFull</a></li><li><a href="global.html#getWayRelations">getWayRelations</a></li><li><a href="global.html#getWays">getWays</a></li><li><a href="global.html#getWikiLanguages">getWikiLanguages</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#lookup">lookup</a></li><li><a href="global.html#options">options</a></li><li><a href="global.html#osmTagInfoAPI">osmTagInfoAPI</a></li><li><a href="global.html#osmtogeojson">osmtogeojson</a></li><li><a href="global.html#osrmAPI">osrmAPI</a></li><li><a href="global.html#overpass">overpass</a></li><li><a href="global.html#overpassAPI">overpassAPI</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#putUserPreferences">putUserPreferences</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#setAuthAdapter">setAuthAdapter</a></li><li><a href="global.html#setCredentials">setCredentials</a></li><li><a href="global.html#setOauth">setOauth</a></li><li><a href="global.html#xhr">xhr</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: gh-pages/dist/osm-togeojson.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' &amp;&amp; typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' &amp;&amp; define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["name"] = factory();
+	else
+		root["angular-osm"] = root["angular-osm"] || {}, root["angular-osm"]["name"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 0:
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(15);
+
+
+/***/ },
+
+/***/ 15:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _togeojson = __webpack_require__(16);
+
+	var _togeojson2 = _interopRequireDefault(_togeojson);
+
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
+
+	var osmtogeojsonModule = angular.module('osm.togeojson', []).provider('osmtogeojson', _togeojson2.default);
+
+	exports.default = osmtogeojsonModule;
+
+/***/ },
+
+/***/ 16:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _togeojson = __webpack_require__(17);
+
+	var _togeojson2 = _interopRequireDefault(_togeojson);
+
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
+
+	function osmtogejsonProvider() {
+	    this.options = {
+	        areaTags: ['area', 'building', 'leisure', 'tourism', 'ruins', 'historic', 'landuse', 'military', 'natural', 'sport'],
+	        uninterestingTags: ['source', 'source_ref', 'source:ref', 'history', 'attribution', 'created_by', 'tiger:county', 'tiger:tlid', 'tiger:upload_uuid'],
+	        styles: {}
+	    };
+	    this.$get = function () {
+	        return (0, _togeojson2.default)(this.options);
+	    };
+	}
+	exports.default = osmtogejsonProvider;
+
+/***/ },
+
+/***/ 17:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _typeof = typeof Symbol === "function" &amp;&amp; typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj &amp;&amp; typeof Symbol === "function" &amp;&amp; obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	/**
+	 * @ngdoc service
+	 * @name osmtogeojson
+	 * @description osm to geojson without dependencies :)
+	   
+	   Import Note : geojson wait for lon/lat where every body else use lat/lon
+	 */
+	function factory(options) {
+	    //copy/pasted/adapter from https://github.com/jfirebaugh/leaflet-osm/blob/master/leaflet-osm.js
+	    var service = {
+	        options: options,
+	        getAsArray: getAsArray,
+	        getFeatures: getFeatures,
+	        getNodes: getNodes,
+	        getWays: getWays,
+	        getRelations: getRelations,
+	        getTags: getTags,
+	        buildFeatures: buildFeatures,
+	        isWayArea: isWayArea,
+	        interestingNode: interestingNode,
+	        togeojson: togeojson
+	    };
+	    return service;
+
+	    function getFeatures(data) {
+	        var features = [];
+	        if (!(data instanceof Array)) {
+	            data = buildFeatures(data);
+	        }
+
+	        for (var i = 0; i &lt; data.length; i++) {
+	            var d = data[i];
+	            var feature = {
+	                type: 'Feature',
+	                geometry: {},
+	                properties: {
+	                    id: d.id,
+	                    tags: d.tags
+	                }
+	            };
+	            if (d.type === "changeset") {
+	                //build rectangle
+	                // X = Long; Y = Lat, lets do it clockwise
+	                feature.geometry.type = 'Polygon';
+	                var bounds = d.latLngBounds;
+	                feature.geometry.coordinates = [[[parseFloat(bounds._min_lon), parseFloat(bounds._min_lat)], [parseFloat(bounds._min_lon), parseFloat(bounds._max_lat)], [parseFloat(bounds._max_lon), parseFloat(bounds._max_lat)], [parseFloat(bounds._max_lon), parseFloat(bounds._min_lat)], [parseFloat(bounds._min_lon), parseFloat(bounds._min_lat)]]];
+	            } else if (d.type === "node") {
+	                //add a Point
+	                feature.geometry.type = 'Point';
+	                feature.geometry.coordinates = [d.latLng[1], d.latLng[0]];
+	            } else {
+	                var lngLats = new Array(d.nodes.length);
+
+	                for (var j = 0; j &lt; d.nodes.length; j++) {
+	                    var latLng = d.nodes[j].latLng;
+	                    lngLats[j] = [latLng[1], latLng[0]];
+	                }
+
+	                if (isWayArea(d)) {
+	                    feature.geometry.type = 'Polygon';
+	                    feature.geometry.coordinates = [lngLats];
+	                } else {
+	                    feature.geometry.type = 'LineString';
+	                    feature.geometry.coordinates = lngLats;
+	                }
+	            }
+	            features.push(feature);
+	        }
+	        return features;
+	    }
+	    function getAsArray(data) {
+	        if (Array.isArray(data)) {
+	            return data;
+	        } else if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === "object") {
+	            return [data];
+	        } else {
+	            return [];
+	        }
+	    }
+	    function getTags(data) {
+	        var rawtags = getAsArray(data.tag);
+	        var tags = {};
+	        rawtags.forEach(function (t) {
+	            tags[t._k] = t._v;
+	        });
+	        return tags;
+	    }
+	    function getChangesets(data) {
+	        var result = [];
+
+	        var nodes = getAsArray(data.osm.changeset);
+	        for (var i = 0; i &lt; nodes.length; i++) {
+	            var node = nodes[i];
+	            result.push({
+	                id: node._id,
+	                type: "changeset",
+
+	                latLngBounds: node,
+	                tags: getTags(node)
+	            });
+	        }
+
+	        return result;
+	    }
+
+	    function getNodes(data) {
+	        var nodesAsArray = getAsArray(data.osm.node);
+	        var nodesById = {};
+	        nodesAsArray.forEach(function (node) {
+	            nodesById[node._id] = {
+	                id: node._id,
+	                type: 'node',
+	                latLng: [parseFloat(node._lat), parseFloat(node._lon)],
+	                tags: getTags(node)
+	            };
+	        });
+	        return nodesById;
+	    }
+	    function getWays(data, nodes) {
+	        var result = [];
+	        var ways = getAsArray(data.osm.way);
+	        var features = [];
+	        ways.forEach(function (way) {
+	            var nds = way.nd;
+	            var way_object = {
+	                id: way._id,
+	                type: "way",
+	                nodes: new Array(nds.length),
+	                tags: getTags(way)
+	            };
+	            for (var j = 0; j &lt; nds.length; j++) {
+	                way_object.nodes[j] = nodes[nds[j]._ref];
+	            }
+	            result.push(way_object);
+	        });
+	        return result;
+	    }
+	    function getRelations(data, nodes, way) {
+	        var result = [];
+
+	        var rels = getAsArray(data.osm.relation);
+	        for (var i = 0; i &lt; rels.length; i++) {
+	            var rel = rels[i];
+	            var members = getAsArray(rel.member);
+	            var rel_object = {
+	                id: rel._id,
+	                type: "relation",
+	                members: new Array(members.length),
+	                tags: getTags(rel)
+	            };
+	            for (var j = 0; j &lt; members.length; j++) {
+	                if (members[j]._type === "node") {
+	                    rel_object.members[j] = nodes[members[j]._ref];
+	                } else {
+	                    // relation-way and relation-relation membership not implemented
+	                    rel_object.members[j] = null;
+	                }
+	            }
+	            result.push(rel_object);
+	        }
+	        return result;
+	    }
+
+	    function buildFeatures(data) {
+	        var features = [];
+	        var nodes = getNodes(data); //-> {id: data, ...}
+	        var ways = getWays(data, nodes); //->[]
+	        var relations = getRelations(data, nodes, ways); //->[]
+
+	        for (var node_id in nodes) {
+	            var node = nodes[node_id];
+	            if (interestingNode(node, ways, relations)) {
+	                features.push(node);
+	            }
+	        }
+
+	        for (var i = 0; i &lt; ways.length; i++) {
+	            var way = ways[i];
+	            features.push(way);
+	        }
+
+	        return features;
+	    }
+
+	    function isWayArea(way) {
+	        if (way.nodes[0] != way.nodes[way.nodes.length - 1]) {
+	            return false;
+	        }
+
+	        for (var key in way.tags) {
+	            if (options.areaTags.indexOf(key)) {
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    }
+
+	    function interestingNode(node, ways, relations) {
+	        var used = false;
+
+	        for (var i = 0; i &lt; ways.length; i++) {
+	            if (ways[i].nodes.indexOf(node) >= 0) {
+	                used = true;
+	                break;
+	            }
+	        }
+
+	        if (!used) {
+	            return true;
+	        }
+
+	        for (var _i = 0; _i &lt; relations.length; _i++) {
+	            if (relations[_i].members.indexOf(node) >= 0) {
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    }
+	    function togeojson(data, options) {
+	        var res = {
+	            type: 'FeatureCollection',
+	            features: []
+	        };
+	        if (data) {
+	            res.features = getFeatures(data);
+	        }
+	        return res;
+	    }
+	}
+
+	exports.default = factory;
+
+/***/ }
+
+/******/ })
+});
+;</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on 2016-05-31
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+<script>
+	(function ( i, s, o, g, r, a, m ) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function () {
+			(i[r].q = i[r].q || []).push( arguments )
+		}, i[r].l = 1 * new Date();
+		a = s.createElement( o ),
+			m = s.getElementsByTagName( o )[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore( a, m )
+	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+	ga( 'create', 'UA-77701501-2', 'auto' );
+	ga( 'send', 'pageview' );
+</script>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

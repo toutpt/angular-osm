@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Angular OSM Source: src/api/api.service.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Angular OSM</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticated">authenticated</a></li><li><a href="global.html#clearCredentials">clearCredentials</a></li><li><a href="global.html#closeChangeset">closeChangeset</a></li><li><a href="global.html#createChangeset">createChangeset</a></li><li><a href="global.html#createNode">createNode</a></li><li><a href="global.html#createRelation">createRelation</a></li><li><a href="global.html#createWay">createWay</a></li><li><a href="global.html#delete">delete</a></li><li><a href="global.html#deleteNode">deleteNode</a></li><li><a href="global.html#deleteRelation">deleteRelation</a></li><li><a href="global.html#deleteWay">deleteWay</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAuthenticated">getAuthenticated</a></li><li><a href="global.html#getAuthorization">getAuthorization</a></li><li><a href="global.html#getCredentials">getCredentials</a></li><li><a href="global.html#getKeyCombinations">getKeyCombinations</a></li><li><a href="global.html#getKeyDistributionNodes">getKeyDistributionNodes</a></li><li><a href="global.html#getKeyDistributionWays">getKeyDistributionWays</a></li><li><a href="global.html#getKeysAll">getKeysAll</a></li><li><a href="global.html#getKeyStats">getKeyStats</a></li><li><a href="global.html#getKeysWikiPages">getKeysWikiPages</a></li><li><a href="global.html#getKeysWithoutWikiPage">getKeysWithoutWikiPage</a></li><li><a href="global.html#getKeyValues">getKeyValues</a></li><li><a href="global.html#getKeyWikiPages">getKeyWikiPages</a></li><li><a href="global.html#getLastOpenedChangesetId">getLastOpenedChangesetId</a></li><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#getNode">getNode</a></li><li><a href="global.html#getNodeRelations">getNodeRelations</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodeWays">getNodeWays</a></li><li><a href="global.html#getNotes">getNotes</a></li><li><a href="global.html#getRelation">getRelation</a></li><li><a href="global.html#getRelationFull">getRelationFull</a></li><li><a href="global.html#getRelationRelations">getRelationRelations</a></li><li><a href="global.html#getRelationRoles">getRelationRoles</a></li><li><a href="global.html#getRelations">getRelations</a></li><li><a href="global.html#getRelationsAll">getRelationsAll</a></li><li><a href="global.html#getRelationStats">getRelationStats</a></li><li><a href="global.html#getRelationWikiPages">getRelationWikiPages</a></li><li><a href="global.html#getSearchByKeyAndValue">getSearchByKeyAndValue</a></li><li><a href="global.html#getSearchByKeyword">getSearchByKeyword</a></li><li><a href="global.html#getSearchByRole">getSearchByRole</a></li><li><a href="global.html#getSearchByValue">getSearchByValue</a></li><li><a href="global.html#getSiteInfo">getSiteInfo</a></li><li><a href="global.html#getSiteSources">getSiteSources</a></li><li><a href="global.html#getTagCombinations">getTagCombinations</a></li><li><a href="global.html#getTagDistributionNodes">getTagDistributionNodes</a></li><li><a href="global.html#getTagDistributionWays">getTagDistributionWays</a></li><li><a href="global.html#getTagsPopular">getTagsPopular</a></li><li><a href="global.html#getTagStats">getTagStats</a></li><li><a href="global.html#getTagWikiPages">getTagWikiPages</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserDetails">getUserDetails</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getWay">getWay</a></li><li><a href="global.html#getWayFull">getWayFull</a></li><li><a href="global.html#getWayRelations">getWayRelations</a></li><li><a href="global.html#getWays">getWays</a></li><li><a href="global.html#getWikiLanguages">getWikiLanguages</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#lookup">lookup</a></li><li><a href="global.html#options">options</a></li><li><a href="global.html#osmTagInfoAPI">osmTagInfoAPI</a></li><li><a href="global.html#osmtogeojson">osmtogeojson</a></li><li><a href="global.html#osrmAPI">osrmAPI</a></li><li><a href="global.html#overpass">overpass</a></li><li><a href="global.html#overpassAPI">overpassAPI</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#putUserPreferences">putUserPreferences</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#setAuthAdapter">setAuthAdapter</a></li><li><a href="global.html#setCredentials">setCredentials</a></li><li><a href="global.html#setOauth">setOauth</a></li><li><a href="global.html#xhr">xhr</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: src/api/api.service.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ * @ngdoc service
+ * @name osm.oauth.osmAuthService
+ * @description The main idea is use geojson object where it is possible
+ * for the rest of the API (changeset, ...) it's XML2JS that is used so always expect objects.
+ * @param  {Object} $http angular http
+ * @param  {Object} $q angular promise
+ */
+class osmAPI {
+    constructor($http, $q, osmx2js, options) {
+        this.url = options.url;
+        this.$http = $http;
+        this.$q = $q;
+        this.osmx2js = osmx2js;
+        this._oauth = null;
+    }
+
+    /**
+     * @ngdoc method
+     * @name setAuthAdapter
+     * @description provide an adapter to make authenticated request
+     * @methodOf osm.api.osmAPI
+    */
+    setAuthAdapter(oauth) {
+        this._oauth = oauth;
+    }
+
+    /**
+     * @ngdoc method
+     * @name setOauth
+     * @description use oauth object to call API
+     * @methodOf osm.api.osmAPI
+     * @return {Object} oauth
+    */
+    getAuthAdapter() {
+        return this._oauth;
+    }
+
+
+    // ------------------ INTERNAL CALL SERVER (API) -----------------
+
+    /**
+     * @ngdoc method
+     * @name xhr
+     * @description call the API
+     * @param {Object} options
+     * ```
+        var options = {
+            method: 'GET', // POST, DELETE, PUT
+            path: '/0.6/changesets', //without the /api
+            data: content //if you need a payload
+        };
+        osmAPI.xhr(options);
+        ```
+     * @methodOf osm.api.osmAPI
+     * @return {Object} oauth
+    */
+    xhr(options) {
+        let deferred = this.$q.defer();
+        return this._oauth.xhr(options);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getAuthenticated
+     * @description send a get request to OSM with
+     * @methodOf osm.api.osmAPI
+     * @returns {Promise} $http response
+    */
+    getAuthenticated(method, config) {
+        var _config = angular.copy(config);
+        if (!_config) {
+            _config = {};
+        }
+        _config.method = 'GET';
+        _config.path = method;
+        return this.xhr(_config);
+    }
+    /**
+     * @ngdoc method
+     * @name get
+     * @description send a get request
+     * @methodOf osm.api.osmAPI
+     * @param {string} method the api method
+     * @param {Object} config the $http.get config
+     * @returns {Promise} $http response with XML as string
+    */
+    get(method, config) {
+        var deferred = this.$q.defer();
+        var self = this;
+        var url = this.url + method;
+        this.$http.get(url, config).then(function (data) {
+            deferred.resolve(self.osmx2js.xml2js(data.data));
+        }, function (error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    }
+    /**
+     * @ngdoc method
+     * @name put
+     * @description send a put request
+     * @methodOf osm.api.osmAPI
+     * @param {string} method the api method
+     * @param {Object} content payload
+     * @param {Object} config the $http.put config
+     * @returns {Promise} $http response
+    */
+    put(method, content, config) {
+        if (!config) {
+            config = {};
+        }
+        var _config = angular.copy(config);
+        _config.method = 'PUT';
+        _config.path = method;
+        _config.data = this.osmx2js.js2xml(content);
+        return this.xhr(_config);
+    }
+    /**
+     * @ngdoc method
+     * @name delete
+     * @description send a delete request
+     * @methodOf osm.api.osmAPI
+     * @param {string} method the api method
+     * @param {Object} config the $http.delete config
+     * @returns {Promise} $http response
+    */
+    delete(method, config) {
+        if (!config) {
+            config = {};
+        }
+        var _config = angular.copy(config);
+        _config.method = 'DELETE';
+        _config.path = method;
+        return this.xhr(_config);
+    }
+
+
+    // ------------------ CHANGESET -----------------
+
+
+    /**
+     * @ngdoc method
+     * @name createChangeset
+     * @methodOf osm.api.osmAPI
+     * @param {string} comment the comment assiociated to the changeset
+     * @returns {Promise} $http response
+    */
+    createChangeset(comment) {
+        var self = this;
+        var deferred = this.$q.defer();
+        var changeset = {osm: {
+            changeset: {
+                tag: [
+                    {_k:'created_by', _v: 'Angular-OSM'},
+                    {_k:'comment', _v: comment},
+                ]
+            }
+        }};
+        this.put('/0.6/changeset/create', changeset).then(function (data) {
+            deferred.resolve(data);
+        });
+        return deferred.promise;
+    }
+    /**
+     * @ngdoc method
+     * @name getLastOpenedChangesetId
+     * @methodOf osm.api.osmAPI
+     * @returns {Promise} $http response with the last changeset id
+     * or undefined if no changeset was opened
+    */
+    getLastOpenedChangesetId() {
+        var self = this;
+        var deferred = this.$q.defer();
+        var config = {
+            params:{user: this._oauth.getUserID(), open: true}
+        };
+        this.get('/0.6/changesets', config).then(function (data) {
+            var changesets = data.osm.changeset;
+            if (changesets.length > 0) {
+                deferred.resolve(changesets[0].id);
+            } else if (changesets._id) {
+                deferred.resolve(changesets._id);
+            } else {
+                deferred.resolve();
+            }
+        });
+        return deferred.promise;
+    }
+    /**
+     * @ngdoc method
+     * @name closeChangeset
+     * @methodOf osm.api.osmAPI
+     * @returns {Promise} $http.put response of
+     * /0.6/changeset/CHANGESET_ID/close
+    */
+    closeChangeset(id) {
+        var self = this;
+        return this.put(`/0.6/changeset/${id}/close`)
+        .then(function (data) {
+            return data;
+        });
+    }
+
+
+    // ------------------ USER API -----------------
+
+    /**
+     * @ngdoc method
+     * @name getUserById
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id of the user
+     * @returns {Promise} $http.get response
+     * /0.6/user/#id
+    */
+    getUserById(id) {
+        return this.getAuthenticated('/0.6/user/' + id);
+    }
+
+
+    /**
+     * @ngdoc method
+     * @name getUserDetails
+     * @methodOf osm.api.osmAPI
+     * @returns {Promise} $http.get response
+     * /0.6/user/details
+    */
+    getUserDetails() {
+        return this.getAuthenticated('/0.6/user/details');
+    }
+    /**
+     * @ngdoc method
+     * @name getUserPreferences
+     * @methodOf osm.api.osmAPI
+     * @returns {Promise} $http.get response
+     * /0.6/user/preferences
+    */
+    getUserPreferences() {
+        return this.getAuthenticated('/0.6/user/preferences');
+    }
+
+    /**
+     * @ngdoc method
+     * @name putUserPreferences
+     * @methodOf osm.api.osmAPI
+     * @param {string} key the preference key
+     * @param {string} value the preference value
+     * @returns {Promise} $http.get response
+     * /0.6/user/preferences
+    */
+    putUserPreferences(key, value) {
+        return this.put('/0.6/user/preferences/' + key , value);
+    }
+
+
+    //------------------ MAP DATA -------------------------
+
+    /**
+     * @ngdoc method
+     * @name getMap
+     * @methodOf osm.api.osmAPI
+     * @param {string} bbox left,bottom,right,top
+     * where:
+        left is the longitude of the left (westernmost) side of the bounding box.
+        bottom is the latitude of the bottom (southernmost) side of the bounding box.
+        right is the longitude of the right (easternmost) side of the bounding box.
+        top is the latitude of the top (northernmost) side of the bounding box.
+     * @returns {Promise} $http.get response
+     * /0.6/map?bbox=bbox
+    */
+    getMap(bbox) {
+        return this.get('/0.6/map?bbox=' + bbox);
+    }
+
+
+    /**
+     * @ngdoc method
+     * @name getNotes
+     * @methodOf osm.api.osmAPI
+     * @param {string} bbox left,bottom,right,top
+     * where:
+        left is the longitude of the left (westernmost) side of the bounding box.
+        bottom is the latitude of the bottom (southernmost) side of the bounding box.
+        right is the longitude of the right (easternmost) side of the bounding box.
+        top is the latitude of the top (northernmost) side of the bounding box.
+     * @returns {Promise} $http.get response
+    */
+    getNotes(bbox) {
+        var url = '/0.6/notes?bbox=' + bbox;
+        return this.get(url);
+    }
+
+
+
+    //------------------ ELEMENTS: Node ----------------
+
+    /**
+     * @ngdoc method
+     * @name createNode
+     * @methodOf osm.api.osmAPI
+     * @param {Object/string} node
+         var node = {osm: {node: {
+            _changeset: '12', _lat: '...', _lon: '...',
+            tags: [
+                {_k: '...', _v: '...'}
+            ]
+        }}};
+     * @returns {Promise} $http.put response
+     * PUT /0.6/node/create
+    */
+    createNode(node) {
+        return this.put('/0.6/node/create', node);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getNode
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id
+    */
+    getNode(id) {
+        return this.get('/0.6/node/' + id);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getNodeRelations
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id/relations
+    */
+    getNodeRelations(id) {
+        return this.get(`/0.6/node/${id}/relations`);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getNodeWays
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id/ways
+    */
+    getNodeWays(id) {
+        return this.get(`/0.6/node/${id}/ways`);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getNodes
+     * @methodOf osm.api.osmAPI
+     * @param {array} ids ids
+     * @returns {Promise} $http.get response
+     * GET /0.6/node/#id
+    */
+    getNodes(ids) {
+        return this.get('/0.6/nodes?nodes=' + ids.join(','));
+    }
+
+    /**
+     * @ngdoc method
+     * @name deleteNode
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.delete response
+     * DELETE /0.6/node/#id
+    */
+    deleteNode(id) {
+        return this.delete('/0.6/node/' + id);
+    }
+
+
+
+    //------------------ ELEMENTS: WAY ----------------
+
+
+    /**
+     * @ngdoc method
+     * @name createWay
+     * @methodOf osm.api.osmAPI
+     * @param {Object/string} way
+        var way = {osm: {way: {
+            _changeset: '12', _lat: '...', _lon: '...',
+            tags: [
+                {_k: '...', _v: '...'}
+            ],
+            nd: [
+                {_ref: '123'},
+                {_ref: '456'},
+            ]
+        }}};
+     * @returns {Promise} $http.put response
+     * PUT /0.6/way/create
+    */
+    createWay(way) {
+        return this.put('/0.6/way/create', way);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getWay
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/way/#id
+    */
+    getWay(id) {
+        return this.get('/0.6/way/' + id);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getWayRelations
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/way/#id/relations
+    */
+    getWayRelations(id) {
+        return this.get(`/0.6/way/${id}/relations`);
+    }
+
+
+    /**
+     * @ngdoc method
+     * @name getWayFull
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/way/#id/full
+    */
+    getWayFull(id) {
+        return this.get(`/0.6/way/${id}/full`);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getWays
+     * @methodOf osm.api.osmAPI
+     * @param {array} ids ids
+     * @returns {Promise} $http.get response
+     * GET /0.6/ways?ways=ids
+    */
+    getWays(ids) {
+        return this.get('/0.6/ways?ways=' + ids.join(','));
+    }
+
+
+    /**
+     * @ngdoc method
+     * @name deleteWay
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.delete response
+     * DELETE /0.6/way/#id
+    */
+    deleteWay(id) {
+        return this.delete('/0.6/way/' + id);
+    }
+
+    //------------------ ELEMENTS: RELATION ----------------
+
+
+    /**
+     * @ngdoc method
+     * @name createRelation
+     * @methodOf osm.api.osmAPI
+     * @param {Object/string} relation
+        var relation = {osm: {relation: {
+            _changeset: '12', _lat: '...', _lon: '...',
+            tags: [
+                {_k: '...', _v: '...'}
+            ],
+            member: [
+                {_type: 'node', _role: 'stop', 'ref': '123'},
+                {_type: 'way', 'ref': '234'}
+            ]
+        }}};
+     * @returns {Promise} $http.put response
+     * PUT /0.6/relation/create
+    */
+    createRelation(relation) {
+        return this.put('/0.6/relation/create', relation);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getRelation
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/relation/#id
+    */
+    getRelation(id) {
+        return this.get('/0.6/relation/' + id);
+    }
+    /**
+     * @ngdoc method
+     * @name getRelationRelations
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/relation/#id/relations
+    */
+    getRelationRelations(id) {
+        return this.get(`/0.6/relation/${id}/relations`);
+    }
+
+
+    /**
+     * @ngdoc method
+     * @name getRelationFull
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.get response
+     * GET /0.6/relation/#id/full
+    */
+    getRelationFull(id) {
+        return this.get(`/0.6/relation/${id}/full`);
+    }
+
+    /**
+     * @ngdoc method
+     * @name getRelations
+     * @methodOf osm.api.osmAPI
+     * @param {array} ids ids
+     * @returns {Promise} $http.get response
+     * GET /0.6/relations?relations=ids
+    */
+    getRelations(ids) {
+        return this.get('/0.6/relations?relations=' + ids.join(','));
+    }
+
+    /**
+     * @ngdoc method
+     * @name deleteRelation
+     * @methodOf osm.api.osmAPI
+     * @param {string} id id
+     * @returns {Promise} $http.delete response
+     * DELETE /0.6/relation/#id
+    */
+    deleteRelation(id) {
+        return this.delete('/0.6/relation/' + id);
+    }
+
+}
+
+osmAPI.$inject = ['$http', '$q', 'osmx2js'];
+export default osmAPI;
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on 2016-05-31
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+<script>
+	(function ( i, s, o, g, r, a, m ) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function () {
+			(i[r].q = i[r].q || []).push( arguments )
+		}, i[r].l = 1 * new Date();
+		a = s.createElement( o ),
+			m = s.getElementsByTagName( o )[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore( a, m )
+	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+	ga( 'create', 'UA-77701501-2', 'auto' );
+	ga( 'send', 'pageview' );
+</script>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

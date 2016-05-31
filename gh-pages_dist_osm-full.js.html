@@ -1,13 +1,83 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Angular OSM Source: gh-pages/dist/osm-full.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Angular OSM</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#authenticated">authenticated</a></li><li><a href="global.html#clearCredentials">clearCredentials</a></li><li><a href="global.html#closeChangeset">closeChangeset</a></li><li><a href="global.html#createChangeset">createChangeset</a></li><li><a href="global.html#createNode">createNode</a></li><li><a href="global.html#createRelation">createRelation</a></li><li><a href="global.html#createWay">createWay</a></li><li><a href="global.html#delete">delete</a></li><li><a href="global.html#deleteNode">deleteNode</a></li><li><a href="global.html#deleteRelation">deleteRelation</a></li><li><a href="global.html#deleteWay">deleteWay</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAuthenticated">getAuthenticated</a></li><li><a href="global.html#getAuthorization">getAuthorization</a></li><li><a href="global.html#getCredentials">getCredentials</a></li><li><a href="global.html#getKeyCombinations">getKeyCombinations</a></li><li><a href="global.html#getKeyDistributionNodes">getKeyDistributionNodes</a></li><li><a href="global.html#getKeyDistributionWays">getKeyDistributionWays</a></li><li><a href="global.html#getKeysAll">getKeysAll</a></li><li><a href="global.html#getKeyStats">getKeyStats</a></li><li><a href="global.html#getKeysWikiPages">getKeysWikiPages</a></li><li><a href="global.html#getKeysWithoutWikiPage">getKeysWithoutWikiPage</a></li><li><a href="global.html#getKeyValues">getKeyValues</a></li><li><a href="global.html#getKeyWikiPages">getKeyWikiPages</a></li><li><a href="global.html#getLastOpenedChangesetId">getLastOpenedChangesetId</a></li><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#getNode">getNode</a></li><li><a href="global.html#getNodeRelations">getNodeRelations</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodeWays">getNodeWays</a></li><li><a href="global.html#getNotes">getNotes</a></li><li><a href="global.html#getRelation">getRelation</a></li><li><a href="global.html#getRelationFull">getRelationFull</a></li><li><a href="global.html#getRelationRelations">getRelationRelations</a></li><li><a href="global.html#getRelationRoles">getRelationRoles</a></li><li><a href="global.html#getRelations">getRelations</a></li><li><a href="global.html#getRelationsAll">getRelationsAll</a></li><li><a href="global.html#getRelationStats">getRelationStats</a></li><li><a href="global.html#getRelationWikiPages">getRelationWikiPages</a></li><li><a href="global.html#getSearchByKeyAndValue">getSearchByKeyAndValue</a></li><li><a href="global.html#getSearchByKeyword">getSearchByKeyword</a></li><li><a href="global.html#getSearchByRole">getSearchByRole</a></li><li><a href="global.html#getSearchByValue">getSearchByValue</a></li><li><a href="global.html#getSiteInfo">getSiteInfo</a></li><li><a href="global.html#getSiteSources">getSiteSources</a></li><li><a href="global.html#getTagCombinations">getTagCombinations</a></li><li><a href="global.html#getTagDistributionNodes">getTagDistributionNodes</a></li><li><a href="global.html#getTagDistributionWays">getTagDistributionWays</a></li><li><a href="global.html#getTagsPopular">getTagsPopular</a></li><li><a href="global.html#getTagStats">getTagStats</a></li><li><a href="global.html#getTagWikiPages">getTagWikiPages</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserDetails">getUserDetails</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getWay">getWay</a></li><li><a href="global.html#getWayFull">getWayFull</a></li><li><a href="global.html#getWayRelations">getWayRelations</a></li><li><a href="global.html#getWays">getWays</a></li><li><a href="global.html#getWikiLanguages">getWikiLanguages</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#lookup">lookup</a></li><li><a href="global.html#options">options</a></li><li><a href="global.html#osmTagInfoAPI">osmTagInfoAPI</a></li><li><a href="global.html#osmtogeojson">osmtogeojson</a></li><li><a href="global.html#osrmAPI">osrmAPI</a></li><li><a href="global.html#overpass">overpass</a></li><li><a href="global.html#overpassAPI">overpassAPI</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#putUserPreferences">putUserPreferences</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#setAuthAdapter">setAuthAdapter</a></li><li><a href="global.html#setCredentials">setCredentials</a></li><li><a href="global.html#setOauth">setOauth</a></li><li><a href="global.html#xhr">xhr</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: gh-pages/dist/osm-full.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' &amp;&amp; typeof module === 'object')
+		module.exports = factory(require("angular"));
+	else if(typeof define === 'function' &amp;&amp; define.amd)
+		define(["angular"], factory);
 	else if(typeof exports === 'object')
-		exports["name"] = factory();
+		exports["name"] = factory(require("angular"));
 	else
-		root["angular-osm"] = root["angular-osm"] || {}, root["angular-osm"]["name"] = factory();
-})(this, function() {
+		root["angular-osm"] = root["angular-osm"] || {}, root["angular-osm"]["name"] = factory(root["angular"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,11 +126,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+	var _angular = __webpack_require__(6);
 
-	var _oauth = __webpack_require__(6);
+	var _angular2 = _interopRequireDefault(_angular);
+
+	var _oauth = __webpack_require__(7);
 
 	var _oauth2 = _interopRequireDefault(_oauth);
 
@@ -72,30 +142,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _api2 = _interopRequireDefault(_api);
 
-	var _overpass = __webpack_require__(8);
+	var _overpass = __webpack_require__(9);
 
 	var _overpass2 = _interopRequireDefault(_overpass);
 
-	var _taginfo = __webpack_require__(10);
+	var _taginfo = __webpack_require__(11);
 
 	var _taginfo2 = _interopRequireDefault(_taginfo);
 
-	var _nominatim = __webpack_require__(12);
+	var _nominatim = __webpack_require__(13);
 
 	var _nominatim2 = _interopRequireDefault(_nominatim);
 
-	var _togeojson = __webpack_require__(14);
+	var _togeojson = __webpack_require__(15);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
-	var _osrm = __webpack_require__(17);
+	var _osrm = __webpack_require__(18);
 
 	var _osrm2 = _interopRequireDefault(_osrm);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
-	angular.module('osm', [_api2.default.name, _base2.default.name, _oauth2.default.name, _overpass2.default.name, _taginfo2.default.name, _nominatim2.default.name, _togeojson2.default.name, _osrm2.default.name]);
-	exports.default = angular.module('osm');
+	_angular2.default.module('osm', [_api2.default.name, _base2.default.name, _oauth2.default.name, _overpass2.default.name, _taginfo2.default.name, _nominatim2.default.name, _togeojson2.default.name, _osrm2.default.name]);
 
 /***/ },
 /* 1 */
@@ -115,7 +184,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _x2js2 = _interopRequireDefault(_x2js);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osmAPIModule = angular.module('osm.api', [_x2js2.default.name]).provider('osmAPI', function osmAPIProvider() {
 	    this.options = {
@@ -139,7 +208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i &lt; props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -825,7 +894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _x2js2 = _interopRequireDefault(_x2js);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osmBase64Module = angular.module('osm.base64', [_x2js2.default.name, _api2.default.name, 'base64']).provider('osmBase64', function osmBase64Provider() {
 	    this.options = {
@@ -849,7 +918,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i &lt; props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -878,7 +947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return;
 	                }
 	                if (d.substr) {
-	                    if (d.substr(0, 5) === '<?xml') {
+	                    if (d.substr(0, 5) === '&lt;?xml') {
 	                        return self.osmx2js.xml2js(d);
 	                    }
 	                }
@@ -957,6 +1026,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 6 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -965,7 +1040,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _oauth = __webpack_require__(7);
+	var _oauth = __webpack_require__(8);
 
 	var _oauth2 = _interopRequireDefault(_oauth);
 
@@ -977,7 +1052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _x2js2 = _interopRequireDefault(_x2js);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osmOAuthModule = angular.module('osm.oauth', [_api2.default.name, _x2js2.default.name]).provider('osmAuthService', function osmAuthServiceProvider() {
 	    this.options = {};
@@ -991,7 +1066,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmOAuthModule;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1000,7 +1075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i &lt; props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1015,7 +1090,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _classCallCheck(this, osmAuthService);
 
 	        if (options) {
-	            if (options.oauth_secret && options.oauth_consumer_key) {
+	            if (options.oauth_secret &amp;&amp; options.oauth_consumer_key) {
 	                this.auth = osmAuth(options);
 	            }
 	        }
@@ -1116,7 +1191,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmAuthService;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1125,11 +1200,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _overpass = __webpack_require__(9);
+	var _overpass = __webpack_require__(10);
 
 	var _overpass2 = _interopRequireDefault(_overpass);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osmOverpassModule = angular.module('osm.overpass', []).provider('osmOverpassAPI', function osmOverpassAPIProvider() {
 	    this.options = {
@@ -1144,7 +1219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmOverpassModule;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1153,7 +1228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i &lt; props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1245,14 +1320,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                function getNodeById(id) {
 	                    if (!cache.loaded) {
 	                        var tmp;
-	                        for (var i = 0; i < data.elements.length; i++) {
+	                        for (var i = 0; i &lt; data.elements.length; i++) {
 	                            tmp = data.elements[i];
 	                            cache[tmp.id] = tmp;
 	                        }
 	                    }
 	                    return cache[id];
 	                }
-	                for (var i = 0; i < data.elements.length; i++) {
+	                for (var i = 0; i &lt; data.elements.length; i++) {
 	                    node = data.elements[i];
 	                    if (node.type === 'node') {
 	                        feature = {
@@ -1278,7 +1353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                coordinates: coordinates
 	                            }
 	                        };
-	                        for (var j = 0; j < node.nodes.length; j++) {
+	                        for (var j = 0; j &lt; node.nodes.length; j++) {
 	                            coordinates.push([getNodeById(node.nodes[j]).lon, getNodeById(node.nodes[j]).lat]);
 	                        }
 	                        if (!filter(feature)) {
@@ -1307,7 +1382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmOverpassAPI;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1316,18 +1391,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _taginfo = __webpack_require__(11);
+	var _taginfo = __webpack_require__(12);
 
 	var _taginfo2 = _interopRequireDefault(_taginfo);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osmTagInfoModule = angular.module('osm.taginfo', []).service('osmTagInfoAPI', _taginfo2.default);
 
 	exports.default = osmTagInfoModule;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1336,7 +1411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i &lt; props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1729,7 +1804,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmTagInfoAPI;
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1738,11 +1813,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _nominatim = __webpack_require__(13);
+	var _nominatim = __webpack_require__(14);
 
 	var _nominatim2 = _interopRequireDefault(_nominatim);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osmNominatimModule = angular.module('osm.nominatim', []).factory('osmNominatim', _nominatim2.default).provider('osmNominatim', function osmNominatimProvider() {
 	    this.options = {
@@ -1757,7 +1832,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmNominatimModule;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1766,7 +1841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i &lt; props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1798,7 +1873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'search',
 	        value: function search(query) {
 	            //https://nominatim.openstreetmap.org/search
-	            //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	            //?X-Requested-With=overpass-turbo&amp;format=json&amp;q=vern-sur-seiche
 	            //params['accept-language'] = 'fr';
 	            var params;
 	            if (typeof query === 'string' || !query) {
@@ -1830,7 +1905,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'reverse',
 	        value: function reverse(query) {
 	            //https://nominatim.openstreetmap.org/reverse
-	            //?X-Requested-With=overpass-turbo&format=json&q=vern-sur-seiche
+	            //?X-Requested-With=overpass-turbo&amp;format=json&amp;q=vern-sur-seiche
 	            //params['accept-language'] = 'fr';
 	            var params;
 	            if (typeof query === 'string') {
@@ -1887,7 +1962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmNominatim;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1896,18 +1971,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _togeojson = __webpack_require__(15);
+	var _togeojson = __webpack_require__(16);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osmtogeojsonModule = angular.module('osm.togeojson', []).provider('osmtogeojson', _togeojson2.default);
 
 	exports.default = osmtogeojsonModule;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1916,11 +1991,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _togeojson = __webpack_require__(16);
+	var _togeojson = __webpack_require__(17);
 
 	var _togeojson2 = _interopRequireDefault(_togeojson);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	function osmtogejsonProvider() {
 	    this.options = {
@@ -1935,7 +2010,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osmtogejsonProvider;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1944,7 +2019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" &amp;&amp; typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj &amp;&amp; typeof Symbol === "function" &amp;&amp; obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	/**
 	 * @ngdoc service
@@ -1976,7 +2051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            data = buildFeatures(data);
 	        }
 
-	        for (var i = 0; i < data.length; i++) {
+	        for (var i = 0; i &lt; data.length; i++) {
 	            var d = data[i];
 	            var feature = {
 	                type: 'Feature',
@@ -1999,7 +2074,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else {
 	                var lngLats = new Array(d.nodes.length);
 
-	                for (var j = 0; j < d.nodes.length; j++) {
+	                for (var j = 0; j &lt; d.nodes.length; j++) {
 	                    var latLng = d.nodes[j].latLng;
 	                    lngLats[j] = [latLng[1], latLng[0]];
 	                }
@@ -2037,7 +2112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var result = [];
 
 	        var nodes = getAsArray(data.osm.changeset);
-	        for (var i = 0; i < nodes.length; i++) {
+	        for (var i = 0; i &lt; nodes.length; i++) {
 	            var node = nodes[i];
 	            result.push({
 	                id: node._id,
@@ -2076,7 +2151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                nodes: new Array(nds.length),
 	                tags: getTags(way)
 	            };
-	            for (var j = 0; j < nds.length; j++) {
+	            for (var j = 0; j &lt; nds.length; j++) {
 	                way_object.nodes[j] = nodes[nds[j]._ref];
 	            }
 	            result.push(way_object);
@@ -2087,7 +2162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var result = [];
 
 	        var rels = getAsArray(data.osm.relation);
-	        for (var i = 0; i < rels.length; i++) {
+	        for (var i = 0; i &lt; rels.length; i++) {
 	            var rel = rels[i];
 	            var members = getAsArray(rel.member);
 	            var rel_object = {
@@ -2096,7 +2171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                members: new Array(members.length),
 	                tags: getTags(rel)
 	            };
-	            for (var j = 0; j < members.length; j++) {
+	            for (var j = 0; j &lt; members.length; j++) {
 	                if (members[j]._type === "node") {
 	                    rel_object.members[j] = nodes[members[j]._ref];
 	                } else {
@@ -2122,7 +2197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 
-	        for (var i = 0; i < ways.length; i++) {
+	        for (var i = 0; i &lt; ways.length; i++) {
 	            var way = ways[i];
 	            features.push(way);
 	        }
@@ -2147,7 +2222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function interestingNode(node, ways, relations) {
 	        var used = false;
 
-	        for (var i = 0; i < ways.length; i++) {
+	        for (var i = 0; i &lt; ways.length; i++) {
 	            if (ways[i].nodes.indexOf(node) >= 0) {
 	                used = true;
 	                break;
@@ -2158,7 +2233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return true;
 	        }
 
-	        for (var _i = 0; _i < relations.length; _i++) {
+	        for (var _i = 0; _i &lt; relations.length; _i++) {
 	            if (relations[_i].members.indexOf(node) >= 0) {
 	                return true;
 	            }
@@ -2181,7 +2256,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = factory;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2190,11 +2265,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _osrm = __webpack_require__(18);
+	var _osrm = __webpack_require__(19);
 
 	var _osrm2 = _interopRequireDefault(_osrm);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj &amp;&amp; obj.__esModule ? obj : { default: obj }; }
 
 	var osrmModule = angular.module('osm.osrm', []).provider('osrmAPI', function osrmAPIProvider() {
 	    this.options = {
@@ -2209,7 +2284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = osrmModule;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2218,7 +2293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i &lt; props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2291,4 +2366,148 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ }
 /******/ ])
 });
-;
+;</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on 2016-05-31
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+<script>
+	(function ( i, s, o, g, r, a, m ) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function () {
+			(i[r].q = i[r].q || []).push( arguments )
+		}, i[r].l = 1 * new Date();
+		a = s.createElement( o ),
+			m = s.getElementsByTagName( o )[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore( a, m )
+	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+	ga( 'create', 'UA-77701501-2', 'auto' );
+	ga( 'send', 'pageview' );
+</script>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

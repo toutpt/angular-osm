@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Angular OSM Index</title>
+	<title>Angular OSM Source: src/taginfo/taginfo.service.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -58,139 +58,322 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	
-	
+		<h1 class="page-title">Source: src/taginfo/taginfo.service.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">
+/**
+ * @ngdoc service
+ * @name osmTagInfoAPI
+ * @description integration of taginfo
+ * http://taginfo.openstreetmap.org/taginfo/apidoc
+ * @param  {any} $http
+ * @param  {any} $q
+ */
+class osmTagInfoAPI{
+    constructor($http, $q) {
+        this.$http = $http;
+        this.$q = $q;
+        this.url = 'https://taginfo.openstreetmap.org/api/4';
+    }
+    get(method, config) {
+        var deferred = this.$q.defer();
+        this.$http.get(this.url + method, config).then(
+            function (data) {
+                deferred.resolve(data.data);
+            }, function (error) {
+                deferred.reject(error);
+            }
+        );
+        return deferred.promise;
+    }
+    /**
+     * @ngdoc method
+     * @name getKeyCombinations
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+        query — Only show results where the other_key matches this query (substring match, optional).
+     */
+    getKeyCombinations(params) {
+        return this.get('/key/combinations', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeyDistributionNodes
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+     */
+    getKeyDistributionNodes(params) {
+        return this.get('/key/distribution/nodes', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeyDistributionWays
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+     * key — Tag key (required).
+     */
+    getKeyDistributionWays(params) {
+        return this.get('/key/distribution/ways', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeyStats
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+     * key — Tag key (required).
+     */
+    getKeyStats(params) {
+        return this.get('/key/stats', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeyValues
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+        lang — Language for description (optional, default: 'en').
+        query — Only show results where the value matches this query (substring match, optional).
+     */
+    getKeyValues(params) {
+        return this.get('/key/values', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeyWikiPages
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+     */
+    getKeyWikiPages(params) {
+        return this.get('/key/wiki_pages', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeysAll
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Only show keys matching this query (substring match, optional).
+     */
+    getKeysAll(params) {
+        return this.get('/keys/all', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeysWikiPages
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Only show keys matching this query (substring match, optional).
+     */
+    getKeysWikiPages(params) {
+        return this.get('/keys/wiki_pages', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getKeysWithoutWikiPage
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        english — Check for key wiki pages in any language (0, default) or in the English language (1).
+        min_count — How many tags with this key must there be at least to show up here? (default 10000).
+        query — Only show results where the key matches this query (substring match, optional).
+     */
+    getKeysWithoutWikiPage(params) {
+        return this.get('/keys/without_wiki_page', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getRelationRoles
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Only show results where the role matches this query (substring match, optional).
+        rtype — Relation type (required).
+     */
+    getRelationRoles(params) {
+        return this.get('/relation/roles', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getRelationStats
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        rtype — Relation type (required).
+     */
+    getRelationStats(params) {
+        return this.get('/relation/stats', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getRelationWikiPages
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        rtype — Relation type (required).
+     */
+    getRelationWikiPages(params) {
+        return this.get('/relation/wiki_pages', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getRelationsAll
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Only show results where the relation type matches this query (substring match, optional).
+     */
+    getRelationsAll(params) {
+        return this.get('/relations/all', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getSearchByKeyAndValue
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Value to search for (substring search, required).
+     */
+    getSearchByKeyAndValue(params) {
+        return this.get('/search/by_key_and_value', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getSearchByKeyword
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Value to search for (substring search, required).
+     */
+    getSearchByKeyword(params) {
+        return this.get('/search/by_keyword', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getSearchByRole
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Role to search for (substring search, required).
+     */
+    getSearchByRole(params) {
+        return this.get('/search/by_role', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getSearchByValue
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Value to search for (substring search, required).
+     */
+    getSearchByValue(params) {
+        return this.get('/search/by_value', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getSiteInfo
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+         param: No params
+     */
+    getSiteInfo(params) {
+        return this.get('/site/info', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getSiteSources
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+         param: No params
+     */
+    getSiteSources(params) {
+        return this.get('/site/sources', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getTagCombinations
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+        query — Only show results where the other_key or other_value matches this query (substring match, optional).
+        value — Tag value (required).
+     */
+    getTagCombinations(params) {
+        return this.get('/tag/combinations', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getTagDistributionNodes
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+        value — Tag value (required).
+     */
+    getTagDistributionNodes(params) {
+        return this.get('/tag/distribution/nodes', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getTagDistributionWays
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+        value — Tag value (required).
+     */
+    getTagDistributionWays(params) {
+        return this.get('/tag/distribution/ways', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getTagStats
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+        value — Tag value (required).
+     */
+    getTagStats(params) {
+        return this.get('/tag/stats', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getTagWikiPages
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        key — Tag key (required).
+        value — Tag value (required).
+     */
+    getTagWikiPages(params) {
+        return this.get('/tag/wiki_pages', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getTagsPopular
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+        query — Only show tags matching this query (substring match in key and value, optional).
+     */
+    getTagsPopular(params) {
+        return this.get('/tags/popular', {params: params});
+    }
+    /**
+     * @ngdoc method
+     * @name getWikiLanguages
+     * @methodOf osm.taginfo.osmTagInfoAPI
+     * @param {any} params
+         param: No params
+     */
+    getWikiLanguages(params) {
+        return this.get('/wiki/languages', {params: params});
+    }
+}
 
+osmTagInfoAPI.$inject = ['$http', '$q'];
 
-
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><h1>Angular OSM</h1><p><a href="https://npmjs.org/package/angular-osm"><img src="https://nodei.co/npm/angular-osm.png?downloads=true" alt="NPM"> </a></p>
-<p><a href="https://travis-ci.org/toutpt/angular-osm"><img src="https://travis-ci.org/toutpt/angular-osm.png?branch=master" alt="Travis CI"> </a>
-<a href="https://www.codacy.com/public/toutpt/angular-osm.git"><img src="https://api.codacy.com/project/badge/Grade/aa28c31e62114c2591e7a7e3161d48ca" alt="Codacy Badge"> </a>
-<a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release"> </a></p>
-<p><a href="http://packagequality.com/#?package=angular-osm"><img src="http://npm.packagequality.com/shield/angular-osm.svg" alt="Quality"> </a>
-<a href="https://coveralls.io/github/toutpt/angular-osm?branch=master"><img src="https://coveralls.io/repos/github/toutpt/angular-osm/badge.svg?branch=master" alt="Coverage Status"> </a>
-<a href="https://circleci.com/gh/toutpt/angular-osm"><img src="https://circleci.com/gh/toutpt/angular-osm.svg?style=svg" alt="Circle CI"> </a></p>
-<p><a href="https://david-dm.org/toutpt/angular-osm"><img src="https://david-dm.org/toutpt/angular-osm.png" alt="dependencies"> </a>
-<a href="https://david-dm.org/toutpt/angular-osm#info=devDependencies"><img src="https://david-dm.org/toutpt/angular-osm/dev-status.png" alt="devdependencies"> </a></p>
-<p>Angular OSM is a set of angular services to use OSM APIs.</p>
-<p>Please visit the website (with examples) http://toutpt.github.io/angular-osm</p>
-<h1>How to add angular openstreetmap to my project</h1><p>First add it to your dependencies:</p>
-<pre class="prettyprint source"><code>npm install --save angular-osm</code></pre><p>Next it depends what you want to do. The release provide many distributed files:</p>
-<pre class="prettyprint source"><code>node_modules/angular-osm
-├── README.md
-├── dist
-│   ├── osm-api.js
-│   ├── osm-api.min.js
-│   ├── osm-base64.js
-│   ├── osm-base64.min.js
-│   ├── osm-full.js
-│   ├── osm-full.min.js
-│   ├── osm-nominatim.js
-│   ├── osm-nominatim.min.js
-│   ├── osm-oauth.js
-│   ├── osm-oauth.min.js
-│   ├── osm-overpass.js
-│   ├── osm-overpass.min.js
-│   ├── osm-taginfo.js
-│   ├── osm-taginfo.min.js
-│   ├── osm-togeojson.js
-│   ├── osm-togeojson.min.js</code></pre><p>Each build provides one osm api integration so you can just pick the one you want.</p>
-<p>If you want all API just include osm-full.min.js.</p>
-<p>So you may need more dependencies dependening on what you want to do.
-Here is the dependencies table of angular-osm builds:</p>
-<table>
-<thead>
-<tr>
-<th>dist</th>
-<th>dependencies to install</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>osm-api</td>
-<td>npm install --save x2js</td>
-</tr>
-<tr>
-<td>osm-base64</td>
-<td>npm install --save angular-base64 x2js</td>
-</tr>
-<tr>
-<td>osm-oauth</td>
-<td>npm install --save osm-auth x2js</td>
-</tr>
-<tr>
-<td>osm-nominatim</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-overpass</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-taginfo</td>
-<td></td>
-</tr>
-<tr>
-<td>osm-togeojson</td>
-</tr>
-</tbody>
-</table>
-<p>Now you have choose this you can plug the component into your angular app:</p>
-<pre class="prettyprint source"><code>angular.module('example', ['osm.api'])</code></pre><p>If you want, most of provided service can be configured using correspondint providers</p>
-<pre class="prettyprint source"><code>angular.module('example', ['osm.api'])
-.config(function (osmAPIProvider) {
-    osmAPIProvider.options = {
-        url: 'http://api06.dev.openstreetmap.org/api'
-    };
-});</code></pre><p>The complete list of injectable services:</p>
-<table>
-<thead>
-<tr>
-<th>osm.api</th>
-<th>osm.nominatim</th>
-<th>osm.oauth</th>
-<th>osm.overpass</th>
-<th>osm.taginfo</th>
-<th>osm.togeojson</th>
-<th>osm.base64</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>osmAPI</td>
-<td>osmNominatim</td>
-<td>osmAuthService</td>
-<td>osmOverpassAPI</td>
-<td>osmTagInfoAPI</td>
-<td>osmtogeojson</td>
-<td>osmBase64</td>
-</tr>
-</tbody>
-</table></article>
-    </section>
-
-
+export default osmTagInfoAPI;
+</pre>
+    </article>
+</section>
 
 
 
@@ -201,10 +384,6 @@ Here is the dependencies table of angular-osm builds:</p>
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>
