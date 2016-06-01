@@ -55,8 +55,8 @@ Please show me examples
 [Example : oauth adapter](http://toutpt.github.io/angular-osm/examples/oauth)
 [Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/oauth)
 
-[Example : orsm](http://toutpt.github.io/angular-osm/examples/orsm)
-[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/orsm)
+[Example : osrm](http://toutpt.github.io/angular-osm/examples/osrm)
+[Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/osrm)
 
 [Example : overpass](http://toutpt.github.io/angular-osm/examples/overpass)
 [Source](https://github.com/toutpt/angular-osm/tree/gh-pages/examples/overpass)
