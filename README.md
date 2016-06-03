@@ -94,6 +94,8 @@ Next it depends what you want to do. The release provide many distributed files:
     │   ├── osm-nominatim.min.js
     │   ├── osm-oauth.js
     │   ├── osm-oauth.min.js
+    │   ├── osm-osrm.js
+    │   ├── osm-osrm.min.js
     │   ├── osm-overpass.js
     │   ├── osm-overpass.min.js
     │   ├── osm-taginfo.js
@@ -114,6 +116,7 @@ Here is the dependencies table of angular-osm builds:
 | osm-base64    | npm install --save angular-base64 x2js           |
 | osm-oauth     | npm install --save osm-auth x2js                 |
 | osm-nominatim |                                                  |
+| osm-osrm      |                                                  |
 | osm-overpass  |                                                  |
 | osm-taginfo   |                                                  |
 | osm-togeojson |                                                  |
@@ -137,7 +140,13 @@ If you want, most of provided service can be configured using correspondint prov
 
 The complete list of injectable services:
 
-| osm.api | osm.nominatim | osm.oauth      | osm.overpass   | osm.taginfo   | osm.togeojson | osm.base64 |
-|---------|---------------|----------------|----------------|---------------|---------------|------------|
-| osmAPI  | osmNominatim  | osmAuthService | osmOverpassAPI | osmTagInfoAPI | osmtogeojson  | osmBase64  |
-
+| module        | service                    |
+|---------------|----------------------------|
+| osm.api       | osmAPI                     |
+| osm.base64    | osmBase64                  |
+| osm.oauth     | osmAuthService             |
+| osm.nominatim | osmNominatim               |
+| osm.osrm      | osrmAPI                    |
+| osm.overpass  | osmOverpassAPI             |
+| osm.taginfo   | osmTagInfoAPI              |
+| osm.togeojson | osmtogeojson               |
