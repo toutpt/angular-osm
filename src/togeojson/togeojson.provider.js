@@ -1,6 +1,6 @@
 import factory from './togeojson.factory';
 
-function osmtogejsonProvider() {
+function osmtogeojsonProvider() {
     this.options = {
         areaTags: ['area', 'building', 'leisure', 'tourism', 'ruins', 'historic', 'landuse', 'military', 'natural', 'sport'],
         uninterestingTags: ['source', 'source_ref', 'source:ref', 'history', 'attribution', 'created_by', 'tiger:county', 'tiger:tlid', 'tiger:upload_uuid'],
@@ -10,4 +10,4 @@ function osmtogejsonProvider() {
         return factory(this.options);
     };
 }
-export default osmtogejsonProvider;
+export default osmtogeojsonProvider;
