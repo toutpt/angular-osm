@@ -48,7 +48,7 @@
         $ctrl.routeOptions = {
             alternatives: false,
             steps: false,
-            annotate: false,
+            annotations: false,
             overview: 'simplified',
             continue_straight: 'default',
             geometries: 'geojson'

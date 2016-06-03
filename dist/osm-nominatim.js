@@ -122,6 +122,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        this.url = options.url;
 	        this.$http = $http;
+	        this.cache = true;
+	        if (options.cache === false) {
+	            this.cache = false;
+	        }
 	    }
 
 	    /**
@@ -148,7 +152,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                params.format = 'json';
 	            }
 	            var config = {
-	                params: params
+	                params: params,
+	                cache: this.cache
 	            };
 	            var url = this.url + '/search';
 	            return this.$http.get(url, config);
@@ -177,7 +182,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                params.format = 'json';
 	            }
 	            var config = {
-	                params: params
+	                params: params,
+	                cache: this.cache
 	            };
 	            var url = this.url + '/reverse';
 	            return this.$http.get(url, config);
@@ -204,7 +210,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                params.format = 'json';
 	            }
 	            var config = {
-	                params: params
+	                params: params,
+	                cache: this.cache
 	            };
 	            var url = this.url + '/lookup';
 	            return this.$http.get(url, config);

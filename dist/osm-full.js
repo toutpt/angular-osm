@@ -1243,7 +1243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _taginfo = __webpack_require__(11);
@@ -1252,9 +1252,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var osmTagInfoModule = angular.module('osm.taginfo', []).service('osmTagInfoAPI', _taginfo2.default); /**
-	                                                                                                       * @module osm.taginfo
-	                                                                                                       */
+	var osmTagInfoModule = angular.module('osm.taginfo', []).provider('osmTagInfoAPI', function osmTagInfoAPIProvider() {
+	    this.options = {
+	        url: 'https://taginfo.openstreetmap.org/api/4'
+	    };
+	    this.$get = function osmTagInfoAPIFactory($http, $q) {
+	        return new _taginfo2.default($http, $q, this.options);
+	    };
+	    this.$get.$inject = ['$http', '$q'];
+	}); /**
+	     * @module osm.taginfo
+	     */
 
 
 	exports.default = osmTagInfoModule;
@@ -1285,12 +1293,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {Object} $q angular $q service
 	     */
 
-	    function TagInfoAPI($http, $q) {
+	    function TagInfoAPI($http, $q, options) {
 	        _classCallCheck(this, TagInfoAPI);
 
 	        this.$http = $http;
 	        this.$q = $q;
-	        this.url = 'https://taginfo.openstreetmap.org/api/4';
+	        this.url = options.url;
+	        this.cache = true;
+	        if (options.cache === false) {
+	            this.cache = false;
+	        }
 	    }
 	    /**
 	     * internal get request to the remote API
@@ -1304,6 +1316,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'get',
 	        value: function get(method, config) {
 	            var deferred = this.$q.defer();
+	            if (!config) {
+	                config = {};
+	            }
+	            if (config.cache === undefined) {
+	                config.cache = this.cache;
+	            }
 	            this.$http.get(this.url + method, config).then(function (data) {
 	                deferred.resolve(data.data);
 	            }, function (error) {
@@ -1654,6 +1672,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        this.url = options.url;
 	        this.$http = $http;
+	        this.cache = true;
+	        if (options.cache === false) {
+	            this.cache = false;
+	        }
 	    }
 
 	    /**
@@ -1680,7 +1702,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                params.format = 'json';
 	            }
 	            var config = {
-	                params: params
+	                params: params,
+	                cache: this.cache
 	            };
 	            var url = this.url + '/search';
 	            return this.$http.get(url, config);
@@ -1709,7 +1732,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                params.format = 'json';
 	            }
 	            var config = {
-	                params: params
+	                params: params,
+	                cache: this.cache
 	            };
 	            var url = this.url + '/reverse';
 	            return this.$http.get(url, config);
@@ -1736,7 +1760,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                params.format = 'json';
 	            }
 	            var config = {
-	                params: params
+	                params: params,
+	                cache: this.cache
 	            };
 	            var url = this.url + '/lookup';
 	            return this.$http.get(url, config);
@@ -2108,6 +2133,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.url = options.url;
 	        this.$http = $http;
 	        this.$q = $q;
+	        this.cache = true;
+	        if (options.cache === false) {
+	            this.cache = false;
+	        }
 	    }
 	    /**
 	     * internal get request to the remote API
@@ -2115,7 +2144,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {string} version
 	     * @param {string} profile
 	     * @param {string|Object} coordinates
-	     * the string format is {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
+	     * the string format is
+	     * {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
 	     * @param {Object} options
 	     */
 
@@ -2128,7 +2158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _coordinates = coordinates.join(';');
 	            }
 	            var url = this.url + '/' + service + '/' + version + '/' + profile + '/' + _coordinates;
-	            return this.$http.get(url, { params: options });
+	            return this.$http.get(url, { params: options, cache: this.cache });
 	        }
 	        /**
 	         * neareset service
