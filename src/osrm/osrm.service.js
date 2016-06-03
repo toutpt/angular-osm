@@ -13,6 +13,10 @@ class OSRMAPI{
         this.url = options.url;
         this.$http = $http;
         this.$q = $q;
+        this.cache = true;
+        if (options.cache === false) {
+            this.cache = false;
+        }
     }
     /**
      * internal get request to the remote API
@@ -20,7 +24,8 @@ class OSRMAPI{
      * @param {string} version
      * @param {string} profile
      * @param {string|Object} coordinates
-     * the string format is {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
+     * the string format is
+     * {longitude},{latitude};{longitude},{latitude}[;{longitude},{latitude} ...]
      * @param {Object} options
      */
     get(service, version, profile, coordinates, options) {
@@ -29,7 +34,7 @@ class OSRMAPI{
             _coordinates = coordinates.join(';');
         }
         var url = `${this.url}/${service}/${version}/${profile}/${_coordinates}`;
-        return this.$http.get(url, {params: options});
+        return this.$http.get(url, {params: options, cache: this.cache});
     }
     /**
      * neareset service

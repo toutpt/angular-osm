@@ -12,6 +12,10 @@ class NominatimAPI{
     constructor($http, options) {
         this.url = options.url;
         this.$http = $http;
+        this.cache = true;
+        if (options.cache === false) {
+            this.cache = false;
+        }
     }
 
     /**
@@ -34,7 +38,8 @@ class NominatimAPI{
             params.format = 'json';
         }
         var config = {
-            params: params
+            params: params,
+            cache: this.cache
         };
         let url = this.url + '/search';
         return this.$http.get(url, config);
@@ -60,7 +65,8 @@ class NominatimAPI{
             params.format = 'json';
         }
         var config = {
-            params: params
+            params: params,
+            cache: this.cache
         };
         let url = this.url + '/reverse';
         return this.$http.get(url, config);
@@ -85,7 +91,8 @@ class NominatimAPI{
             params.format = 'json';
         }
         var config = {
-            params: params
+            params: params,
+            cache: this.cache
         };
         let url = this.url + '/lookup';
         return this.$http.get(url, config);

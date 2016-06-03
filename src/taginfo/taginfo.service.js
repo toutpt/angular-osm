@@ -9,10 +9,14 @@ class TagInfoAPI{
      * @param {Object} $http angular $http service
      * @param {Object} $q angular $q service
      */
-    constructor($http, $q) {
+    constructor($http, $q, options) {
         this.$http = $http;
         this.$q = $q;
-        this.url = 'https://taginfo.openstreetmap.org/api/4';
+        this.url = options.url;
+        this.cache = true;
+        if (options.cache === false) {
+            this.cache = false;
+        }
     }
     /**
      * internal get request to the remote API
@@ -22,6 +26,12 @@ class TagInfoAPI{
      */
     get(method, config) {
         var deferred = this.$q.defer();
+        if (!config) {
+            config = {};
+        }
+        if (config.cache === undefined) {
+            config.cache = this.cache;
+        }
         this.$http.get(this.url + method, config).then(
             function (data) {
                 deferred.resolve(data.data);
