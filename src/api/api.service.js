@@ -128,13 +128,13 @@ class OSMAPI {
      * @param {string} comment the comment assiociated to the changeset
      * @returns {Promise} $http response
     */
-    createChangeset(comment) {
+    createChangeset(comment, author) {
         var self = this;
         var deferred = this.$q.defer();
         var changeset = {osm: {
             changeset: {
                 tag: [
-                    {_k:'created_by', _v: 'Angular-OSM'},
+                    {_k:'created_by', _v: author || 'Angular-OSM'},
                     {_k:'comment', _v: comment},
                 ]
             }
