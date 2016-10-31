@@ -103,7 +103,7 @@ class OSMAPI {
         _config.path = method;
         _config.data = this.osmx2js.js2xml(content);
         _config.options = {};
-        _config.options["header"] = {"Content-Type": "text/xml"};
+        _config.options.header = {"Content-Type": "text/xml"};
         return this.xhr(_config);
     }
     /**
