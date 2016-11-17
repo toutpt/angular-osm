@@ -79,10 +79,7 @@ Just as in the **subject**, use the imperative, present tense: "change" not "cha
 The body should include the motivation for the change and contrast this with previous behavior.
 
 #### Footer
-The footer should contain
-
-* any information about **Breaking Changes**
-* [Smart commits](https://confluence.atlassian.com/fisheye/using-smart-commits-298976812.html) (aka JIRA commands)
+The footer should contain any information about **Breaking Changes**
 
 **Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
 
