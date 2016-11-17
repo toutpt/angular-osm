@@ -132,7 +132,7 @@ Now you have choose this you can plug the component into your angular app:
 
 
 
-If you want, most of provided service can be configured using correspondint providers
+If you want, most of provided service can be configured using corresponding providers
 
     angular.module('example', ['osm.api'])
     .config(function (osmAPIProvider) {
