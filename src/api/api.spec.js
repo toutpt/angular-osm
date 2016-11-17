@@ -31,10 +31,12 @@ ngDescribe({
             };
             deps.osmAPI.setAuthAdapter(adapter);
         };
+
         it('should have URL configured', function() {
             var url = 'http://api.openstreetmap.org/api';
             expect(deps.osmAPI.url).toBe(url);
         });
+
         it('should access to oauth dependency if set', function() {
             var oauthDep = {};
             expect(deps.osmAPI._oauth).toBe(null);
@@ -112,6 +114,7 @@ ngDescribe({
             deps.$rootScope.$digest();
             deps.$httpBackend.flush();
         });
+
         it('should put works (case of create node) to return id', function() {
             setHTTPAdapter(deps);
             var method = '/0.6/node/create';
@@ -139,6 +142,7 @@ ngDescribe({
             deps.$rootScope.$digest();
             deps.$httpBackend.flush();
         });
+
         it('should delete works', function() {
             setHTTPAdapter(deps);
             var method = '/0.6/node/132134';
@@ -153,6 +157,7 @@ ngDescribe({
             deps.$rootScope.$digest();
             deps.$httpBackend.flush();
         });
+
         it('should createChangeset works', function() {
             setHTTPAdapter(deps);
             var method = '/0.6/changeset/create';
@@ -165,6 +170,27 @@ ngDescribe({
             xml += '</changeset></osm>';
             deps.$httpBackend.expectPUT(url, xml).respond(200, response);
             deps.osmAPI.createChangeset(comment)
+            .then(function (data) {
+                expect(typeof data).toBe('string');
+                expect(data).toBe(response);
+            });
+            deps.$rootScope.$digest();
+            deps.$httpBackend.flush();
+        });
+
+        it('should createChangeset via specific author name works', function() {
+            setHTTPAdapter(deps);
+            var method = '/0.6/changeset/create';
+            var comment = 'my changeset';
+            var author = "foobar";
+            var url = deps.osmAPI.url + method;
+            var response = '3147'; //The ID of the newly created changeset
+            var xml = '<osm>';
+            xml += '<changeset><tag k="created_by" v="foobar" />';
+            xml += '<tag k="comment" v="my changeset" />';
+            xml += '</changeset></osm>';
+            deps.$httpBackend.expectPUT(url, xml).respond(200, response);
+            deps.osmAPI.createChangeset(comment, author)
             .then(function (data) {
                 expect(typeof data).toBe('string');
                 expect(data).toBe(response);
@@ -190,6 +216,7 @@ ngDescribe({
             deps.$rootScope.$digest();
             deps.$httpBackend.flush();
         });
+
         it('should closeChangeset works', function() {
             setHTTPAdapter(deps);
             var id = '1234';
