@@ -51,8 +51,8 @@ class OAuthAdapter{
         var deferred = this.$q.defer();
         options.path = '/api' + options.path;
         if (options.data) {
-            options.body = options.data;
-            options.data = undefined;
+            options.content = options.data;
+            delete options.data;
         }
         this.auth.xhr(options, function (err, data) {
             if (err) {
