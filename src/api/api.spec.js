@@ -6,7 +6,7 @@
 
 ngDescribe({
     modules: ['osm.api'],
-    inject: ['osmAPI', 'osmx2js', '$q', '$http', '$httpBackend', '$rootScope'],
+    inject: ['osmAPI', 'osmx2js', '$http', '$httpBackend', '$rootScope'],
     tests: function (deps) {
         function setHTTPAdapter(deps) {
             var adapter = {
@@ -48,7 +48,7 @@ ngDescribe({
         it('should internal xhr works as expected', function() {
             var backend = {
                 xhr: function(options) {
-                    return deps.$q.when({data: 'data'});
+                    return Promise.resolve({data: 'data'});
                 }
             };
             deps.osmAPI.setAuthAdapter(backend);
