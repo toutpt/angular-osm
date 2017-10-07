@@ -7,14 +7,12 @@
 class OSMAPI {
     /**
      * @param  {Object} $http angular http
-     * @param  {Object} $q angular promise
      * @param  {Object} osmx2js service
      * @param  {Object} options to get set url of the API
      */
-    constructor($http, $q, osmx2js, options) {
+    constructor($http, osmx2js, options) {
         this.url = options.url;
         this.$http = $http;
-        this.$q = $q;
         this.osmx2js = osmx2js;
         this._oauth = null;
     }
@@ -53,7 +51,6 @@ class OSMAPI {
      * @return {Promise} the adapter response
     */
     xhr(options) {
-        let deferred = this.$q.defer();
         return this._oauth.xhr(options);
     }
 
@@ -77,15 +74,8 @@ class OSMAPI {
      * @returns {Promise} $http response with XML as string
     */
     get(method, config) {
-        var deferred = this.$q.defer();
-        var self = this;
-        var url = this.url + method;
-        this.$http.get(url, config).then(function (data) {
-            deferred.resolve(self.osmx2js.xml2js(data.data));
-        }, function (error) {
-            deferred.reject(error);
-        });
-        return deferred.promise;
+        return this.$http.get(this.url + method, config)
+        .then((data) => this.osmx2js.xml2js(data.data));
     }
     /**
      * send a put request
@@ -131,8 +121,6 @@ class OSMAPI {
      * @returns {Promise} $http response
     */
     createChangeset(comment, author) {
-        var self = this;
-        var deferred = this.$q.defer();
         var changeset = {osm: {
             changeset: {
                 tag: [
@@ -141,43 +129,33 @@ class OSMAPI {
                 ]
             }
         }};
-        this.put('/0.6/changeset/create', changeset).then(function (data) {
-            deferred.resolve(data);
-        });
-        return deferred.promise;
+        return this.put('/0.6/changeset/create', changeset);
     }
     /**
      * @returns {Promise} $http response with the last changeset id
      * or undefined if no changeset was opened
     */
     getLastOpenedChangesetId() {
-        var self = this;
-        var deferred = this.$q.defer();
         var config = {
             params:{user: this._oauth.getUserID(), open: true}
         };
-        this.get('/0.6/changesets', config).then(function (data) {
+        return this.get('/0.6/changesets', config).then((data) => {
             var changesets = data.osm.changeset;
             if (changesets.length > 0) {
-                deferred.resolve(changesets[0].id);
+                return changesets[0].id;
             } else if (changesets._id) {
-                deferred.resolve(changesets._id);
+                return changesets._id;
             } else {
-                deferred.resolve();
+                return;
             }
         });
-        return deferred.promise;
     }
     /**
      * @returns {Promise} $http.put response of
      * /0.6/changeset/CHANGESET_ID/close
     */
     closeChangeset(id) {
-        var self = this;
-        return this.put(`/0.6/changeset/${id}/close`)
-        .then(function (data) {
-            return data;
-        });
+        return this.put(`/0.6/changeset/${id}/close`);
     }
 
 
@@ -454,5 +432,5 @@ class OSMAPI {
 
 }
 
-OSMAPI.$inject = ['$http', '$q', 'osmx2js'];
+OSMAPI.$inject = ['$http', 'osmx2js'];
 export default OSMAPI;
